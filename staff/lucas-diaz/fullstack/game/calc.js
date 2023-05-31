@@ -4,7 +4,7 @@
 //     0 1   2     3    aqui decimos que recibira una variable almacenada en "op" que de forma predet es + pero se puede cambiar
 const [, , num1, num2, op = "+" ] = process.argv // ! OJO RECIBIMOS STRINGS
 
-parseInt(num1)
+parseInt(num1) 
 parseInt(num2)
 
 
