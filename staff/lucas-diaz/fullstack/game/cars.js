@@ -1,4 +1,6 @@
-const STEP = 2, LAPSE = 10
+const fs = require('fs');
+
+const STEP = 3, LAPSE = 100
 
 class Car {
     constructor(emoji) {
@@ -63,15 +65,13 @@ const intervalId = setInterval(() => {
         const taxiResult = taxi.status()
         const redCardResult = redCar.status()
         const policeCarResult = policeCar.status()
-        
+
         const results = []
         results.push(taxiResult, redCardResult, policeCarResult)
         console.log(results)
 
-        const fs = require('fs');
-
         const content = JSON.stringify(results)
-    
+
         fs.writeFile('/Users/lucasdiaz/workspace/isdi-parttime-202303/staff/lucas-diaz/fullstack/game/results.txt', content, err => {
             if (err) {
                 console.error(err);
@@ -83,5 +83,5 @@ const intervalId = setInterval(() => {
 }, LAPSE);
 
 
-// OBJETIVO ESCRIBIR LOS RESULTADOS EN UN ARCHIVO 
+// OBJETIVO ESCRIBIR LOS RESULTADOS EN UN ARCHIVO -->  DONE ✅
 
