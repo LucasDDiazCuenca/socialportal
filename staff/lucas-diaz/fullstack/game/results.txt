@@ -1,1 +1,1 @@
-[{"icon":"🚖","endPosition":100.63990039738398,"finalTime":6700},{"icon":"🚘","endPosition":100.18471992143385,"finalTime":6900},{"icon":"🚔","endPosition":101.83292714995406,"finalTime":6100}]
+[{"icon":"🚖","endPosition":100.03391729502107,"finalTime":6300},{"icon":"🚘","endPosition":100.14444667416304,"finalTime":7400},{"icon":"🚔","endPosition":102.39072251505404,"finalTime":6400}]
