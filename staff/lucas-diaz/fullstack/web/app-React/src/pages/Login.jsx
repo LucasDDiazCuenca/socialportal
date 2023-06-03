@@ -30,8 +30,8 @@ export default function Login(props) {
     function handleLogin(event) {
         event.preventDefault();
 
-        const email = event.target.email.value 
-        const password = event.target.password.value 
+        const email = event.target.email.value = "lucas@gmail.com"
+        const password = event.target.password.value = "LucasDiaz22!"
 
         try {
             authenticateUser(email, password, (error, userId) => {

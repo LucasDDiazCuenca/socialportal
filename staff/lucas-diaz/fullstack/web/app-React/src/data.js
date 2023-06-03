@@ -1,4 +1,4 @@
-import { users } from "../../app-React.2/src/data"
+
 
 const DELAY = 400
 
