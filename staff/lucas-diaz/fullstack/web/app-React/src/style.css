@@ -31,7 +31,6 @@
 }
 
 
-
 /*! MODAL PARA AÑADIR UN POST*/
 .home-add-post-modal,
 .home-edit-post-modal {
@@ -74,66 +73,9 @@
     border-radius: .3rem;
 }
 
-
-/*! FOOTER*/
-.footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    height: 8%;
-    width: 100%;
-    background-color: #1e3a3a;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-}
-
-.footer-button {
-    height: 2.8rem;
-    flex-basis: 15%;
-    cursor: pointer;
-
-    background-color: rgb(0 36 36);
-    color: azure;
-    border-radius: .6rem;
-    border: none;
-    margin-top: 0.2rem;
-    padding: 0.6rem 1rem;
-    cursor: pointer;
-}
-
-.loader {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.cubeCanvas {
-    position: relative;
-    z-index: 1;
-    opacity: .72;
-}
-
-.loader-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
-    color: white;
-    font-size: 20px;
-}
-
-
-/*! MISCELANEOUS*/
-
-
 .fade {
     opacity: 15%;
 }
-
 
 @media (min-width: 650px) {
 

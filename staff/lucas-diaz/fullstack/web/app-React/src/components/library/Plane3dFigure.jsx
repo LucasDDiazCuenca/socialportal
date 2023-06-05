@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
-export default function CreateCube() {
+export default function Plane3dFigure() {
     const canvasRef = useRef(null);
 
     useEffect(() => {
@@ -27,7 +27,7 @@ export default function CreateCube() {
 
             scene.add(cube);
 
-            camera.position.z = 4.0;
+            camera.position.z = 1;
 
             animate();
         }
@@ -37,7 +37,7 @@ export default function CreateCube() {
             requestAnimationFrame(animate);
 
             cube.rotation.x += 0.000;
-            cube.rotation.y += 0.01;
+            cube.rotation.y += 0.003;
 
             renderer.render(scene, camera);
         }
@@ -53,9 +53,8 @@ export default function CreateCube() {
         };
     }, []);
 
-    return <div className='fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
-        <p className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 text-white text-xl'>Loading...</p>
-        <canvas ref={canvasRef} className='relative z-1 opacity-75'>
+    return <div className='loader'>
+        <canvas ref={canvasRef} className="relative z-1 opacity-50">
         </canvas>
     </div>
 }

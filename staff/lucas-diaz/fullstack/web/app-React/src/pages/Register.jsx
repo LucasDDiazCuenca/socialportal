@@ -1,6 +1,7 @@
 import registerUser from "../logic/registerUser.js"
 import React, { useState } from "react";
 import Form from "../components/library/Form.jsx";
+import Plane3dFigure from "../components/library/Plane3dFigure.jsx";
 
 export default function Register(props) {
     const [errorMessage, setErrorMessage] = useState("");
@@ -36,9 +37,9 @@ export default function Register(props) {
         }
     }
 
-    return <div className="container">
-
-        <section className="h-1/2">
+    return <>
+        <div className="container">
+        <section className="h-1/2 z-20">
             <h1 className="app-h1">REGISTER</h1>
             {errorMessage && <p className="fail-warning red">{errorMessage}</p>}
             <Form onSubmit={handleRegister}>
@@ -63,4 +64,6 @@ export default function Register(props) {
             </Form>
         </section>
     </div>
+    <Plane3dFigure/>
+    </>
 }

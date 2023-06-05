@@ -138,7 +138,7 @@ export default function Home({ onLogOutClick }) {
             }
         </main>
 
-        <footer className="footer">
+        <footer className="footerArea">
             {modal === "updatePost" && <UpdatePost
                 postId={postId}
                 onUpdatedPost={HandleUpdatedPost}
@@ -149,11 +149,11 @@ export default function Home({ onLogOutClick }) {
                 onCreatedPost={handleCreatedPost}
             />}
 
-            <button className="footer-button" onClick={handleHomeClick}><span className="material-symbols-outlined">home</span></button>
-            <button className="footer-button"><span className="material-symbols-outlined">sell</span></button>
-            <button className="footer-button button" onClick={handleFooterButtonClick}> + </button>
-            <button className="footer-button" onClick={handleFooterFavButtonClick}><span className="material-symbols-outlined">bookmarks</span></button>
-            <button className="footer-button" onClick={handleFooterUserPostsClick}><span className="material-symbols-outlined">account_circle</span></button>
+            <button className="form-button" onClick={handleHomeClick}><span className="material-symbols-outlined">home</span></button>
+            <button className="form-button"><span className="material-symbols-outlined">sell</span></button>
+            <button className="form-button" onClick={handleFooterButtonClick}><p className="p-1">+</p></button>
+            <button className="form-button" onClick={handleFooterFavButtonClick}><span className="material-symbols-outlined">bookmarks</span></button>
+            <button className="form-button" onClick={handleFooterUserPostsClick}><span className="material-symbols-outlined">account_circle</span></button>
         </footer>
     </div>
 

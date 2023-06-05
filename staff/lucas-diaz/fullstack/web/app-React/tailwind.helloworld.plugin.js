@@ -67,6 +67,18 @@ export default plugin(({ addBase, addComponents, addUtilities, theme }) => {
             borderRadius: ".3rem",
             color: "white",
             gap: ".4rem"
+        },
+        ".footerArea": {
+            position: "fixed",
+            bottom: "0",
+            left: "0",
+            height: "8%",
+            width: "100%",
+            backgroundColor: "#1e3a3a",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "1rem",
         }
     })
 
