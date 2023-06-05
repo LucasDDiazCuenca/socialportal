@@ -5,6 +5,7 @@ import retrieveLanzaroteWeather from "../logic/retrieveLanzaroteWeather.js"
 import Form from "../components/library/Form.jsx"
 import Plane3dFigure from "../components/library/Plane3dFigure.jsx";
 
+
 export default function Login(props) {
     const [errorMessage, setErrorMessage] = useState("");
     const [weatherMessage, setWeatherMessage] = useState();
@@ -53,7 +54,7 @@ export default function Login(props) {
 
     return <>
         <div className="container">
-            <section className="h-1/2 z-40">
+            <section className="h-1/2 z-10">
                 <h1 className="app-h1">LOG IN</h1>
 
                 {errorMessage && <p className="fail-warning red">{errorMessage}</p>}

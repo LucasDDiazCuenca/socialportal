@@ -41,7 +41,7 @@ export default function Register(props) {
         <div className="container">
         <section className="h-1/2 z-20">
             <h1 className="app-h1">REGISTER</h1>
-            {errorMessage && <p className="fail-warning red">{errorMessage}</p>}
+            {errorMessage && <p className="fail-warning red text-center">{errorMessage}</p>}
             <Form onSubmit={handleRegister}>
                 <div className="box-input">
                     <label>Your username:</label>
