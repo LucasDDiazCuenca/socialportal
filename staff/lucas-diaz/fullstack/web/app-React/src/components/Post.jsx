@@ -82,10 +82,10 @@ export default function Post(props) {
 
     console.log("Post -> render")
 
-    return <article>
-        <div className="home-post-content-article-box">
-            <img className="home-post-content-article-avatar" src={post.author.avatar} />
-            <p className="home-post-content-article-userName">{post.userName}</p>
+    return <article className="home-post-content-article">
+        <div className="flex basis-1/2 items-center gap-2">
+            <img className="w-12 h-12 rounded-full m-2" src={post.author.avatar} />
+            <p className="text-emerald-400 text-center">{post.userName}</p>
         </div>
 
         {post.author.id === context.userId ? <span className="material-symbols-rounded lockimg" onClick={handleHidePostClick}>
@@ -96,16 +96,16 @@ export default function Post(props) {
             delete
         </span> : null}
 
-        {post.author.id === context.userId ? <button className="home-edit-post-modal-button" onClick={openEditPostModal}>Edit</button> : null}
-        <div className="post-image-container">
-            <img className="home-post-content-article-img" src={post.image} />
+        {post.author.id === context.userId ? <button className="edit-button" onClick={openEditPostModal}>Edit</button> : null}
+        <div className="w-full flex relative pb-3-4">
+            <img className="w-full h-full absolute object-contain" src={post.image} />
         </div>
         <span className={post.likeCounter.includes(context.userId) ? "material-symbols-rounded material-symbols-rounded-liked" : "material-symbols-rounded"} onClick={handleHeartClick}>favorite</span>
-        <p className="home-post-content-article-icon-text">{post.likeCounter.length} {post.likeCounter.length === 1 ? "like" : "likes"}</p>
+        <p className="self-center text-sm">{post.likeCounter.length} {post.likeCounter.length === 1 ? "like" : "likes"}</p>
 
-        <button className="home-post-content-article-saved" onClick={handleSavePostClick}><span className={`material-symbols-rounded ${user.savedPosts.includes(post.id) ? "filled" : ""}`}>bookmark</span></button>
+        <button className="bg-transparent border-none basis-4/6 text-right" onClick={handleSavePostClick}><span className={`material-symbols-rounded ${user.savedPosts.includes(post.id) ? "filled" : ""}`}>bookmark</span></button>
 
-        <p className="home-post-content-article-text">{post.text}</p>
-        <time className="home-post-content-article-date">{post.date.toLocaleString()}</time>
+        <p className="text-white text-sm basis-full text-left bg-zinc-800 p-1.5">{post.text}</p>
+        <time className="basis-full text-right text-xs text-gray-500 pr-3 pb-2">{post.date.toLocaleString()}</time>
     </article>
 }  

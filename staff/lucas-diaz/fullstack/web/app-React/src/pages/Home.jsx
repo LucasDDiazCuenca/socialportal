@@ -88,24 +88,24 @@ export default function Home({ onLogOutClick }) {
 
     console.log("Home -> render")
 
-    return <div className="home">
+    return <div className="home h-0">
         <header className="home-header">
-            <h1 className="home-header-tittle" onClick={handleHomeClick}>Home</h1>
-            <div className="home-header-left-items">
-                <img className="home-header-left-items-config-icon" src="https://www.iconpacks.net/icons/2/free-settings-icon-3110-thumb.png" alt="" onClick={handleSettingsClick} />
-                <button className="home-header-left-items-log-out-button button" onClick={handleLogOutClick} >Log out</button>
+            <h1 className="px-3 text-3xl cursor-pointer" onClick={handleHomeClick}>Home</h1>
+            <div className="flex gap-3 p-2">
+                <img className="w-10 h-10 filter invert cursor-pointer rotate-slow" src="https://www.iconpacks.net/icons/2/free-settings-icon-3110-thumb.png" alt="" onClick={handleSettingsClick} />
+                <button className="form-button active:red" onClick={handleLogOutClick} >Log out</button>
             </div>
-            <div className="home-header-user">
+            <div className="flex basis-full items-center">
                 {user && <>
-                    <img className="home-header-user-avatar" src={avatar || user.avatar} alt="default avatar" />
+                    <img className="w-14 h-14 rounded-full transition-all duration-200 hover:scale-150 mx-4" src={avatar || user.avatar} alt="default avatar" />
+                    <h2 className="text-xl">{user.name}</h2>
                 </>}
-                <h2 className="home-header-user-welcome-msj"></h2>
             </div>
             <nav className={`home-menu ${view === null ? "home-menu-transition" : ""} ${view === "avatar" || view === "posts" || view === "password" || view === "savedPosts" || view === "userPosts"? "" : "home-menu-transition"}`}>
-                <ul>
-                    <li><a href="" className="home-menu-change-pass-anchor" onClick={handlePasswordAnchor}>change password</a></li>
-                    <li><a href="" className="home-menu-avatar-anchor" onClick={handleAvatarAnchor}>Avatar</a></li>
-                    <li><a href="" className="home-menu-option3">option 3</a></li>
+                <ul className="basis-full flex gap-6 bg-zinc-700 p-4 rounded-md">
+                    <li><a href="" className="hover:green" onClick={handlePasswordAnchor}>change password</a></li>
+                    <li><a href="" className="hover:green" onClick={handleAvatarAnchor}>Avatar</a></li>
+                    <li><a href="" className="home-menu-option3 hover:green">option 3</a></li>
                 </ul>
             </nav>
         </header>

@@ -1,6 +1,7 @@
 import updateUserPassword from "../logic/updateUserPassword.js"
 import { context } from "../ui.js";
 import { useState } from "react";
+import Form from "./library/Form.jsx";
 
 export default function UpdatePassword(props) {
     const [errorMessage, setErrorMessage] = useState("");
@@ -30,10 +31,10 @@ export default function UpdatePassword(props) {
         props.onCancelClick();
     }
 
-    return <div className="change-password-menu menu-page">
+    return <div className="flex flex-wrap flex-row justify-center basis-11/12 p-4 text-white gap-4 bg-zinc-800 rounded-lg">
         <h3>UPDATE PASSWORD</h3>
         <p>To change current password, provide a new one</p>
-        <form className="form" onSubmit={handleUpdatePassword}>
+        <Form onSubmit={handleUpdatePassword}>
             <label htmlFor="old-password">Old password: </label>
             <input type="text" className="old-password form-item" name="old-password" placeholder="Enter old password"
                 autoComplete="current-password" />
@@ -43,12 +44,12 @@ export default function UpdatePassword(props) {
             <label htmlFor="new-password-repetition">Repeat new password:</label>
             <input type="password" className="new-password-repetition form-item" name="new-password-repetition"
                 placeholder="Enter again new password" id="new-password-repetition" autoComplete="current-password" />
-            {errorMessage && <p className="fail-password-match-advise red">{errorMessage}</p>}
+            {errorMessage && <p className="fail-password-match-advise basis-full text-center red">{errorMessage}</p>}
             <div className="form-buttons">
-                <button className="cancel-change-password" onClick={handleCancelClick}>Cancel</button>
-                <button type="submit" className="change-password">Change password</button>
+                <button className="form-button" onClick={handleCancelClick}>Cancel</button>
+                <button type="submit" className="form-button">Change password</button>
             </div>
-        </form>
+        </Form>
     </div>
 
 }

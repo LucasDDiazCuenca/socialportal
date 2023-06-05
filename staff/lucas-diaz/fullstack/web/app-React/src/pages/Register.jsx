@@ -1,5 +1,6 @@
 import registerUser from "../logic/registerUser.js"
 import React, { useState } from "react";
+import Form from "../components/library/Form.jsx";
 
 export default function Register(props) {
     const [errorMessage, setErrorMessage] = useState("");
@@ -19,46 +20,47 @@ export default function Register(props) {
 
         try {
             registerUser(temporalUserName, temporalEmail, temporalPassword, error => {
-                if (error){
+                if (error) {
                     console.log(error)
                     setErrorMessage(error.message);
                     return;
-                }   
-                
+                }
+
                 props.onUserRegistered()
             });
 
             event.target.reset();
-            
+
         } catch (error) {
             setErrorMessage(error.message);
         }
     }
 
     return <div className="container">
-        <section className="register">
-            <h1 className="register-header">REGISTER</h1>
+
+        <section className="h-1/2">
+            <h1 className="app-h1">REGISTER</h1>
             {errorMessage && <p className="fail-warning red">{errorMessage}</p>}
-            <form className="form" onSubmit={handleRegister}>
-                <div className="input-box">
-                    <label>your username</label>
-                    <input type="text" className="form-username" name="name" placeholder="Enter username" />
+            <Form onSubmit={handleRegister}>
+                <div className="box-input">
+                    <label>Your username:</label>
+                    <input type="text" className="basis-full rounded-md pl-2 text-emerald-800" name="name" placeholder="Enter username" />
                 </div>
-                <div className="input-box">
-                    <label>your email</label>
-                    <input type="email" className="form-email" name="email" placeholder="Enter email"
+                <div className="box-input">
+                    <label>Your email:</label>
+                    <input type="email" className="basis-full rounded-md pl-2 text-emerald-800" name="email" placeholder="Enter email"
                         autoComplete="current-password" />
                 </div>
-                <div className="input-box">
-                    <label>your password</label>
-                    <input type="password" name="password" placeholder="Enter password" className="form-password"
+                <div className="box-input">
+                    <label>Your password:</label>
+                    <input type="password" name="password" placeholder="Enter password" className="basis-full rounded-md pl-2 text-emerald-800"
                         autoComplete="current-password" />
                 </div>
-                <button type="submit" className="submit-button sign-up">SIGN UP</button>
-            </form>
-            <p className="initialize-login">
-                Alreaddy logged?<a href="" onClick={handleLoginClick} className="register-login-anchor green"> Go to login!</a>
-            </p>
+                <button type="submit" className="form-button active:green">SIGN UP</button>
+                <p className="basis-full text-center pt-2">
+                    Alreaddy logged?<a href="" onClick={handleLoginClick} className="register-login-anchor green"> Go to login!</a>
+                </p>
+            </Form>
         </section>
     </div>
 }

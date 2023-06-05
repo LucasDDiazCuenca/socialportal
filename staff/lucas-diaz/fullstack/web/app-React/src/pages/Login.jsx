@@ -2,6 +2,7 @@ import { context } from "../ui.js";
 import authenticateUser from "../logic/authenticateUser.js"
 import { useState, useEffect } from "react";
 import retrieveLanzaroteWeather from "../logic/retrieveLanzaroteWeather.js"
+import Form from "../components/library/Form.jsx";
 
 export default function Login(props) {
     const [errorMessage, setErrorMessage] = useState("");
@@ -50,32 +51,33 @@ export default function Login(props) {
     }
 
     return <div className="container">
-        <section className="login">
-            <h1 className="login-header">LOG IN</h1>
-            <p className="login-success-warning green off">User created successfully</p>
+        <section className="h-1/2">
+            <h1 className="app-h1">LOG IN</h1>
+
             {errorMessage && <p className="fail-warning red">{errorMessage}</p>}
-            <form className="form" onSubmit={handleLogin}>
-                <div className="input-box">
-                    <label>your email</label>
-                    <input type="email" className="form-email" name="email" placeholder="Enter email" autoComplete="current-password" />
+            <Form  onSubmit={handleLogin}>
+                <div className="box-input">
+                    <label>Your email</label>
+                    <input type="email" className="basis-full rounded-md pl-2 text-emerald-800" name="email" placeholder="Enter email" autoComplete="current-password" />
                 </div>
-                <div className="input-box">
-                    <label>your password</label>
-                    <input type="password" className="form-password" name="password" placeholder="Enter password" autoComplete="current-password" />
+                <div className="box-input">
+                    <label>Your password</label>
+                    <input type="password" className="basis-full rounded-md pl-2 text-emerald-800" name="password" placeholder="Enter password" autoComplete="current-password" />
                 </div>
-                <div className="login-other-options">
-                    <div className="login-other-options-remember-me">
-                        <input type="checkbox" name="remember" id="log-in-checkbox" />
+                <div className="mt-4 basis-full flex items-center justify-around">
+                    <div>
+                        <input type="checkbox" name="remember" className="mr-2" id="log-in-checkbox" />
                         <label htmlFor="log-in-checkbox">Remember me</label>
                     </div>
                     <a className="forgot-password-anchor green" href="">Forgot password?</a>
                 </div>
-                <button type="submit" className="submit-button log-in">LOG IN</button>
-                <p className="initialize-register">
+                <button type="submit" className="form-button active:green">LOG IN</button>
+
+                <p className="text-white text-center basis-full ">
                     Not a member? <a href="" onClick={handleRegisterClick} className="login-register-anchor green">register here</a>
                 </p>
-            </form>
-            <p className="weather-message">{weatherMessage}</p>
+            </Form>
+            <p className="weather-message text-white text-center m-8 text-sm">{weatherMessage}</p>
         </section>
     </div>
 }
