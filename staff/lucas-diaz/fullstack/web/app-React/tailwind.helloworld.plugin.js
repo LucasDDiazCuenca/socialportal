@@ -55,7 +55,7 @@ export default plugin(({ addBase, addComponents, addUtilities, theme }) => {
             justifyContent: "center",
             gap: "1rem",
             backgroundColor: "#0d1a15",
-            marginTop: "1rem",
+            marginTop: "1.7rem",
             paddingBottom: "5rem",
         },
         ".home-post-content-article": {
@@ -79,6 +79,22 @@ export default plugin(({ addBase, addComponents, addUtilities, theme }) => {
             justifyContent: "center",
             alignItems: "center",
             gap: "1rem",
+        },
+        ".post-modal":{
+            width: "80%",
+            position: "fixed",
+            bottom: "170px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            display: "flex",
+            flexFlow: "row wrap",
+            justifyContent: "center",
+            alignContent: "center",
+            alignItems: "center",
+            borderRadius: "0.3rem",
+            backgroundColor: "#313338",
+            padding: "0.5rem",
+            boxShadow: "0.5rem 0.5rem 2rem black"
         }
     })
 

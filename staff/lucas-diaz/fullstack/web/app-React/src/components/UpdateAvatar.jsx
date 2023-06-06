@@ -35,7 +35,7 @@ export default function UpdateAvatar(props) {
         <p className=" text-center">To update avatar, please provide a link that contains an image .png or .jpeg</p>
         <Form  onSubmit={handleUpdateAvatar}>
             <label className="basis-full" htmlFor="url">Avatar's URL: </label>
-            <input type="url" className="basis-full rounded p-2" name="url" placeholder="Enter url" />
+            <input type="url" className="basis-full rounded p-2 text-black" name="url" placeholder="Enter url" />
             <div className="form-buttons mt-5">
                 { errorMessage &&  <p className="fail-warning basis-full text-center red">{errorMessage}</p>}
                 <button className="form-button mx-3" onClick={handleCancelClick}>Cancel</button>

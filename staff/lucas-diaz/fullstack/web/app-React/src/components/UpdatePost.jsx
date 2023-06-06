@@ -49,23 +49,23 @@ export default function UpdatePost({ postId, onUpdatedPost, onCancelClick }) {
     }
 
 
-    return <section className="home-edit-post-modal">
+    return <section className="post-modal">
         <Form onSubmit={handleUpdatePost}>
             {post && <>
-                <label htmlFor="url">Edit post:</label>
-                <input type="url" className="form-post-url-input form-item text-black" name="url" defaultValue={post.image} />
+                <label className="basis-full text-center text-xl" htmlFor="url">Edit post:</label>
+                <input type="url" className="form-item text-black basis-11/12 rounded p-2" name="url" defaultValue={post.image} />
                 <input type="hidden" className="home-edit-hidden-input" name="postId" />
-                <textarea className="text-black" name="text" cols="30" rows="5" defaultValue={post.text}></textarea>
+                <textarea className="text-black basis-11/12 rounded p-2" name="text" cols="30" rows="5" defaultValue={post.text}></textarea>
             </> || <>
-                    <label htmlFor="url">Loading edit post:</label>
-                    <input type="url" className="form-post-url-input form-item" name="url" disabled placeholder="Loading..." style={{ backgroundColor: "white" }} />
+                    <label className="basis-full text-center text-xl" htmlFor="url">Loading...</label>
+                    <input type="url" className="form-item basis-11/12 rounded p-2" name="url" disabled placeholder="Loading..." style={{ backgroundColor: "white" }} />
                     <input type="hidden" className="home-edit-hidden-input" name="postId" />
-                    <textarea name="text" cols="30" rows="5" disabled placeholder="Loading..." style={{ backgroundColor: "white" }}></textarea>
+                    <textarea className="basis-11/12 rounded p-2" name="text" cols="30" rows="5" disabled placeholder="Loading..." style={{ backgroundColor: "white" }}></textarea>
                 </>}
 
 
             <div className="form-buttons">
-                <button type="button" className="form-button active:red" onClick={handleCancelClick}>Cancel</button>
+                <button type="button" className="form-button mr-5 active:red" onClick={handleCancelClick}>Cancel</button>
                 <button type="submit" className="form-button active:green">Save</button>
                 <p className="fail-warning red"></p>
             </div>

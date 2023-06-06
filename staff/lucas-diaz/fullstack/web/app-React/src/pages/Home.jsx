@@ -97,7 +97,7 @@ export default function Home({ onLogOutClick }) {
             </div>
             <div className="flex basis-full items-center">
                 {user && <>
-                    <img className="w-14 h-14 rounded-full transition-all duration-200 hover:scale-150 mx-4" src={avatar || user.avatar} alt="default avatar" />
+                    <img className="w-14 h-14 rounded-full transition-all duration-200 hover:scale-150 mx-4 mb-3" src={avatar || user.avatar} alt="default avatar" />
                     <h2 className="text-xl">{user.name}</h2>
                 </>}
             </div>

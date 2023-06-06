@@ -36,13 +36,13 @@ export default function UpdatePassword(props) {
         <p className=" text-center ">To change current password, provide a new one!</p>
         <Form onSubmit={handleUpdatePassword}>
             <label className="basis-full" htmlFor="old-password">Old password: </label>
-            <input type="text" className="old-password form-item basis-full rounded p-2" name="old-password" placeholder="Enter old password"
+            <input type="text" className="old-password form-item basis-full rounded p-2 text-black" name="old-password" placeholder="Enter old password"
                 autoComplete="current-password" />
             <label className="basis-full" htmlFor="new-password">New password:</label>
-            <input type="password" className="new-password form-item basis-full rounded p-2" name="new-password" placeholder="Enter new password"
+            <input type="password" className="new-password form-item basis-full rounded p-2 text-black" name="new-password" placeholder="Enter new password"
                 id="new-password" autoComplete="current-password" />
             <label className="basis-full" htmlFor="new-password-repetition">Repeat new password:</label>
-            <input type="password" className="new-password-repetition form-item basis-full rounded p-2" name="new-password-repetition"
+            <input type="password" className="new-password-repetition form-item basis-full rounded p-2 text-black" name="new-password-repetition"
                 placeholder="Enter again new password" id="new-password-repetition" autoComplete="current-password" />
             {errorMessage && <p className="fail-password-match-advise basis-full text-center red">{errorMessage}</p>}
             <div className="form-buttons mt-5">

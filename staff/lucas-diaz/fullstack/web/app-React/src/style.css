@@ -10,7 +10,6 @@
     align-items: center;
 
 }
-
 .home-header {
     position: fixed;
     width: 100%;
@@ -24,122 +23,12 @@
     color: azure;
     z-index: 10;
 }
-
 .rotate-slow {
     animation: rotate-gear 10s infinite linear;
     align-self: center;
 }
-
-
-/*! MODAL PARA AÑADIR UN POST*/
-.home-add-post-modal,
-.home-edit-post-modal {
-    width: 80%;
-    position: fixed;
-    bottom: 170px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    border-radius: 0.3rem;
-    background-color: #313338;
-    padding: 0.5rem;
-    box-shadow: 0.5rem 0.5rem 2rem black;
-}
-
-.home-add-post-modal .form,
-.home-edit-post-form {
-    gap: 1rem;
-}
-
-.home-add-post-modal .form textarea,
-.home-edit-post-form textarea {
-    flex-basis: 90%;
-    border-radius: .5rem;
-}
-
-.home-add-post-modal .form label,
-.home-edit-post-form label {
-    text-align: center;
-    font-size: 1rem;
-    margin: 0px;
-}
-
-.form-post-url-input {
-    flex-basis: 90%;
-    border-radius: .3rem;
-}
-
 .fade {
     opacity: 15%;
-}
-
-@media (min-width: 650px) {
-
-    .register,
-    .login {
-        font-size: 1rem;
-        width: 50%;
-        height: 50%;
-        background-color: #2b2d31;
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.125);
-        display: flex;
-        flex-flow: wrap row;
-        align-items: center;
-        justify-content: center;
-        padding: 16px;
-    }
-
-
-    .other-register-options {
-        flex-basis: 80%;
-    }
-
-    .home {
-        margin-top: 10px;
-        max-width: 700px;
-        min-height: 100vh;
-        height: auto;
-        border-radius: 10px 10px 0px 0px;
-        row-gap: 10px;
-    }
-
-    .home-posts-content {
-        padding-top: 120px;
-        height: fit-content;
-    }
-
-    .home-header {
-        background-color: #252c27;
-        z-index: 10;
-    }
-
-    .home-main-content {
-        padding-top: 100rem;
-        padding-bottom: 8rem;
-    }
-
-    .menu-page {
-        margin-top: 0px;
-    }
-
-    .home-add-post-modal {
-        max-width: 700px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-
-
-    .footer {
-        height: 6%;
-        border-radius: 0px 0px 10px 10px;
-        background-color: #252c27;
-    }
 }
 
 @keyframes rotate-gear {

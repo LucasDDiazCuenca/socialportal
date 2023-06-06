@@ -31,14 +31,14 @@ export default function AddPostModal(props) {
         }
     }
 
-    return <section className="home-add-post-modal">
+    return <section className="post-modal">
         <Form  onSubmit={handleCreatePost}>
-            <label htmlFor="url">Create post:</label>
-            <input type="url" className="form-post-url-input form-item" name="url" placeholder="Enter an image by typing a url" />
-            <textarea  name="text" cols="30" rows="5" placeholder="What do yo want to say ??"></textarea>
+            <label className="basis-full text-center text-xl" htmlFor="url">Create post:</label>
+            <input type="url" className="form-item text-black basis-11/12 rounded p-2" name="url" placeholder="Enter an image by typing a url" />
+            <textarea className="text-black basis-11/12 rounded p-2" name="text" cols="30" rows="5" placeholder="What do yo want to say ??"></textarea>
             <div className="form-buttons">
             {errorMessage && <p className="fail-warning red">{errorMessage}</p>}
-                <button type="button" className="form-button active:red" onClick={handleCancelClick}>Cancel</button>
+                <button type="button" className="form-button mr-5 active:red" onClick={handleCancelClick}>Cancel</button>
                 <button type="submit" className="form-button active:green">Create post</button>
             </div>
         </Form>
