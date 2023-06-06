@@ -1,33 +1,30 @@
-const { readFile } = require("fs") //Commons js 
+const { readFile, writeFile } = require("fs") //Commons js 
 
 
 
-function registerUser(name, email, password) {
+module.exports =  function registerUser(name, email, password, callback) {
     // TODO validate imputs
 
-    // formato //callba
-    readFile("./data/users.json", "utf-8", (error, json) => {
+                              // formato //callback
+    readFile("./data/users.json", "utf8", (error, json) => {
         if (error) {
             callback(error)
             return
         }
 
         const users = JSON.parse(json)
-
         let user = users.find(user => user.email === email)
 
         if (user) {
-            callbac(new Error(`User with email ${email} alreadye exists`))
+            callback(new Error(`User with email ${email} already exist`))
             return
         }
 
         let id = "user-1"
-
         const lastUser = users.at(-1)
 
         if (lastUser)
             id = "user-" + (parseInt(lastUser.id.slice(5)) + 1)
-
 
         user = {
             id,
@@ -36,6 +33,17 @@ function registerUser(name, email, password) {
             password: password,
             avatar: "https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png",
             savedPosts: [] 
-        }
+        } 
+        users.push(user)
+
+        json = JSON.stringify(users)
+
+        writeFile("./data/users.json", json ,"utf8", error => {
+            if (error){
+                callback(error)
+                return
+            }
+            callback(null)
+        })
     })
 }
