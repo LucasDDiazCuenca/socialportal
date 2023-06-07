@@ -1,7 +1,5 @@
 const { readFile, writeFile } = require("fs") //Commons js 
 
-
-
 module.exports =  function registerUser(name, email, password, callback) {
     // TODO validate imputs
 
@@ -37,7 +35,6 @@ module.exports =  function registerUser(name, email, password, callback) {
         users.push(user)
 
         json = JSON.stringify(users)
-
         writeFile("./data/users.json", json ,"utf8", error => {
             if (error){
                 callback(error)

@@ -14,4 +14,8 @@ registerUser("pepa pig", "pepa@pig.com", "PepaPig22!", error => {
         return
     }
     console.log("User registered correctly")
+
+
+    //si todo va bien, esperamos que el error sea nulo 
+    
 }) 
