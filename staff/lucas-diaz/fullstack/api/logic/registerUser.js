@@ -19,6 +19,7 @@ module.exports =  function registerUser(name, email, password, callback) {
         }
 
         let id = "user-1"
+        
         const lastUser = users.at(-1)
 
         if (lastUser)
@@ -34,7 +35,7 @@ module.exports =  function registerUser(name, email, password, callback) {
         } 
         users.push(user)
 
-        json = JSON.stringify(users)
+        json = JSON.stringify(users, null, 4)
         writeFile("./data/users.json", json ,"utf8", error => {
             if (error){
                 callback(error)
