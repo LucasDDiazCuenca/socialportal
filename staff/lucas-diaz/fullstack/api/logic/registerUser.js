@@ -36,6 +36,7 @@ module.exports =  function registerUser(name, email, password, callback) {
         users.push(user)
 
         json = JSON.stringify(users, null, 4)
+        
         writeFile("./data/users.json", json ,"utf8", error => {
             if (error){
                 callback(error)
