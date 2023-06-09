@@ -1,6 +1,6 @@
+import { validators } from 'com'
 import { findPostByPostId, findUserById, savePost } from "../data";
-import { validateId } from "./helpers/validators";
-
+const {validateId} = validators
 
 export default function hideAPost(userId, post, callback){
     validateId(userId)

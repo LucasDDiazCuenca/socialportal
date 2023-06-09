@@ -1,5 +1,6 @@
+import { validators } from 'com'
 import { savePost, findUserById, findPostByPostId } from "../data";
-import { validateId } from "./helpers/validators";
+const {validateId} = validators
 
 
 export default function likeAPost(userId, post, callback) {

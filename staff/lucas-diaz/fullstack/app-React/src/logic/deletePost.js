@@ -1,6 +1,6 @@
-import { validateId } from "./helpers/validators";
+import { validators } from 'com'
 import { loadUsers, loadPosts, savePosts } from "../data";
-
+const {validateId} = validators
 
 export default function deletePost(userId, postId, callback) {
     validateId(userId);
