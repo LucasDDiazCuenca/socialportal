@@ -86,46 +86,46 @@ describe("authenticateUser", () => {
 
     //sincronos de email
     it("should fail on empty email", () => {
-        expect(() => authenticateUser( "" , "helloFriends!22", () => { })).to.throw(Error, "Email is empty")
+        expect(() => authenticateUser( "" , password, () => { })).to.throw(Error, "Email is empty")
     })
 
     it("should fail on non-string value in email", () => {
-        expect(() => authenticateUser(22, "helloFriends!22", () => { })).to.throw(Error, "Email is not a string")
-        expect(() => authenticateUser(true, "helloFriends!22", () => { })).to.throw(Error, "Email is not a string")
-        expect(() => authenticateUser({}, "helloFriends!22", () => { })).to.throw(Error, "Email is not a string")
-        expect(() => authenticateUser([], "helloFriends!22", () => { })).to.throw(Error, "Email is not a string")
+        expect(() => authenticateUser(22, password, () => { })).to.throw(Error, "Email is not a string")
+        expect(() => authenticateUser(true, password, () => { })).to.throw(Error, "Email is not a string")
+        expect(() => authenticateUser({}, password, () => { })).to.throw(Error, "Email is not a string")
+        expect(() => authenticateUser([], password, () => { })).to.throw(Error, "Email is not a string")
     })
 
     it("should fail on invalid format in email", () => {
-        expect(() => authenticateUser("heloworld", "helloFriends!22", password, () => { })).to.throw(Error, 'Invalid email format')
+        expect(() => authenticateUser("heloworld", password, password, () => { })).to.throw(Error, 'Invalid email format')
     })
 
     it("should fail on blank space value in email", () => {
-        expect(() => authenticateUser(" ", "helloFriends!22", () => { })).to.throw(Error, "Email cant be a blankSpace")
+        expect(() => authenticateUser(" ", password, () => { })).to.throw(Error, "Email cant be a blankSpace")
     })
 
     // sincronos de pass 
     it("should fail on empty password", () => {
-        expect(() => authenticateUser("hello@gmail.com", "", () => { })).to.throw(Error, "Password is empty")
+        expect(() => authenticateUser(email, "", () => { })).to.throw(Error, "Password is empty")
     })
 
     it("should fail on non-string value in password", () => {
-        expect(() => authenticateUser("hello@gmail.com", 22, () => { })).to.throw(Error, "Password is not a string")
-        expect(() => authenticateUser("hello@gmail.com", true, () => { })).to.throw(Error, "Password is not a string")
-        expect(() => authenticateUser("hello@gmail.com", {}, () => { })).to.throw(Error, "Password is not a string")
-        expect(() => authenticateUser("hello@gmail.com", [], () => { })).to.throw(Error, "Password is not a string")
+        expect(() => authenticateUser(email, 22, () => { })).to.throw(Error, "Password is not a string")
+        expect(() => authenticateUser(email, true, () => { })).to.throw(Error, "Password is not a string")
+        expect(() => authenticateUser(email, {}, () => { })).to.throw(Error, "Password is not a string")
+        expect(() => authenticateUser(email, [], () => { })).to.throw(Error, "Password is not a string")
     })
 
     it("should fail on blank space value in password", () => {
-        expect(() => authenticateUser("hello@gmail.com", " ", () => { })).to.throw(Error, "Password cant be a blankSpace")
+        expect(() => authenticateUser(email, " ", () => { })).to.throw(Error, "Password cant be a blankSpace")
     })
 
     it("should fail on lower than 4 character password", () => {
-        expect(() => authenticateUser("hello@gmail.com", "bo", () => { })).to.throw(Error, "Password is shorter than 4 characters")
+        expect(() => authenticateUser(email, "bo", () => { })).to.throw(Error, "Password is shorter than 4 characters")
     })
 
     it("should fail on invalid format in password", () => {
-        expect(() => authenticateUser("hello@gmail.com", "helloworld", () => { })).to.throw(Error, `password format incorrect`)
+        expect(() => authenticateUser(email, "helloworld", () => { })).to.throw(Error, `password format incorrect`)
     })
 
 

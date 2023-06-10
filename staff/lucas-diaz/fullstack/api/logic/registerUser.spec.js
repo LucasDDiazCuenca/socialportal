@@ -44,6 +44,53 @@ describe("registerUser", () => {
         })
     })
 
+    it("should suceed in other existing user", done => {
+        //creamos un user 
+        const idNumber = Math.round(Math.random() * 100 + 1)
+        const id = `user-${idNumber}`
+        const name = `name-${Math.floor(Math.random() * 101)}`
+        const email = `e-${Math.floor(Math.random() * 101)}@gmail.com`
+        const password = `abcD!!${Math.floor(Math.random() * 101)}eg`
+        const avatar = `https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512${Math.floor(Math.random() * 101)}.png`
+        const savedPosts = []
+
+        const name2 = `name-${Math.floor(Math.random() * 101)}`
+        const email2 = `e-${Math.floor(Math.random() * 101)}@gmail.com`
+        const password2 = `abcD!!${Math.floor(Math.random() * 101)}eg`
+
+        const user = { id, name, email, password, avatar, savedPosts }
+        const json = JSON.stringify([user], null, 4)
+        //metemos un user 
+        writeFile("./data/users.json", json, "utf8", error => {
+            expect(error).to.be.null
+
+            registerUser(name2, email2, password2, error => {
+                //Esperamos que el error sea nulo
+                expect(error).to.be.null
+    
+                //esperamos que el usuario se haya registrado, pa eso tenemos
+                //Que leer el users.json y buscarlo 
+                readFile("./data/users.json", "utf8", (error, json) => {
+                    //Esperamos que el error sea nulo
+                    expect(error).to.be.null
+    
+                    const users = JSON.parse(json)
+                    const user = users.find(user => user.email === email2)
+                    console.log(user)
+                    
+                    expect(user).to.exist
+                    expect(user.id).to.equal(`user-${idNumber + 1}`)
+                    expect(user.name).to.equal(name2)
+                    expect(user.email).to.equal(email2)
+                    expect(user.password).to.equal(password2)
+                    expect(user.savedPosts).to.have.lengthOf(0)
+    
+                    done();
+                })
+            })
+        })
+    })
+
     it("should fail on existing user", done => {
         //creamos un user 
         const id = `id-${Math.floor(Math.random() * 101)}`
@@ -70,6 +117,8 @@ describe("registerUser", () => {
             })
         })
     })
+
+
 
     //! OJO AL TRATO DE ERROR SINCRONO
     it("should fail on empty name", () => {
