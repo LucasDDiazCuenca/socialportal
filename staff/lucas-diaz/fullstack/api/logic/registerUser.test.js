@@ -6,7 +6,7 @@ registerUser("lucas Diaz", "lucas@gmail.com", "LucasDiaz22!", error => {
         return
     }
     console.log("User registered correctly")
-})
+}) 
 
 /* registerUser("pepa pig", "pepa@pig.com", "PepaPig22!", error => {
     if (error){
@@ -16,6 +16,5 @@ registerUser("lucas Diaz", "lucas@gmail.com", "LucasDiaz22!", error => {
     console.log("User registered correctly")
 
 
-    //si todo va bien, esperamos que el error sea nulo 
-    
+    si todo va bien, esperamos que --> error = nulo (falsy)
 })  */

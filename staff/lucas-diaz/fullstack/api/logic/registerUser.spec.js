@@ -4,21 +4,19 @@ const { readFile, writeFile } = require("fs")
 
 
 describe("registerUser", () => {
+    let name, email, password
     // antes de todos los test para limpiar el array a "[]"
     beforeEach(done => {
+        name = `name-${Math.floor(Math.random() * 101)}`
+        email = `e-${Math.floor(Math.random() * 101)}@gmail.com`
+        password = `abcD!!${Math.floor(Math.random() * 101)}eg`
+
         writeFile("./data/users.json", "[]", "utf8", error => {
             done(error)
         })
     })
 
     it("should succed on new user", done => {
-
-        //son randoms 
-        const name = `name-${Math.floor(Math.random() * 101)}`
-        const email = `e-${Math.floor(Math.random() * 101)}@gmail.com`
-        const password = `abcD!!${Math.floor(Math.random() * 101)}eg`
-
-
         registerUser(name, email, password, error => {
             //Esperamos que el error sea nulo
             expect(error).to.be.null
@@ -47,7 +45,6 @@ describe("registerUser", () => {
     })
 
     it("should fail on existing user", done => {
-        debugger;
         //creamos un user 
         const id = `id-${Math.floor(Math.random() * 101)}`
         const name = `name-${Math.floor(Math.random() * 101)}`
@@ -65,7 +62,7 @@ describe("registerUser", () => {
             registerUser(name, email, password, error => {
                 //volvemos a meter el mismo user 
                 // meter los expect 
-                expect(error).to.exist
+                //expect(error).to.exist ES REDUNDANTE POR EL DE ABAJO
                 expect(error).to.be.instanceOf(Error)
                 expect(error.message).to.equal(`User with email ${email} already exist`)
 
@@ -74,8 +71,73 @@ describe("registerUser", () => {
         })
     })
 
-    // Se ejecuta 1 vez luego de todos los test para limpiar 
-    after(done => writeFile("./data/users.json", "[]", "utf8", error => done(error)))  
+    //! OJO AL TRATO DE ERROR SINCRONO
+    it("should fail on empty name", () => {
+        /*         try {
+                    registerUser("", email, password, () => { })
+        
+                } catch (error) {
+                    expect(error).to.be.instanceOf(Error)
+                    expect(error.message).to.equal("Username is empty")
+                } */
+        expect(() => registerUser("", email, password, () => { })).to.throw(Error, "Username is empty")
+    })
+
+    it("should fail on non-string value in username", () => {
+        expect(() => registerUser(true, email, password, () => { })).to.throw(Error, "Username is not a string")
+        expect(() => registerUser(22, email, password, () => { })).to.throw(Error, "Username is not a string")
+        expect(() => registerUser({}, email, password, () => { })).to.throw(Error, "Username is not a string")
+        expect(() => registerUser([], email, password, () => { })).to.throw(Error, "Username is not a string")
+    })
+
+    it("should fail on blank space value in username", () => {
+        expect(() => registerUser(" ", email, password, () => { })).to.throw(Error, "Username cant be a blankSpace")
+    })
+
+    it("should fail on empty email", () => {
+        expect(() => registerUser(name, "", password, () => { })).to.throw(Error, "Email is empty")
+    })
+
+    it("should fail on non-string value in email", () => {
+        expect(() => registerUser(name, 22, password, () => { })).to.throw(Error, "Email is not a string")
+        expect(() => registerUser(name, true, password, () => { })).to.throw(Error, "Email is not a string")
+        expect(() => registerUser(name, {}, password, () => { })).to.throw(Error, "Email is not a string")
+        expect(() => registerUser(name, [], password, () => { })).to.throw(Error, "Email is not a string")
+    })
+
+    it("should fail on invalid format in email", () => {
+        expect(() => registerUser(name, "hola", password, () => { })).to.throw(Error, 'Invalid email format')
+    })
+
+    it("should fail on blank space value in email", () => {
+        expect(() => registerUser(name, " ", password, () => { })).to.throw(Error, "Email cant be a blankSpace")
+    })
+
+    it("should fail on empty password", () => {
+        expect(() => registerUser(name, email, "", () => { })).to.throw(Error, "Password is empty")
+    })
+
+    it("should fail on non-string value in password", () => {
+        expect(() => registerUser(name, email, 22, () => { })).to.throw(Error, "Password is not a string")
+        expect(() => registerUser(name, email, true, () => { })).to.throw(Error, "Password is not a string")
+        expect(() => registerUser(name, email, {}, () => { })).to.throw(Error, "Password is not a string")
+        expect(() => registerUser(name, email, [], () => { })).to.throw(Error, "Password is not a string")
+    })
+
+    it("should fail on blank space value in password", () => {
+        expect(() => registerUser(name, email, " ", () => { })).to.throw(Error, "Password cant be a blankSpace")
+    })
+
+    it("should fail on lower than 4 character password", () => {
+        expect(() => registerUser(name, email, "bo", () => { })).to.throw(Error, "Password is shorter than 4 characters")
+    })
+
+    it("should fail on invalid format in password", () => {
+        expect(() => registerUser(name, email, "helloworld", () => { })).to.throw(Error, `password format incorrect`)
+    })
+
+    // Se ejecuta 1 vez luego de todos  los test para limpiar 
+    after(done => writeFile("./data/users.json", "[]", "utf8", error => done(error)))
 })
 
 
