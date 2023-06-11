@@ -76,7 +76,6 @@ describe("registerUser", () => {
     
                     const users = JSON.parse(json)
                     const user = users.find(user => user.email === email2)
-                    console.log(user)
                     
                     expect(user).to.exist
                     expect(user.id).to.equal(`user-${idNumber + 1}`)
