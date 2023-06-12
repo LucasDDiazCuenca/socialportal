@@ -29,7 +29,7 @@ api.post("/users", (req, res) => {
                     return
                 }
 
-                res.status(201).send()
+                res.status(204).send()
             })
 
         } catch (error) {
@@ -99,7 +99,7 @@ api.post("/users/avatar", (req, res) => {
                 if (error) {
                     res.status(404).json({ error: error.message })
                 }
-                res.status(201).send()
+                res.status(204).send()
             })
 
         } catch (error) {
@@ -123,7 +123,7 @@ api.post("/users/password", (req, res) => {
                 if (error) {
                     res.status(404).json({ error: error.message })
                 }
-                res.status(201).send()
+                res.status(204).send()
             })
 
         } catch (error) {
