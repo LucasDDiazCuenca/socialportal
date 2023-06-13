@@ -33,9 +33,9 @@ function validatePasswordsChanges(password, newPassword, newPasswordConfirm){
 
 function validateUrl(url){
     const avatarRegex = /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i
-    if (!url.trim()) throw new Error("url is empty");
     if ( typeof url !== "string") throw new Error("url is not a string");
     if (url === " ") throw new Error("url cant be a blankSpace");
+    if (!url.trim()) throw new Error("url is empty");
     if (!avatarRegex.test(url)) throw new Error('Image format invalid');
 }
 

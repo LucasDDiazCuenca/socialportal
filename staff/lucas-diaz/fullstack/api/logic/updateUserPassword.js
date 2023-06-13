@@ -1,8 +1,20 @@
 const { readFile, writeFile } = require("fs")
+const {validators: {validateId, validatePassword} } = require("com")
 
 module.exports = function updateUserPassword(userId, password, newPassword, newPasswordConfirmation, callback) {
-    // TODO validate imputs 
+    validateId(userId)
+    validatePassword(password)
+    validatePassword(newPassword)
+    validatePassword(newPasswordConfirmation) 
 
+    if (password === newPassword) {
+        throw new Error(`New password must be different as previous password`)
+    }
+
+    if (newPassword !== newPasswordConfirmation) {
+        throw new Error(`new password and new password confirmation does not match`)
+    }
+    
     readFile("./data/users.json", "utf8", (error, json) => {
         if (error) {
             callback(error)
@@ -21,15 +33,7 @@ module.exports = function updateUserPassword(userId, password, newPassword, newP
             callback(new Error("typed password isn't actual password user's value"))
             return
         }
-        if (password === newPassword) {
-            callback(new Error("Password is equal than new password"))
-            return
-        }
 
-        if (newPassword !== newPasswordConfirmation) {
-            callback(new Error("New password and new password confirmation are not the same"))
-            return
-        }
 
         foundUser.password = newPassword;
         json = JSON.stringify(users, null, 4)
