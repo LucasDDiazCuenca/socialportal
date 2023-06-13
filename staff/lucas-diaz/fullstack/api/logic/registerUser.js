@@ -7,7 +7,7 @@ module.exports =  function registerUser(name, email, password, callback) {
     validatePassword(password)
 
                               // formato //callback
-    readFile("./data/users.json", "utf8", (error, json) => {
+    readFile("./data/users.json",  (error, json) => {
         if (error) {
             callback(error)
             return
@@ -40,7 +40,7 @@ module.exports =  function registerUser(name, email, password, callback) {
 
         json = JSON.stringify(users, null, 4)
         
-        writeFile("./data/users.json", json ,"utf8", error => {
+        writeFile("./data/users.json", json , error => {
             if (error){
                 callback(error)
                 return

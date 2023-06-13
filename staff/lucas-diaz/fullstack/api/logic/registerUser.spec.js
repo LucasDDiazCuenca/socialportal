@@ -11,7 +11,7 @@ describe("registerUser", () => {
         email = `e-${Math.floor(Math.random() * 101)}@gmail.com`
         password = `abcD!!${Math.floor(Math.random() * 101)}eg`
 
-        writeFile("./data/users.json", "[]", "utf8", error => {
+        writeFile("./data/users.json", "[]",  error => {
             done(error)
         })
     })
@@ -23,7 +23,7 @@ describe("registerUser", () => {
 
             //esperamos que el usuario se haya registrado, pa eso tenemos
             //Que leer el users.json y buscarlo 
-            readFile("./data/users.json", "utf8", (error, json) => {
+            readFile("./data/users.json",  (error, json) => {
                 //Esperamos que el error sea nulo
                 expect(error).to.be.null
 
@@ -61,7 +61,7 @@ describe("registerUser", () => {
         const user = { id, name, email, password, avatar, savedPosts }
         const json = JSON.stringify([user], null, 4)
         //metemos un user 
-        writeFile("./data/users.json", json, "utf8", error => {
+        writeFile("./data/users.json", json,  error => {
             expect(error).to.be.null
 
             registerUser(name2, email2, password2, error => {
@@ -70,7 +70,7 @@ describe("registerUser", () => {
     
                 //esperamos que el usuario se haya registrado, pa eso tenemos
                 //Que leer el users.json y buscarlo 
-                readFile("./data/users.json", "utf8", (error, json) => {
+                readFile("./data/users.json",  (error, json) => {
                     //Esperamos que el error sea nulo
                     expect(error).to.be.null
     
@@ -102,7 +102,7 @@ describe("registerUser", () => {
         const user = { id, name, email, password, avatar, savedPosts }
         const json = JSON.stringify([user], null, 4)
         //metemos un user 
-        writeFile("./data/users.json", json, "utf8", error => {
+        writeFile("./data/users.json", json,  error => {
             expect(error).to.be.null
 
             registerUser(name, email, password, error => {
@@ -185,7 +185,7 @@ describe("registerUser", () => {
     })
 
     // Se ejecuta 1 vez luego de todos  los test para limpiar 
-    after(done => writeFile("./data/users.json", "[]", "utf8", error => done(error)))
+    after(done => writeFile("./data/users.json", "[]",  error => done(error)))
 })
 
 

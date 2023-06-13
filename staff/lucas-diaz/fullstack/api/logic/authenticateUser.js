@@ -5,7 +5,7 @@ module.exports = function authenticateUser(email, password, callback){
     validateEmail(email)
     validatePassword(password)
 
-    readFile("./data/users.json", "utf8", (error, json) => {
+    readFile("./data/users.json",  (error, json) => {
         if (error){
             callback(error)
             return;

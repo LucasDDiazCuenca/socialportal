@@ -15,7 +15,7 @@ module.exports = function updateUserPassword(userId, password, newPassword, newP
         throw new Error(`new password and new password confirmation does not match`)
     }
     
-    readFile("./data/users.json", "utf8", (error, json) => {
+    readFile("./data/users.json",  (error, json) => {
         if (error) {
             callback(error)
             return
@@ -38,7 +38,7 @@ module.exports = function updateUserPassword(userId, password, newPassword, newP
         foundUser.password = newPassword;
         json = JSON.stringify(users, null, 4)
 
-        writeFile("./data/users.json", json, "utf8", error => {
+        writeFile("./data/users.json", json,  error => {
             if (error) {
                 callback(error)
                 return

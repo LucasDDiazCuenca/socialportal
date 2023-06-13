@@ -13,7 +13,7 @@ describe("updateUserAvatar", () => {
         avatar = `https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512${Math.floor(Math.random() * 101)}.png`
         newAvatar = "https://archello.s3.eu-central-1.amazonaws.com/images/2018/05/11/tobiarchitects1.1526035990.6946.jpg"
         savedPosts = []
-        writeFile("./data/users.json", "[]", "utf8", error => done(error))
+        writeFile("./data/users.json", "[]",  error => done(error))
     })
 
     it("should suceed on changing user avatar", done => {
@@ -22,19 +22,19 @@ describe("updateUserAvatar", () => {
             id,
             name,
             email,
-            password,
+            password, 
             avatar,
             savedPosts
         }
         const json = JSON.stringify([user])
 
-        writeFile("./data/users.json", json, "utf8", error => {
+        writeFile("./data/users.json", json,  error => {
             expect(error).to.be.null
 
             updateUserAvatar(user.id, newAvatar, error => {
                 expect(error).to.be.null
 
-                readFile("./data/users.json", "utf8", (error, json) => {
+                readFile("./data/users.json",  (error, json) => {
                     expect(error).to.be.null
 
                     const users = JSON.parse(json)

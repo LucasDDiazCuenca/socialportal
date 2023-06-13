@@ -14,7 +14,7 @@ describe("updateUserPassword", () => {
         avatar = `https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512${Math.floor(Math.random() * 101)}.png`
         savedPosts = []
         newPassword = `abcD!!${Math.floor(Math.random() * 101)}eg`
-        writeFile("./data/users.json", "[]", "utf8", error => done(error))
+        writeFile("./data/users.json", "[]",  error => done(error))
     })
 
     it("should succed on updating user password", done => {
@@ -29,13 +29,13 @@ describe("updateUserPassword", () => {
         const json = JSON.stringify([user])
         newPasswordConfirm = newPassword
 
-        writeFile("./data/users.json", json, "utf8", error => {
+        writeFile("./data/users.json", json,  error => {
             expect(error).to.be.null
 
             updateUserPassword(user.id, password, newPassword, newPasswordConfirm, error => {
                 expect(error).to.be.null
 
-                readFile("./data/users.json", "utf8", (error, json) => {
+                readFile("./data/users.json",  (error, json) => {
                     expect(error).to.be.null
 
                     const users = JSON.parse(json)
@@ -64,7 +64,7 @@ describe("updateUserPassword", () => {
         const json = JSON.stringify([user])
         newPasswordConfirm = newPassword
 
-        writeFile("./data/users.json", json, "utf8", error => {
+        writeFile("./data/users.json", json,  error => {
             expect(error).to.be.null
 
             updateUserPassword(failUserId, password, newPassword, newPasswordConfirm, error => {
@@ -89,7 +89,7 @@ describe("updateUserPassword", () => {
         newPasswordConfirm = newPassword
         const wrongPassword = `abcDdw!!${Math.floor(Math.random() * 101)}eg`
 
-        writeFile("./data/users.json", json, "utf8", error => {
+        writeFile("./data/users.json", json,  error => {
             expect(error).to.be.null
 
             updateUserPassword(user.id, wrongPassword, newPassword, newPasswordConfirm, error => {
