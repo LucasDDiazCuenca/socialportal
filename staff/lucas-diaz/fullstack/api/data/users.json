@@ -5,7 +5,9 @@
         "email": "lucas@gmail.com",
         "password": "LucasDiaz22!",
         "avatar": "https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png",
-        "savedPosts": []
+        "savedPosts": [
+            "post-2"
+        ]
     },
     {
         "id": "user-2",
