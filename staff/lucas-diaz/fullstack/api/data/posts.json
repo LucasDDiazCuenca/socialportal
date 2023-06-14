@@ -1,0 +1,22 @@
+[
+    {
+        "id": "post-2",
+        "author": "user-1",
+        "userName": "lucas Diaz",
+        "image": "https://archello.s3.eu-central-1.amazonaws.com/images/2018/05/11/tobiarchitects1.1526035990.6946.jpg",
+        "text": "Really like this house",
+        "date": "2023-06-14T00:39:08.652Z",
+        "likeCounter": [],
+        "visibility": "public"
+    },
+    {
+        "id": "post-3",
+        "author": "user-2",
+        "userName": "pepa pig",
+        "image": "https://archello.s3.eu-central-1.amazonaws.com/images/2018/05/11/tobiarchitects1.1526035990.6946.jpg",
+        "text": "Really like this house",
+        "date": "2023-06-14T01:26:33.965Z",
+        "likeCounter": [],
+        "visibility": "public"
+    }
+]

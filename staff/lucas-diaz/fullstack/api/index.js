@@ -47,8 +47,6 @@ api.post("/users/auth", (req, res) => {
     })
 
     req.on("end", () => {
-        debugger;
-
         try {
             const { email, password } = JSON.parse(json)
             authenticateUser(email, password, (error, userId) => {
@@ -67,26 +65,26 @@ api.post("/users/auth", (req, res) => {
 //!retrieveUser
 api.get("/users/:userId", (req, res) => {
     //TODO call retrieveUser and return user (in json)
-    debugger;
     try {
         const { userId } = req.params
 
         retrieveUser(userId, (error, user) => {
-            if(error){
-                res.status(400).json({error: error.message})
+            if (error) {
+                res.status(400).json({ error: error.message })
                 return
             }
 
             res.status(200).json(user)
         })
     } catch (error) {
-        res.status(400).json({error: error.message})
+        res.status(400).json({ error: error.message })
     }
 })
 
 //!updateUserAvatar
-api.post("/users/avatar", (req, res) => {
+api.patch("/users/avatar/:userId", (req, res) => {
     let json = "";
+
 
     req.on("data", chunk => {
         json += chunk
@@ -94,7 +92,8 @@ api.post("/users/avatar", (req, res) => {
 
     req.on("end", () => {
         try {
-            const { userId, avatar } = JSON.parse(json)
+            const { userId } = req.params
+            const { avatar } = JSON.parse(json)
             updateUserAvatar(userId, avatar, error => {
                 if (error) {
                     res.status(404).json({ error: error.message })
@@ -109,16 +108,18 @@ api.post("/users/avatar", (req, res) => {
 })
 
 //!updateUserPassword
-api.post("/users/password", (req, res) => {
+api.patch("/users/password/:userId", (req, res) => {
     let json = "";
 
     req.on("data", chunk => {
         json += chunk
     })
-
+ 
     req.on("end", () => {
+        debugger;
         try {
-            const { userId, password, newPassword, newPasswordConfirmation } = JSON.parse(json)
+            const { userId } = req.params
+            const { password, newPassword, newPasswordConfirmation } = JSON.parse(json)
             updateUserPassword(userId, password, newPassword, newPasswordConfirmation, error => {
                 if (error) {
                     res.status(404).json({ error: error.message })
@@ -131,9 +132,6 @@ api.post("/users/password", (req, res) => {
         }
     })
 })
-
-
-
 
 
 api.listen(4000)

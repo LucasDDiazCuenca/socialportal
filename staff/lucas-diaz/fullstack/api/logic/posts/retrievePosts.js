@@ -1,20 +1,32 @@
-import { validators } from 'com'
-import { loadUsers, loadPosts } from "../data.js";
-const {validateId} = validators 
+const { readFile } = require("fs")
+const {validators: {validateId} } = require("com")
 
-export default function retrievePosts(userId, callback) {
+module.exports = function retrievePosts(userId, callback){
     validateId(userId);
 
-    loadUsers(users => {
-        const found = users.find(user => user.id === userId)
+    readFile("./data/users.json",  (error, json) => {
+        if (error) {
+            callback(error)
+            return
+        }
+        const users = JSON.parse(json)
+        //buscar user 
+        const user = users.find(user => user.id === userId)
 
-        if (!found) {
-            callback(new Error(`there is no user with this current ${userId} id`));
+        if (!user) {
+            callback(new Error("User not found"))
             return
         }
 
-        loadPosts((posts) => {
-            //vamos a recorrer todos los posts
+        readFile("./data/posts.json", (error, json) => {
+            if(error){
+                callback(error)
+                return
+            }
+            
+            
+            const posts = JSON.parse(json)
+
             posts.forEach(post => {
                 // para c/post vamos a buscar su user propio
                 const _user = users.find(user => user.id === post.author)
@@ -26,7 +38,6 @@ export default function retrievePosts(userId, callback) {
                 }
             })
 
-
             const _posts = posts.filter(post=> {
                 //trae tu post 
                 if (post.author.id === userId){
@@ -37,9 +48,7 @@ export default function retrievePosts(userId, callback) {
                 }
             })
 
-            callback(null, _posts.toReversed());
+            callback(null, _posts.reverse())
         })
     })
 }
-
-// de esta forma no modificamos el array original de posts, solamente modificamos la logica que almacena temporalmente estos posts con un poco mas de informacion. 

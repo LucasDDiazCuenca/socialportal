@@ -5,7 +5,7 @@ module.exports =  function registerUser(name, email, password, callback) {
     validateUsername(name)
     validateEmail(email)
     validatePassword(password)
-
+    
                               // formato //callback
     readFile("./data/users.json",  (error, json) => {
         if (error) {

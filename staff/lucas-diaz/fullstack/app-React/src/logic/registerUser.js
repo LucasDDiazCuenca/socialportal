@@ -1,5 +1,5 @@
 import { validators } from 'com'
-import { loadUsers, saveUsers, findUserByEmail } from "../data.js";
+
 const {validateEmail, validateUsername, validatePassword} = validators
 
 export default function registerUser(userName, email, password, callback) {
@@ -7,29 +7,25 @@ export default function registerUser(userName, email, password, callback) {
     validateEmail(email);
     validatePassword(password);
 
-    findUserByEmail(email, foundUser => {
-        if (foundUser) {
-            callback(new Error("This profile already exist"));
-            return;
-        }
-        
-        let id = "user-1";
+    const xhr = new XMLHttpRequest
 
-        loadUsers(users => {
-            const lastUser = users.at(-1);
+    xhr.onload = () => {
+        const payload = JSON.parse(xhr.response)
 
-            if (lastUser)
-                id = "user-" + (parseInt(lastUser.id.slice(5)) + 1)
+        callback(null, payload)
+    }
 
-            users.push({
-                id,
-                name: userName,
-                email: email,
-                password: password,
-                avatar: "https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png",
-                savedPosts: []
-            });
-            saveUsers(users,() => callback(null));
-        })
-    });
+    xhr.onerror = () => {
+        callback(new Error("conection error"));
+    }
+    //tenemos que enviar la cabecera 
+    xhr.setRequestHeader("Content-Type", "application/json")
+
+    const user = {userName, email, password}
+    const json = JSON.stringify(user)
+
+    xhr.open("POST", "http://localhost:4000/users")
+    xhr.send(json)
 }
+
+
