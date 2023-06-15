@@ -2,7 +2,7 @@ import { validators } from 'com'
 import { findPostByPostId, findUserById, savePost } from "../data";
 const {validateId} = validators
 
-export default function hideAPost(userId, post, callback){
+export default function toggleHidePost(userId, post, callback){
     validateId(userId)
 
     findUserById(userId, foundUser => {

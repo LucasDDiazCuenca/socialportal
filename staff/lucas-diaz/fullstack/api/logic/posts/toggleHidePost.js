@@ -1,7 +1,7 @@
 const { readFile, writeFile } = require("fs")
 const { validators: { validateId } } = require("com")
 
-module.exports = function savePostInUser(userId, postId, callback) {
+module.exports = function toggleHidePost(userId, postId, callback) {
     validateId(userId)
     validateId(postId)
 
@@ -32,19 +32,20 @@ module.exports = function savePostInUser(userId, postId, callback) {
                 return
             }
 
-            if (user.savedPosts.includes(foundPost.id)){
-                const index = user.savedPosts.indexOf(foundPost.id)
-                user.savedPosts.splice(index,1)
-                
-
-                //si no lo tiene pushear el id del post 
-            }else if (!user.savedPosts.includes(foundPost.id)){
-                user.savedPosts.push(foundPost.id)
+            if (foundPost.author !== userId) {
+                callback(new Error("this user has not permition to hide this post"))
+                return
             }
-            
-            json = JSON.stringify(users, null, 4)
 
-            writeFile("./data/users.json", json, error => {
+            if(foundPost.visibility !== "private"){
+                foundPost.visibility = "private";
+            } else {
+                foundPost.visibility = "public";
+            }
+
+            json = JSON.stringify(posts, null, 4)
+
+            writeFile("./data/posts.json", json, error => {
                 if (error) {
                     callback(error)
                     return

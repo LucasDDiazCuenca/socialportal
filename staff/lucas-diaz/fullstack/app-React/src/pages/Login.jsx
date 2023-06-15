@@ -33,8 +33,8 @@ export default function Login(props) {
     function handleLogin(event) {
         event.preventDefault();
 
-        const email = event.target.email.value = "lucas@gmail.com"
-        const password = event.target.password.value = "LucasDiaz22!"
+        const email = event.target.email.value 
+        const password = event.target.password.value 
 
         try {
             authenticateUser(email, password, (error, userId) => {
@@ -57,7 +57,7 @@ export default function Login(props) {
             <section className="h-1/2 z-10">
                 <h1 className="app-h1">LOG IN</h1>
 
-                {errorMessage && <p className="fail-warning red">{errorMessage}</p>}
+                {errorMessage && <p className="fail-warning text-center red">{errorMessage}</p>}
                 <Form onSubmit={handleLogin}>
                     <div className="box-input">
                         <label>Your email</label>

@@ -2,7 +2,7 @@ import { validators } from 'com'
 import { saveUser, findUserById } from "../data";
 const {validateId} = validators 
 
-export default function savePostInUser(userId, post, callback){
+export default function toggleSavePostInUser(userId, post, callback){
     validateId(userId);
 
     findUserById(userId, foundUser => {

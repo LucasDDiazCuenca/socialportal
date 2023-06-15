@@ -1,6 +1,6 @@
-const hideAPost = require("./hideAPost")
+const toggleHidePost = require("./toggleHidePost")
 
-hideAPost("user-2", "post-3", error => {
+toggleHidePost("user-2", "post-3", error => {
     if(error){
         console.log(error)
         return

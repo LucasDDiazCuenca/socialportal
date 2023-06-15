@@ -1,33 +1,40 @@
 import { validators } from 'com'
-import { loadUsers, saveUsers, findUserById} from "../data.js";
-const {validatePasswordsChanges, validateId} = validators
+const {validatePassword, validateId} = validators
 
-export default function updateUserPassword(authenticatedUserId, password, newPassword, newPasswordConfirm, callback) {
-    validatePasswordsChanges(password,newPassword, newPasswordConfirm);
-    validateId( authenticatedUserId)
+export default function updateUserPassword(userId, password, newPassword, newPasswordConfirmation, callback) {
+    validatePassword(password)
+    validatePassword(newPassword)
+    validatePassword(newPasswordConfirmation) 
+    validateId( userId)
     
-    loadUsers( _users => {
-        
-        findUserById(authenticatedUserId, currentUser => {
+    const xhr = new XMLHttpRequest
 
-            const currentUserIndex = _users.findIndex(user => user.id === authenticatedUserId);
+    xhr.onload = () => {
+        const { status } = xhr
     
-            if (currentUser.password !== password) {
-                callback(new Error("typed password isn't actual password user's value"));
-                return;
-            }
-            if (password === newPassword){
-                callback(new Error("Password is equal than new password"))
-                return
-            } 
-            if (newPassword !== newPasswordConfirm){
-                callback(new Error("New password and new password confirmation are not the same"))
-                return
-            } 
-            
-            _users[currentUserIndex].password = newPassword;
-        
-            saveUsers(_users, () => callback(null));
-        });
-    })
+        if (status !== 204) {
+            const { response: json } = xhr
+            const { error } = JSON.parse(json)
+    
+            callback(new Error(error))    
+            return
+        }
+
+        callback(null)
+    }
+
+
+    xhr.onerror = () => {
+        callback(new Error('connection error'))
+    }
+
+
+    xhr.open('PATCH',`http://localhost:4000/users/password/${userId}`)
+    xhr.setRequestHeader('Content-Type', 'application/json')
+
+    let data =  {password, newPassword, newPasswordConfirmation}
+
+    let json = JSON.stringify(data)
+
+    xhr.send(json)
 }

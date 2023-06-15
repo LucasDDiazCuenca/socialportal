@@ -3,7 +3,7 @@ import { savePost, findUserById, findPostByPostId } from "../data";
 const {validateId} = validators
 
 
-export default function likeAPost(userId, post, callback) {
+export default function toggleLikePost(userId, post, callback) {
     validateId(userId);
 
     findUserById(userId, foundUser => {

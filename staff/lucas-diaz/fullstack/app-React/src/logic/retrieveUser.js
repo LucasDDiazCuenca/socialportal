@@ -1,24 +1,38 @@
 import { validators } from 'com'
-import { findUserById } from "../data";
 const {validateId} = validators
 
 // NOS DA EL USER SIN PASSWORD NI EMAIL , PARA ELLO LO HACEMOS CON UN FIND(() => {})
 
 export default function retrieveUser(userId, callback) {
     validateId(userId);
-    findUserById(userId, user => {
-        if (!user){
-            callback(new Error("User not found"));
-            return;
-        } 
 
-        const _user = {
-            name: user.name,
-            avatar: user.avatar,
-            savedPosts: user.savedPosts
+    const xhr = new XMLHttpRequest
+
+    xhr.onload = () => {
+        const { status } = xhr
+    
+        if (status !== 200) {
+            const { response: json } = xhr
+            const { error } = JSON.parse(json)
+    
+            callback(new Error(error))    
+            return
         }
-        callback(null, _user);
 
-    });
+        const { response: json } = xhr
+        const  user = JSON.parse(json)
+        
+        callback(null, user)
+    }
 
+
+    xhr.onerror = () => {
+        callback(new Error('connection error'))
+    }
+
+
+    xhr.open('GET',`http://localhost:4000/users/${userId}`)
+    xhr.setRequestHeader('Content-Type', 'application/json')
+
+    xhr.send()
 }

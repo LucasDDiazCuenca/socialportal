@@ -3,8 +3,20 @@ const { registerUser, authenticateUser, retrieveUser, updateUserAvatar, updateUs
 
 const api = express()
 
+// esto es un middleware que pasará primero para cada peticion api.get/post/etc
+api.use((req, res, next) =>{
+    //Estas 2 de abajo son cabeceras (headers)
+    res.setHeader("Access-Control-Allow-Origin", "*") //acepta llamadas de cualquier ruta
+    res.setHeader("Access-Control-Allow-Headers", "*") //permite cualquier tipo de header
+    res.setHeader("Access-Control-Allow-Methods", "*") //nos permite acceder a todos los metodos que no sean get y post (patch)
+    //sirve para avisar que aqui hemos terminado, que continue con la peticion corresp
+    next()
+})
+
+
+
 api.get("/", (req, res) => {
-    res.send("Hello, World!")
+    res.send("Hello, World!") 
 })
 api.get("/helloworld", (req, res) => res.json({ hello: "world" }))
 
@@ -93,7 +105,8 @@ api.patch("/users/avatar/:userId", (req, res) => {
     req.on("end", () => {
         try {
             const { userId } = req.params
-            const { avatar } = JSON.parse(json)
+            const  avatar  = JSON.parse(json)
+
             updateUserAvatar(userId, avatar, error => {
                 if (error) {
                     res.status(404).json({ error: error.message })
@@ -119,7 +132,12 @@ api.patch("/users/password/:userId", (req, res) => {
         debugger;
         try {
             const { userId } = req.params
+
             const { password, newPassword, newPasswordConfirmation } = JSON.parse(json)
+
+            console.log(password)
+
+
             updateUserPassword(userId, password, newPassword, newPasswordConfirmation, error => {
                 if (error) {
                     res.status(404).json({ error: error.message })
@@ -129,6 +147,36 @@ api.patch("/users/password/:userId", (req, res) => {
 
         } catch (error) {
             res.status(404).json({ error: error.message })
+        }
+    })
+})
+
+
+//! createPost
+
+api.post("/posts", (req, res) => {
+    let json = ""
+
+    req.on("data", chunk => {
+        json += chunk
+    })
+
+    req.on("end", () => {
+        try {
+            const { name, email, password } = JSON.parse(json)
+
+
+            registerUser(name, email, password, error => {
+                if (error) {
+                    res.status(400).json({ error: error.message })
+                    return
+                }
+
+                res.status(204).send()
+            })
+
+        } catch (error) {
+            res.status(400).json({ error: error.message })
         }
     })
 })

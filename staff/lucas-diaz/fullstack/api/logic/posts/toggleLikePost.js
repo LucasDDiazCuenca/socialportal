@@ -1,7 +1,7 @@
 const { readFile, writeFile } = require("fs")
 const { validators: { validateId } } = require("com")
 
-module.exports = function likeAPost(userId, postId, callback) {
+module.exports = function toggleLikePost(userId, postId, callback) {
     validateId(userId)
 
     readFile("./data/users.json", (error, json) => {

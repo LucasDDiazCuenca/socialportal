@@ -1,6 +1,6 @@
-const likeAPost = require("./likeAPost")
+const likeAPost = require("./toggleLikePost")
 
-likeAPost("user-2", "post-3", error => {
+toggleLikePost("user-2", "post-3", error => {
     if(error){
         console.log(error)
         return

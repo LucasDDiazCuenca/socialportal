@@ -1,7 +1,7 @@
 import deletePost from "../logic/deletePost.js";
-import likeAPost from "../logic/likeAPost.js";
-import savePostInUser from "../logic/savePostInUser.js";
-import hideAPost from "../logic/hideAPost.js";
+import toggleLikePost from "../logic/toggleLikePost.js";
+import toggleSavePostInUser from "../logic/toggleSavePostInUser.js";
+import toggleHidePost from "../logic/toggleHidePost.js";
 import { context } from "../ui.js";
 import { useContext } from "react";
 import Context from "../Context.js";
@@ -19,7 +19,7 @@ export default function Post(props) {
     function handleHeartClick() {
         try {
             freeze()
-            likeAPost(context.userId, post, error => {
+            toggleLikePost(context.userId, post, error => {
                 unFreeze()
                 if (error) {
                     alert(error.message)
@@ -51,7 +51,7 @@ export default function Post(props) {
     function handleSavePostClick() {
         freeze()
         try {
-            savePostInUser(context.userId, post, (error) => {
+            toggleSavePostInUser(context.userId, post, (error) => {
                 unFreeze()
                 if (error) {
                     alert(error.message)
@@ -67,7 +67,7 @@ export default function Post(props) {
     function handleHidePostClick() {
         freeze()
         try {
-            hideAPost(context.userId, post, error => {
+            toggleHidePost(context.userId, post, error => {
                 unFreeze()
                 if (error) {
                     alert(error.message)

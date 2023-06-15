@@ -1,21 +1,37 @@
 import { validators } from 'com'
-import { saveUser, findUserById } from "../data.js";
 const {validateId, validateUrl} = validators 
 
 export default function updateUserAvatar(authenticatedUserId, avatarUrl, callback)  { 
     validateId(authenticatedUserId);
     validateUrl(avatarUrl);
 
+    const xhr = new XMLHttpRequest
 
-    findUserById(authenticatedUserId, foundUser => {
-        
-        if (!foundUser){
-            callback(new Error("user not found"));
-            return;
-        } 
+    xhr.onload = () => {
+        const { status } = xhr
     
-        foundUser.avatar = avatarUrl;
-        
-        saveUser(foundUser, () => callback(null));
-    });
+        if (status !== 204) {
+            const { response: json } = xhr
+            const { error } = JSON.parse(json)
+    
+            callback(new Error(error))    
+            return
+        }
+
+        callback(null)
+    }
+
+
+    xhr.onerror = () => {
+        callback(new Error('connection error'))
+    }
+
+
+    xhr.open('PATCH',`http://localhost:4000/users/avatar/${authenticatedUserId}`)
+    xhr.setRequestHeader('Content-Type', 'application/json')
+
+    let data =  avatarUrl
+    let json = JSON.stringify(data)
+
+    xhr.send(json)
 }
