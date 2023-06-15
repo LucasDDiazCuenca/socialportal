@@ -1,5 +1,5 @@
 const express = require("express")
-const { registerUser, authenticateUser, retrieveUser, updateUserAvatar, updateUserPassword } = require("./logic")
+const { registerUser, authenticateUser, retrieveUser, updateUserAvatar, updateUserPassword, createPost, retrievePosts, retrieveSavedPosts } = require("./logic")
 
 const api = express()
 
@@ -151,9 +151,7 @@ api.patch("/users/password/:userId", (req, res) => {
     })
 })
 
-
 //! createPost
-
 api.post("/posts", (req, res) => {
     let json = ""
 
@@ -163,10 +161,10 @@ api.post("/posts", (req, res) => {
 
     req.on("end", () => {
         try {
-            const { name, email, password } = JSON.parse(json)
+            const { userId, image, text } = JSON.parse(json)
 
 
-            registerUser(name, email, password, error => {
+            createPost(userId, image, text, error => {
                 if (error) {
                     res.status(400).json({ error: error.message })
                     return
@@ -180,6 +178,54 @@ api.post("/posts", (req, res) => {
         }
     })
 })
+
+//! retrievePosts
+api.get("/posts/:userId", (req, res) => {
+    try {
+        const { userId } = req.params
+
+        retrievePosts(userId, (error, user) => {
+            if (error) {
+                res.status(400).json({ error: error.message })
+                return
+            }
+
+            res.status(200).json(user)
+        })
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
+})
+
+//! retrieveSavedPosts
+
+api.get("/posts/saved/:userId", (req, res) => {
+
+    let json = ""
+
+    req.on("data", chunk => {
+        json += chunk
+    })
+
+    req.on("end", () => {
+        try {
+            const { userId } = req.params
+            const posts = JSON.parse(json)
+    
+            retrieveSavedPosts(userId, posts ,(error, user) => {
+                if (error) {
+                    res.status(400).json({ error: error.message })
+                    return
+                }
+    
+                res.status(200).json(user)
+            })
+        } catch (error) {
+            res.status(400).json({ error: error.message })
+        }
+    })
+})
+
 
 
 api.listen(4000)

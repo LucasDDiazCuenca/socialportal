@@ -18,5 +18,15 @@
         "date": "2023-06-14T01:26:33.965Z",
         "likeCounter": [],
         "visibility": "public"
+    },
+    {
+        "id": "post-4",
+        "author": "user-1",
+        "userName": "lucas Diaz",
+        "image": "https://www.construyehogar.com/wp-content/uploads/2016/01/Casa-moderna-un-piso.jpg",
+        "text": "caca",
+        "date": "2023-06-15T16:30:37.466Z",
+        "likeCounter": [],
+        "visibility": "public"
     }
 ]

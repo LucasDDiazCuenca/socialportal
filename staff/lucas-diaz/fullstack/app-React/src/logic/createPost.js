@@ -1,5 +1,4 @@
 import { validators } from 'com'
-import { loadPosts, savePosts, findUserById } from "../data.js";
 const {validateId, validateUrl, validateText } = validators
 
 export default function createPost(userId, image, text, callback) {
@@ -7,34 +6,34 @@ export default function createPost(userId, image, text, callback) {
     validateUrl(image);
     validateText(text);
 
-    findUserById(userId, foundUser => {
+    const xhr = new XMLHttpRequest
 
-        if (!foundUser) {
-            callback(new Error(`user with id ${userId} not found`));
-            return;
+    xhr.onload = () => {
+        const { status } = xhr
+    
+        if (status !== 204) {
+            const { response: json } = xhr
+            const { error } = JSON.parse(json)
+    
+            callback(new Error(error))    
+            return
         }
 
-        loadPosts(_posts => {
-            
-            let id = "post-1";
-            const lastPost = _posts.at(-1);
-            if (lastPost) {
-                id = "post-" + (parseInt(lastPost.id.slice(5)) + 1)
-            }
-            const post = {
-                id,
-                author: userId,
-                userName: foundUser.name,
-                image,
-                text,
-                date: new Date,
-                likeCounter: [],
-                visibility: "public"
-            }
-            _posts.push(post);
+        callback(null)
+    }
 
-            savePosts(_posts, () => callback(null));
 
-        })
-    });
+    xhr.onerror = () => {
+        callback(new Error('connection error'))
+    }
+
+
+    xhr.open('POST',`http://localhost:4000/posts`)
+    xhr.setRequestHeader('Content-Type', 'application/json')
+
+    let data =  {userId, image, text}
+
+    let json = JSON.stringify(data)
+
+    xhr.send(json)
 }
