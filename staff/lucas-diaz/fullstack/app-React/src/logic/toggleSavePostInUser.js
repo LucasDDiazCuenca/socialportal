@@ -1,31 +1,35 @@
 import { validators } from 'com'
-import { saveUser, findUserById } from "../data";
-const {validateId} = validators 
+const { validateId } = validators
 
-export default function toggleSavePostInUser(userId, post, callback){
-    validateId(userId);
+export default function toggleSavePostInUser(userId, postId, callback) {
+    validateId(userId)
+    validateId(postId)
 
-    findUserById(userId, foundUser => {
-        
-        if (!foundUser){
-            callback(new Error("There is no user with this id"));
+    const xhr = new XMLHttpRequest
+
+    xhr.onload = () => {
+        const { status } = xhr
+        if (status !== 204) {
+            const { response: json } = xhr
+            const { error } = JSON.parse(json)
+
+            callback(new Error(error))
             return
-        } 
-
-        // si lo tiene, buscarlo y eliminarlo 
-        if (foundUser.savedPosts.includes(post.id)){
-            const index = foundUser.savedPosts.indexOf(post.id)
-            foundUser.savedPosts.splice(index,1)
-
-            saveUser(foundUser, () => callback(null));
-            return;
         }
-        //si no lo tiene pushear el id del post 
-        if (!foundUser.savedPosts.includes(post.id)){
-            foundUser.savedPosts.push(post.id)
-        }
-        // guardar datos en el user
-        saveUser(foundUser, () => callback(null));
 
-    } );
+        callback(null)
+    }
+
+
+    xhr.onerror = () => {
+        callback(new Error('connection error'))
+    }
+
+
+    xhr.open("PATCH", `http://localhost:4000/users/save/${userId}/${postId}`)
+    xhr.setRequestHeader('Content-Type', 'application/json')
+
+    xhr.send()
+
+
 }

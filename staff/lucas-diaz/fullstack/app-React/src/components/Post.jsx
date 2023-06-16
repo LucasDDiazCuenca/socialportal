@@ -19,7 +19,7 @@ export default function Post(props) {
     function handleHeartClick() {
         try {
             freeze()
-            toggleLikePost(context.userId, post, error => {
+            toggleLikePost(context.userId, post.id, error => {
                 unFreeze()
                 if (error) {
                     alert(error.message)
@@ -51,7 +51,7 @@ export default function Post(props) {
     function handleSavePostClick() {
         freeze()
         try {
-            toggleSavePostInUser(context.userId, post, (error) => {
+            toggleSavePostInUser(context.userId, post.id, (error) => {
                 unFreeze()
                 if (error) {
                     alert(error.message)
@@ -67,7 +67,7 @@ export default function Post(props) {
     function handleHidePostClick() {
         freeze()
         try {
-            toggleHidePost(context.userId, post, error => {
+            toggleHidePost(context.userId, post.id, error => {
                 unFreeze()
                 if (error) {
                     alert(error.message)
@@ -105,8 +105,7 @@ export default function Post(props) {
             <p className="self-center text-sm">{post.likeCounter.length} {post.likeCounter.length === 1 ? "like" : "likes"}</p>
         </div>
 
-
-        <button className="bg-transparent border-none text-right" onClick={handleSavePostClick}><span className={`material-symbols-rounded ${user.savedPosts.includes(post.id) ? "filled" : ""}`}>bookmark</span></button>
+        <button className="bg-transparent border-none text-right" onClick={handleSavePostClick}><span className={`material-symbols-rounded ${user?.savedPosts.includes(post.id) ? "filled" : ""}`}>bookmark</span></button>
 
         <p className="text-white text-sm basis-full text-left bg-zinc-800 p-1.5 pl-3">{post.text}</p>
         <time className="basis-full text-right text-xs text-gray-500 pr-3 pb-2">{post.date.toLocaleString()}</time>

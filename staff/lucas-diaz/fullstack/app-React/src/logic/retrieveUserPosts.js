@@ -1,21 +1,36 @@
 import { validators } from 'com'
-import { findUserById } from "../data.js";
 const {validateId} = validators
 
-export default function retrieveUserPosts(userId, posts, callback) {
+export default function retrieveUserPosts(userId, callback) {
     validateId(userId);
 
-    findUserById(userId, foundUser => {
-        if (!foundUser) {
-            callback(new Error(`there is no user with this current ${userId} id`));
-            return;
+    const xhr = new XMLHttpRequest
+
+    xhr.onload = () => {
+        const { status } = xhr
+    
+        if (status !== 200) {
+            const { response: json } = xhr
+            const { error } = JSON.parse(json)
+    
+            callback(new Error(error))    
+            return
         }
 
-        const userPosts = posts.filter((post)=> {
-            return post.author.id === foundUser.id
-        })
-        callback(null, userPosts);
-    })
+        const { response: json } = xhr
+        const posts = JSON.parse(json)
+        
+        callback(null, posts)
+    }
+
+    xhr.onerror = () => {
+        callback(new Error('connection error'))
+    }
+
+    xhr.open('GET',`http://localhost:4000/posts/users/${userId}`)
+    xhr.setRequestHeader('Content-Type', 'application/json')
+
+    xhr.send()
 }
 
 

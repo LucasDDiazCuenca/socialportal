@@ -1,32 +1,34 @@
 import { validators } from 'com'
-import { findPostByPostId, findUserById, savePost } from "../data";
 const {validateId} = validators
 
-export default function toggleHidePost(userId, post, callback){
+export default function toggleHidePost(userId, postId, callback){
     validateId(userId)
-
-    findUserById(userId, foundUser => {
-        if (!foundUser){
-            callback(new Error("There is no user with this id"));
-            return;
-        }
-        findPostByPostId(post.id , foundPost => {
-            if (!foundPost) {
-                callback(new Error("There is no post with this post id"))
-                return
-            }
-
-            if (foundUser.id !== foundPost.author){
-                callback(new Error("user id doesnt match with post author id"))
-                return
-            }
-            if (foundPost.visibility !== "private"){
-                foundPost.visibility = "private";
-            } else {
-                foundPost.visibility = "public";
-            }
+    validateId(postId)
     
-            savePost(foundPost, () => callback(null))
-        })
-    })
+    const xhr = new XMLHttpRequest
+
+    xhr.onload = () => {
+        const { status } = xhr
+        if (status !== 204) {
+            const { response: json } = xhr
+            const { error } = JSON.parse(json)
+    
+            callback(new Error(error))    
+            return
+        }
+
+        callback(null)
+    }
+
+
+    xhr.onerror = () => {
+        callback(new Error('connection error'))
+    }
+
+
+    xhr.open("PATCH",`http://localhost:4000/posts/hide/${userId}/${postId}`)
+    xhr.setRequestHeader('Content-Type', 'application/json')
+
+    xhr.send()
+
 }

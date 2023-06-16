@@ -1,28 +1,32 @@
 import { validators } from 'com'
-import { loadUsers, loadPosts, savePosts } from "../data";
 const {validateId} = validators
 
 export default function deletePost(userId, postId, callback) {
     validateId(userId);
 
-    loadUsers(foundUser => {
-        const found = foundUser.some(user => user.id === userId)
+    const xhr = new XMLHttpRequest
 
-        if (!found){
-            callback(new Error(`there is no user with this current ${userId} id`));
-            return;
-        } 
-
-        loadPosts( _posts => {
-
-            const foundPostIndex = _posts.findIndex(post => post.id === postId)
-
-            if (foundPostIndex !== -1) {
-                _posts.splice(foundPostIndex, 1);
-            }
+    xhr.onload = () => {
+        const { status } = xhr
+        if (status !== 204) {
+            const { response: json } = xhr
+            const { error } = JSON.parse(json)
     
-            savePosts(_posts, () => callback(null))
+            callback(new Error(error))    
+            return
+        }
 
-        } )
-    })
+        callback(null)
+    }
+
+
+    xhr.onerror = () => {
+        callback(new Error('connection error'))
+    }
+
+    xhr.open("PATCH",`http://localhost:4000/posts/delete/${userId}/${postId}`)
+    xhr.setRequestHeader('Content-Type', 'application/json')
+
+    xhr.send()
+
 }

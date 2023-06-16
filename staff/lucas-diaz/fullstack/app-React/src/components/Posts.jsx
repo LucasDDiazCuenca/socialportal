@@ -13,7 +13,7 @@ export default function Posts({ onEditPostButtonClick, lastPostsUpdate, view }) 
 
     const { freeze, unFreeze } = useContext(Context)
     const [posts, setPosts] = useState([])
-    const [user, setUser] = useState()
+    const [user, setUser] = useState(null)
     const [isInitialRun, setIsInitialRun] = useState(true)
 
     useEffect(() => {
@@ -26,7 +26,9 @@ export default function Posts({ onEditPostButtonClick, lastPostsUpdate, view }) 
 
     const checkPostType = () => {
         freeze()
+
         switch (view) {
+
             case "posts":
                 retrievePosts(context.userId, (error, _posts) => {
                     if (error) {
@@ -35,19 +37,20 @@ export default function Posts({ onEditPostButtonClick, lastPostsUpdate, view }) 
                     }
                     setPosts(_posts)
                 })
-                retrieveUser(context.userId, (error, user) => {
+
+                retrieveUser(context.userId, (error, _user) => {
                     unFreeze()
                     if (error) {
                         alert(error)
                         return;
                     }
-                    setUser(user);
-                })
 
+                    setUser(_user);
+                })
                 break;
 
             case "savedPosts":
-                retrieveSavedPosts(context.userId, retrievedPosts, (error, _posts) => {
+                retrieveSavedPosts(context.userId, (error, _posts) => {
                     if (error) {
                         alert(error)
                         return;
@@ -81,8 +84,6 @@ export default function Posts({ onEditPostButtonClick, lastPostsUpdate, view }) 
                     }
                     setUser(user);
                 });
-                break;
-            default:
                 break;
         }
 

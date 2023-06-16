@@ -1,38 +1,36 @@
 import { validators } from 'com'
-import { savePost, findUserById, findPostByPostId } from "../data";
 const {validateId} = validators
 
 
-export default function toggleLikePost(userId, post, callback) {
+export default function toggleLikePost(userId, postId, callback) {
     validateId(userId);
+    validateId(postId)
 
-    findUserById(userId, foundUser => {
 
-        findPostByPostId(post.id, foundPost => {
+    const xhr = new XMLHttpRequest
 
-            if (!foundUser) {
+    xhr.onload = () => {
+        const { status } = xhr
+        if (status !== 204) {
+            const { response: json } = xhr
+            const { error } = JSON.parse(json)
+    
+            callback(new Error(error))    
+            return
+        }
 
-                callback(new Error("There is no user with this id"));
-                return;
-            }
-            if (!foundPost) {
-                callback(new Error("There is no post with this post id"))
-                return
-            }
+        callback(null)
+    }
 
-            if (foundPost.likeCounter.includes(foundUser.id)) {
 
-                const foundUserIndex = foundPost.likeCounter.indexOf(foundUser.id)
-                foundPost.likeCounter.splice(foundUserIndex, 1);
+    xhr.onerror = () => {
+        callback(new Error('connection error'))
+    }
 
-                savePost(foundPost, () => callback(null));
-                return;
-            }
 
-            foundPost.likeCounter.push(foundUser.id);
-            savePost(foundPost, () => callback(null));
+    xhr.open("PATCH",`http://localhost:4000/posts/like/${userId}/${postId}`)
+    xhr.setRequestHeader('Content-Type', 'application/json')
 
-        });
-    });
+    xhr.send()
 
 }

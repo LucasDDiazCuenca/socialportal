@@ -1,35 +1,39 @@
 import { validators } from 'com'
-import { savePost, findUserById, findPostByPostId } from "../data";
 const {validateId, validateText, validateUrl} = validators
 
 export default function updatePost(userId, postId, image, text, callback) {
-    validateId(userId);
-    validateUrl(image);
-    validateText(text);
+    validateId(userId)
+    validateId(postId)
+    validateUrl(image)
+    validateText(text)
 
-    findUserById(userId, foundUser => {
+    const xhr = new XMLHttpRequest
 
-        if (!foundUser) {
-            callback(new Error(`user with id ${userId} not found`));
-            return;
+    xhr.onload = () => {
+        const { status } = xhr
+        if (status !== 204) {
+            const { response: json } = xhr
+            const { error } = JSON.parse(json)
+    
+            callback(new Error(error))    
+            return
         }
 
-        findPostByPostId(postId, foundPost => {
-            if (!foundPost) {
-                callback(new Error(`post with id ${postId} not found`));
-                return;
-            }
+        callback(null)
+    }
 
-            if (foundUser.id !== foundPost.author) {
-                callback(new Error("The current user Id doesnt belong to post Id"));
-                return
-            }
 
-            foundPost.image = image;
-            foundPost.text = text;
+    xhr.onerror = () => {
+        callback(new Error('connection error'))
+    }
 
-            
-            savePost(foundPost, () => callback(null));
-        });
-    });
+
+    xhr.open("PATCH",`http://localhost:4000/posts/update/${userId}/${postId}`)
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    
+    const data = {image, text}
+    const json = JSON.stringify(data)
+
+    xhr.send(json)
+
 }

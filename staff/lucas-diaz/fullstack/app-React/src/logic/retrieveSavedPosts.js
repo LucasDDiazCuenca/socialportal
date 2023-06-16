@@ -2,24 +2,35 @@ import { validators } from 'com'
 
 const {validateId} = validators
 
-export default function retrieveSavedPosts(userId, posts, callback) {
+export default function retrieveSavedPosts(userId, callback) {
     validateId(userId);
 
-    findUserById(userId, foundUser => {
+    const xhr = new XMLHttpRequest
 
-    if (!foundUser){
-        callback(new Error(`there is no user with this current ${userId} id`));
-        return;
-    } 
+    xhr.onload = () => {
+        console.log(userId)
+        const { status } = xhr
+    
+        if (status !== 200) {
+            const { response: json } = xhr
+            const { error } = JSON.parse(json)
+    
+            callback(new Error(error))    
+            return
+        }
 
-    if (foundUser.savedPosts.length > 0) {
-        const savedPosts = posts.filter((post) => foundUser.savedPosts.includes(post.id));
+        const { response: json } = xhr
+        const posts = JSON.parse(json)
 
-        callback(null,savedPosts);
-    } else {
-        callback(null, []);
+        callback(null, posts)
     }
 
-    });
+    xhr.onerror = () => {
+        callback(new Error('connection error'))
+    }
 
+    xhr.open('GET',`http://localhost:4000/posts/saved/${userId}`)
+    xhr.setRequestHeader('Content-Type', 'application/json')
+
+    xhr.send()
 }

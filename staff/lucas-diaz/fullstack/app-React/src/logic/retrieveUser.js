@@ -10,7 +10,6 @@ export default function retrieveUser(userId, callback) {
 
     xhr.onload = () => {
         const { status } = xhr
-    
         if (status !== 200) {
             const { response: json } = xhr
             const { error } = JSON.parse(json)
@@ -31,7 +30,7 @@ export default function retrieveUser(userId, callback) {
     }
 
 
-    xhr.open('GET',`http://localhost:4000/users/${userId}`)
+    xhr.open("GET",`http://localhost:4000/users/${userId}`)
     xhr.setRequestHeader('Content-Type', 'application/json')
 
     xhr.send()

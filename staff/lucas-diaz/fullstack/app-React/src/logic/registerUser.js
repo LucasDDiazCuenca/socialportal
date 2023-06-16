@@ -1,5 +1,4 @@
 import { validators } from 'com'
-
 const { validateEmail, validateUsername, validatePassword } = validators
 
 export default function registerUser(name, email, password, callback) {

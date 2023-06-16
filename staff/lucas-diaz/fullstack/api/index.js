@@ -1,5 +1,5 @@
 const express = require("express")
-const { registerUser, authenticateUser, retrieveUser, updateUserAvatar, updateUserPassword, createPost, retrievePosts, retrieveSavedPosts, retrievePostByPostId, retrieveUserPosts, toggleHidePost, toggleLikePost, toggleSavePostInUser, updatePost } = require("./logic")
+const { registerUser, authenticateUser, retrieveUser, updateUserAvatar, updateUserPassword, createPost, retrievePosts, retrieveSavedPosts, retrievePostByPostId, retrieveUserPosts, toggleHidePost, toggleLikePost, toggleSavePostInUser, updatePost, deletePost } = require("./logic")
 
 const api = express()
 
@@ -64,6 +64,7 @@ api.post("/users/auth", (req, res) => {
             authenticateUser(email, password, (error, userId) => {
                 if (error) {
                     res.status(404).json({ error: error.message })
+                    return
                 }
                 res.status(202).json({ userId })
             })
@@ -110,6 +111,7 @@ api.patch("/users/avatar/:userId", (req, res) => {
             updateUserAvatar(userId, avatar, error => {
                 if (error) {
                     res.status(404).json({ error: error.message })
+                    return
                 }
                 res.status(204).send()
             })
@@ -135,12 +137,10 @@ api.patch("/users/password/:userId", (req, res) => {
 
             const { password, newPassword, newPasswordConfirmation } = JSON.parse(json)
 
-            console.log(password)
-
-
             updateUserPassword(userId, password, newPassword, newPasswordConfirmation, error => {
                 if (error) {
                     res.status(404).json({ error: error.message })
+                    return
                 }
                 res.status(204).send()
             })
@@ -259,6 +259,7 @@ api.patch("/posts/hide/:userId/:postId", (req, res) => {
         toggleHidePost(userId, postId, error => {
             if (error) {
                 res.status(404).json({ error: error.message })
+                return
             }
             res.status(204).send()
         })
@@ -293,6 +294,7 @@ api.patch("/users/save/:userId/:postId", (req, res) => {
         toggleSavePostInUser(userId, postId, error => {
             if (error) {
                 res.status(404).json({ error: error.message })
+                return
             }
             res.status(204).send()
         })
@@ -313,11 +315,12 @@ api.patch("/posts/update/:userId/:postId", (req, res) => {
     req.on("end", () => {
         try {
             const { userId, postId } = req.params
-            const {image, text} = JSON.parse(json)
+            const { image, text } = JSON.parse(json)
 
             updatePost(userId, postId, image, text, error => {
                 if (error) {
                     res.status(404).json({ error: error.message })
+                    return
                 }
                 res.status(204).send()
             })
@@ -327,6 +330,27 @@ api.patch("/posts/update/:userId/:postId", (req, res) => {
         }
     })
 })
+
+//! deletePost 
+
+api.delete("/posts/delete/:userId/:postId", (req, res) => {
+    try {
+        const { userId, postId } = req.params
+
+
+        deletePost(userId, postId, error => {
+            if (error) {
+                res.status(404).json({ error: error.message })
+                return
+            }
+            res.status(204).send()
+        })
+
+    } catch (error) {
+        res.status(404).json({ error: error.message })
+    }
+})
+
 
 
 api.listen(4000)

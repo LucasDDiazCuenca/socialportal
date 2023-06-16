@@ -3,9 +3,12 @@
         "id": "user-1",
         "name": "lucas Diaz",
         "email": "lucas@gmail.com",
-        "password": "LucasDiaz22!!",
+        "password": "LucasDiaz22!",
         "avatar": "https://www.construyehogar.com/wp-content/uploads/2016/01/Casa-moderna-un-piso.jpg",
-        "savedPosts": []
+        "savedPosts": [
+            "post-5",
+            "post-4"
+        ]
     },
     {
         "id": "user-2",

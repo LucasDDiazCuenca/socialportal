@@ -1,45 +1,36 @@
 import { validators } from 'com'
-import { loadUsers, loadPosts } from "../data.js";
 const {validateId} = validators 
 
 export default function retrievePosts(userId, callback) {
     validateId(userId);
 
-    loadUsers(users => {
-        const found = users.find(user => user.id === userId)
+    const xhr = new XMLHttpRequest
 
-        if (!found) {
-            callback(new Error(`there is no user with this current ${userId} id`));
+    xhr.onload = () => {
+        const { status } = xhr
+    
+        if (status !== 200) {
+            const { response: json } = xhr
+            const { error } = JSON.parse(json)
+    
+            callback(new Error(error))    
             return
         }
 
-        loadPosts((posts) => {
-            //vamos a recorrer todos los posts
-            posts.forEach(post => {
-                // para c/post vamos a buscar su user propio
-                const _user = users.find(user => user.id === post.author)
-                //en esta propiedad, le agregamos un objeto con 3 datos mas, includio el avatar, la id y el nombre. 
-                post.author = {
-                    id: _user.id,
-                    name: _user.name,
-                    avatar: _user.avatar
-                }
-            })
+        const { response: json } = xhr
+        const posts = JSON.parse(json)
+        
+        callback(null, posts)
+    }
 
+    xhr.onerror = () => {
+        callback(new Error('connection error'))
+    }
 
-            const _posts = posts.filter(post=> {
-                //trae tu post 
-                if (post.author.id === userId){
-                    return post.author.id === userId
-                // si no es tu post, trae el que tenga visibilidad
-                } else if (post.author.id !== userId){
-                    return post.visibility === "public"
-                }
-            })
+    xhr.open('GET',`http://localhost:4000/posts/${userId}`)
+    xhr.setRequestHeader('Content-Type', 'application/json')
 
-            callback(null, _posts.toReversed());
-        })
-    })
+    xhr.send()
 }
 
 // de esta forma no modificamos el array original de posts, solamente modificamos la logica que almacena temporalmente estos posts con un poco mas de informacion. 
