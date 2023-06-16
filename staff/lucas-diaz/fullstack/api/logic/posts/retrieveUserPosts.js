@@ -3,7 +3,7 @@ const { validators: {validateId} } = require('com')
 
 //those posts comes from retrievePosts
 
-module.exports = function retrieveUserPosts(userId, posts, callback){
+module.exports = function retrieveUserPosts(userId, callback){
     validateId(userId);
 
     readFile("./data/users.json",  (error, json) => {
@@ -20,10 +20,32 @@ module.exports = function retrieveUserPosts(userId, posts, callback){
             return
         }
 
-        const userPosts = posts.filter(post => {
-            return post.author.id === foundUser.id
-        })
+        readFile("data/posts.json", (error, json) => {
+            if (error) {
+                callback(error)
+                return
+            }
+            const posts = JSON.parse(json)
 
-        callback(null, userPosts)
+            posts.forEach(post => {
+                // para c/post vamos a buscar su user propio
+                const _user = users.find(user => user.id === post.author)
+                //en esta propiedad, le agregamos un objeto con 3 datos mas, includio el avatar, la id y el nombre. 
+                post.author = {
+                    id: _user.id,
+                    name: _user.name,
+                    avatar: _user.avatar
+                }
+            })
+
+            const userPosts = posts.filter(post => {
+                return post.author.id === foundUser.id
+            })
+            
+            callback(null, userPosts) 
+        })
     })
 }
+
+
+

@@ -11,7 +11,7 @@ import Context from "../Context.js";
 export default function Posts({ onEditPostButtonClick, lastPostsUpdate, view }) {
     console.log("Posts -> render")
 
-    const {freeze, unFreeze} = useContext(Context)
+    const { freeze, unFreeze } = useContext(Context)
     const [posts, setPosts] = useState([])
     const [user, setUser] = useState()
     const [isInitialRun, setIsInitialRun] = useState(true)
@@ -47,19 +47,13 @@ export default function Posts({ onEditPostButtonClick, lastPostsUpdate, view }) 
                 break;
 
             case "savedPosts":
-                retrievePosts(context.userId, (error, retrievedPosts) => {
+                retrieveSavedPosts(context.userId, retrievedPosts, (error, _posts) => {
                     if (error) {
                         alert(error)
                         return;
                     }
-                    retrieveSavedPosts(context.userId, retrievedPosts, (error, _posts) => {
-                        if (error) {
-                            alert(error)
-                            return;
-                        }
-                        setPosts(_posts)
-                    })
-                });
+                    setPosts(_posts)
+                })
                 retrieveUser(context.userId, (error, user) => {
                     unFreeze()
                     if (error) {
@@ -71,19 +65,14 @@ export default function Posts({ onEditPostButtonClick, lastPostsUpdate, view }) 
                 break;
 
             case "userPosts":
-                retrievePosts(context.userId, (error, retrievedPosts) => {
+                retrieveUserPosts(context.userId, (error, _posts) => {
                     if (error) {
                         alert(error)
                         return;
                     }
-                    retrieveUserPosts(context.userId, retrievedPosts, (error, _posts) => {
-                        if (error) {
-                            alert(error)
-                            return;
-                        }
-                        setPosts(_posts)
-                    })
-                });
+                    setPosts(_posts)
+                })
+
                 retrieveUser(context.userId, (error, user) => {
                     unFreeze()
                     if (error) {

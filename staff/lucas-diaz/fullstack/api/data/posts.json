@@ -28,5 +28,15 @@
         "date": "2023-06-15T16:30:37.466Z",
         "likeCounter": [],
         "visibility": "public"
+    },
+    {
+        "id": "post-5",
+        "author": "user-1",
+        "userName": "lucas Diaz",
+        "image": "https://assets-global.website-files.com/5f4f67c5950db17954dd4f52/5f5b7ee442f1e5b9fee1c117_hacerse-una-casa.jpeg",
+        "text": "Hola amigos",
+        "date": "2023-06-16T02:08:56.192Z",
+        "likeCounter": [],
+        "visibility": "public"
     }
 ]

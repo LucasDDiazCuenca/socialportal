@@ -1,10 +1,10 @@
 const express = require("express")
-const { registerUser, authenticateUser, retrieveUser, updateUserAvatar, updateUserPassword, createPost, retrievePosts, retrieveSavedPosts } = require("./logic")
+const { registerUser, authenticateUser, retrieveUser, updateUserAvatar, updateUserPassword, createPost, retrievePosts, retrieveSavedPosts, retrievePostByPostId, retrieveUserPosts, toggleHidePost, toggleLikePost, toggleSavePostInUser, updatePost } = require("./logic")
 
 const api = express()
 
 // esto es un middleware que pasará primero para cada peticion api.get/post/etc
-api.use((req, res, next) =>{
+api.use((req, res, next) => {
     //Estas 2 de abajo son cabeceras (headers)
     res.setHeader("Access-Control-Allow-Origin", "*") //acepta llamadas de cualquier ruta
     res.setHeader("Access-Control-Allow-Headers", "*") //permite cualquier tipo de header
@@ -16,7 +16,7 @@ api.use((req, res, next) =>{
 
 
 api.get("/", (req, res) => {
-    res.send("Hello, World!") 
+    res.send("Hello, World!")
 })
 api.get("/helloworld", (req, res) => res.json({ hello: "world" }))
 
@@ -105,7 +105,7 @@ api.patch("/users/avatar/:userId", (req, res) => {
     req.on("end", () => {
         try {
             const { userId } = req.params
-            const  avatar  = JSON.parse(json)
+            const avatar = JSON.parse(json)
 
             updateUserAvatar(userId, avatar, error => {
                 if (error) {
@@ -127,7 +127,7 @@ api.patch("/users/password/:userId", (req, res) => {
     req.on("data", chunk => {
         json += chunk
     })
- 
+
     req.on("end", () => {
         debugger;
         try {
@@ -150,7 +150,7 @@ api.patch("/users/password/:userId", (req, res) => {
         }
     })
 })
-
+//---------------------------------------------------------
 //! createPost
 api.post("/posts", (req, res) => {
     let json = ""
@@ -184,13 +184,13 @@ api.get("/posts/:userId", (req, res) => {
     try {
         const { userId } = req.params
 
-        retrievePosts(userId, (error, user) => {
+        retrievePosts(userId, (error, posts) => {
             if (error) {
                 res.status(400).json({ error: error.message })
                 return
             }
 
-            res.status(200).json(user)
+            res.status(200).json(posts)
         })
     } catch (error) {
         res.status(400).json({ error: error.message })
@@ -198,10 +198,113 @@ api.get("/posts/:userId", (req, res) => {
 })
 
 //! retrieveSavedPosts
-
 api.get("/posts/saved/:userId", (req, res) => {
+    try {
+        const { userId } = req.params
 
-    let json = ""
+        retrieveSavedPosts(userId, (error, savedPosts) => {
+            if (error) {
+                res.status(400).json({ error: error.message })
+                return
+            }
+
+            res.status(200).json(savedPosts)
+        })
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
+})
+
+//! retrieveUserPosts
+api.get("/posts/users/:userId", (req, res) => {
+    try {
+        const { userId } = req.params
+
+        retrieveUserPosts(userId, (error, posts) => {
+            if (error) {
+                res.status(400).json({ error: error.message })
+                return
+            }
+
+            res.status(200).json(posts)
+        })
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
+})
+
+//! retrievePostByPostId
+api.get("/posts/:userId/:postId", (req, res) => {
+    try {
+        const { userId, postId } = req.params
+
+        retrievePostByPostId(userId, postId, (error, post) => {
+            if (error) {
+                res.status(400).json({ error: error.message })
+                return
+            }
+
+            res.status(200).json(post)
+        })
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
+})
+
+//! toggleHidePost
+api.patch("/posts/hide/:userId/:postId", (req, res) => {
+    try {
+        const { userId, postId } = req.params
+
+        toggleHidePost(userId, postId, error => {
+            if (error) {
+                res.status(404).json({ error: error.message })
+            }
+            res.status(204).send()
+        })
+
+    } catch (error) {
+        res.status(404).json({ error: error.message })
+    }
+})
+
+//! toggleLikePost
+api.patch("/posts/like/:userId/:postId", (req, res) => {
+    try {
+        const { userId, postId } = req.params
+
+        toggleLikePost(userId, postId, error => {
+            if (error) {
+                res.status(404).json({ error: error.message })
+            }
+            res.status(204).send()
+        })
+
+    } catch (error) {
+        res.status(404).json({ error: error.message })
+    }
+})
+
+//! toggleSavePostInUser
+api.patch("/users/save/:userId/:postId", (req, res) => {
+    try {
+        const { userId, postId } = req.params
+
+        toggleSavePostInUser(userId, postId, error => {
+            if (error) {
+                res.status(404).json({ error: error.message })
+            }
+            res.status(204).send()
+        })
+
+    } catch (error) {
+        res.status(404).json({ error: error.message })
+    }
+})
+
+//! updatePost
+api.patch("/posts/update/:userId/:postId", (req, res) => {
+    let json = "";
 
     req.on("data", chunk => {
         json += chunk
@@ -209,23 +312,21 @@ api.get("/posts/saved/:userId", (req, res) => {
 
     req.on("end", () => {
         try {
-            const { userId } = req.params
-            const posts = JSON.parse(json)
-    
-            retrieveSavedPosts(userId, posts ,(error, user) => {
+            const { userId, postId } = req.params
+            const {image, text} = JSON.parse(json)
+
+            updatePost(userId, postId, image, text, error => {
                 if (error) {
-                    res.status(400).json({ error: error.message })
-                    return
+                    res.status(404).json({ error: error.message })
                 }
-    
-                res.status(200).json(user)
+                res.status(204).send()
             })
+
         } catch (error) {
-            res.status(400).json({ error: error.message })
+            res.status(404).json({ error: error.message })
         }
     })
 })
-
 
 
 api.listen(4000)

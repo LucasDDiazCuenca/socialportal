@@ -28,6 +28,11 @@ module.exports = function retrievePostByPostId (userId, postId, callback) {
             const posts = JSON.parse(json)
             const post = posts.find(post => post.id === postId)
 
+            if(userId !== post.author){
+                callback(new Error("user id diferent than post author"))
+                return
+            }
+
             callback(null, post)
         })
     })
