@@ -24,7 +24,7 @@ export default function deletePost(userId, postId, callback) {
         callback(new Error('connection error'))
     }
 
-    xhr.open("PATCH",`http://localhost:4000/posts/delete/${userId}/${postId}`)
+    xhr.open("PATCH",`${import.meta.env.VITE_API_URL}/posts/delete/${userId}/${postId}`)
     xhr.setRequestHeader('Content-Type', 'application/json')
 
     xhr.send()

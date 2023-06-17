@@ -26,7 +26,7 @@ export default function toggleHidePost(userId, postId, callback){
     }
 
 
-    xhr.open("PATCH",`http://localhost:4000/posts/hide/${userId}/${postId}`)
+    xhr.open("PATCH",`${import.meta.env.VITE_API_URL}/posts/hide/${userId}/${postId}`)
     xhr.setRequestHeader('Content-Type', 'application/json')
 
     xhr.send()

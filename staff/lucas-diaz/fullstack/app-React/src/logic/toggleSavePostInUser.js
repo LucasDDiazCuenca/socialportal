@@ -26,7 +26,7 @@ export default function toggleSavePostInUser(userId, postId, callback) {
     }
 
 
-    xhr.open("PATCH", `http://localhost:4000/users/save/${userId}/${postId}`)
+    xhr.open("PATCH", `${import.meta.env.VITE_API_URL}/users/save/${userId}/${postId}`)
     xhr.setRequestHeader('Content-Type', 'application/json')
 
     xhr.send()

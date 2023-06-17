@@ -28,7 +28,7 @@ export default function updatePost(userId, postId, image, text, callback) {
     }
 
 
-    xhr.open("PATCH",`http://localhost:4000/posts/update/${userId}/${postId}`)
+    xhr.open("PATCH",`${import.meta.env.VITE_API_URL}/posts/update/${userId}/${postId}`)
     xhr.setRequestHeader('Content-Type', 'application/json')
     
     const data = {image, text}

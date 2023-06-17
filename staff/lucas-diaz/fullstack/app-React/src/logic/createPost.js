@@ -28,7 +28,7 @@ export default function createPost(userId, image, text, callback) {
     }
 
 
-    xhr.open('POST',`http://localhost:4000/posts`)
+    xhr.open('POST',`${import.meta.env.VITE_API_URL}/posts`)
     xhr.setRequestHeader('Content-Type', 'application/json')
 
     let data =  {userId, image, text}

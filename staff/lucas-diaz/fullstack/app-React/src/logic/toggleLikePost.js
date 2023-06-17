@@ -28,7 +28,7 @@ export default function toggleLikePost(userId, postId, callback) {
     }
 
 
-    xhr.open("PATCH",`http://localhost:4000/posts/like/${userId}/${postId}`)
+    xhr.open("PATCH",`${import.meta.env.VITE_API_URL}/posts/like/${userId}/${postId}`)
     xhr.setRequestHeader('Content-Type', 'application/json')
 
     xhr.send()

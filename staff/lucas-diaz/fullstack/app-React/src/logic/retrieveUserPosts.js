@@ -27,7 +27,7 @@ export default function retrieveUserPosts(userId, callback) {
         callback(new Error('connection error'))
     }
 
-    xhr.open('GET',`http://localhost:4000/posts/users/${userId}`)
+    xhr.open('GET',`${import.meta.env.VITE_API_URL}/posts/users/${userId}`)
     xhr.setRequestHeader('Content-Type', 'application/json')
 
     xhr.send()

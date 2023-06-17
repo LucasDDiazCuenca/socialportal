@@ -352,6 +352,6 @@ api.delete("/posts/delete/:userId/:postId", (req, res) => {
 })
 
 
-api.listen(4000)
+api.listen(process.env.PORT, () => console.log(`Process running in port ${process.env.PORT}`))
 
 

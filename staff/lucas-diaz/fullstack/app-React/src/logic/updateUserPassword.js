@@ -29,7 +29,7 @@ export default function updateUserPassword(userId, password, newPassword, newPas
     }
 
 
-    xhr.open('PATCH',`http://localhost:4000/users/password/${userId}`)
+    xhr.open('PATCH',`${import.meta.env.VITE_API_URL}/users/password/${userId}`)
     xhr.setRequestHeader('Content-Type', 'application/json')
 
     let data =  {password, newPassword, newPasswordConfirmation}

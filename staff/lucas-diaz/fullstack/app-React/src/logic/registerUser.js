@@ -30,7 +30,7 @@ export default function registerUser(name, email, password, callback) {
     }
     
      //miramos en el server si es pot/get/... y luego miramos bien la ruta 
-    xhr.open('POST', "http://localhost:4000/users")
+    xhr.open('POST', `${import.meta.env.VITE_API_URL}/users`)
 
     //tenemos que enviar un header si o si y lo ponemos aqui --> especificamos el contenido de lo que se pretende enviar 
     xhr.setRequestHeader('Content-Type', 'application/json')

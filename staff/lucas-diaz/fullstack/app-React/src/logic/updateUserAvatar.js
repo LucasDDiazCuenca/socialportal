@@ -27,7 +27,7 @@ export default function updateUserAvatar(authenticatedUserId, avatarUrl, callbac
     }
 
 
-    xhr.open('PATCH',`http://localhost:4000/users/avatar/${authenticatedUserId}`)
+    xhr.open('PATCH',`${import.meta.env.VITE_API_URL}/users/avatar/${authenticatedUserId}`)
     xhr.setRequestHeader('Content-Type', 'application/json')
 
     let data =  avatarUrl
