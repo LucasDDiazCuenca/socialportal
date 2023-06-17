@@ -1,3 +1,4 @@
+require("dotenv").config()
 const { expect } = require("chai")
 const retrieveUser = require("./retrieveUser")
 const { writeFile } = require("fs")
@@ -12,7 +13,7 @@ describe("retrieveUser", () => {
         password = `abcD!!${Math.floor(Math.random() * 101)}eg`
         avatar = `https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512${Math.floor(Math.random() * 101)}.png`
         savedPosts = []
-        writeFile("./data/users.json", "[]",  error => done(error))
+        writeFile(`${process.env.DB_PATH}/users.json`, "[]",  error => done(error))
     })
 
     it("should succed on retriving an user", done => {
@@ -27,7 +28,7 @@ describe("retrieveUser", () => {
         }
         const json = JSON.stringify([user])
 
-        writeFile("./data/users.json", json,  error => {
+        writeFile(`${process.env.DB_PATH}/users.json`, json,  error => {
             expect(error).to.be.null
 
             //we have to retrieve the same user that appears in the db 
@@ -71,5 +72,5 @@ describe("retrieveUser", () => {
         expect(() => retrieveUser([], () => { })).to.throw(Error, "id is not a string")
     })
 
-    after(done => writeFile("./data/users.json", "[]",  error => done(error)))
+    after(done => writeFile(`${process.env.DB_PATH}/users.json`, "[]",  error => done(error)))
 })

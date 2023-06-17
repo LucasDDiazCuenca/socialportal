@@ -1,3 +1,4 @@
+require("dotenv").config()
 const express = require("express")
 const { registerUser, authenticateUser, retrieveUser, updateUserAvatar, updateUserPassword, createPost, retrievePosts, retrieveSavedPosts, retrievePostByPostId, retrieveUserPosts, toggleHidePost, toggleLikePost, toggleSavePostInUser, updatePost, deletePost } = require("./logic")
 
@@ -332,7 +333,6 @@ api.patch("/posts/update/:userId/:postId", (req, res) => {
 })
 
 //! deletePost 
-
 api.delete("/posts/delete/:userId/:postId", (req, res) => {
     try {
         const { userId, postId } = req.params
@@ -350,7 +350,6 @@ api.delete("/posts/delete/:userId/:postId", (req, res) => {
         res.status(404).json({ error: error.message })
     }
 })
-
 
 
 api.listen(4000)

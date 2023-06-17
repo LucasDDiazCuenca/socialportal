@@ -1,3 +1,4 @@
+require("dotenv").config()
 const { expect } = require("chai")
 const updateUserAvatar = require("./updateUserAvatar")
 const { readFile, writeFile } = require("fs")
@@ -13,7 +14,7 @@ describe("updateUserAvatar", () => {
         avatar = `https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512${Math.floor(Math.random() * 101)}.png`
         newAvatar = "https://archello.s3.eu-central-1.amazonaws.com/images/2018/05/11/tobiarchitects1.1526035990.6946.jpg"
         savedPosts = []
-        writeFile("./data/users.json", "[]",  error => done(error))
+        writeFile(`${process.env.DB_PATH}/users.json`, "[]",  error => done(error))
     })
 
     it("should suceed on changing user avatar", done => {
@@ -28,13 +29,13 @@ describe("updateUserAvatar", () => {
         }
         const json = JSON.stringify([user])
 
-        writeFile("./data/users.json", json,  error => {
+        writeFile(`${process.env.DB_PATH}/users.json`, json,  error => {
             expect(error).to.be.null
 
             updateUserAvatar(user.id, newAvatar, error => {
                 expect(error).to.be.null
 
-                readFile("./data/users.json",  (error, json) => {
+                readFile(`${process.env.DB_PATH}/users.json`,  (error, json) => {
                     expect(error).to.be.null
 
                     const users = JSON.parse(json)

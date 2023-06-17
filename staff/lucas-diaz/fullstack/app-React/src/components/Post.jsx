@@ -10,8 +10,15 @@ import Context from "../Context.js";
 export default function Post(props) {
     //destructuring de props, para no hacer todo el tiempo props.post.userName
     const { post, user } = props
-
     const { alert, freeze, unFreeze } = useContext(Context)
+    
+    const day = new Date(post.date).getDate();
+    const month = new Date(post.date).getMonth() + 1;
+    const year = new Date(post.date).getFullYear();
+    const hour = new Date(post.date).getHours();
+    const minutes = new Date(post.date).getMinutes();
+    const fullDate = `${day}/${month}/${year} ${hour}:${minutes} `
+
     function openEditPostModal() {
         props.onEditPostButton(props.post.id);
     }
@@ -108,6 +115,6 @@ export default function Post(props) {
         <button className="bg-transparent border-none text-right" onClick={handleSavePostClick}><span className={`material-symbols-rounded ${user?.savedPosts.includes(post.id) ? "filled" : ""}`}>bookmark</span></button>
 
         <p className="text-white text-sm basis-full text-left bg-zinc-800 p-1.5 pl-3">{post.text}</p>
-        <time className="basis-full text-right text-xs text-gray-500 pr-3 pb-2">{post.date.toLocaleString()}</time>
+        <time className="basis-full text-right text-xs text-gray-500 pr-3 pb-2">{fullDate}</time>
     </article>
 }  

@@ -1,3 +1,4 @@
+require("dotenv").config()
 const { expect } = require("chai")
 const registerUser = require("./registerUser")
 const { readFile, writeFile } = require("fs")
@@ -11,7 +12,7 @@ describe("registerUser", () => {
         email = `e-${Math.floor(Math.random() * 101)}@gmail.com`
         password = `abcD!!${Math.floor(Math.random() * 101)}eg`
 
-        writeFile("./data/users.json", "[]",  error => {
+        writeFile(`${process.env.DB_PATH}/users.json`, "[]",  error => {
             done(error)
         })
     })
@@ -23,7 +24,7 @@ describe("registerUser", () => {
 
             //esperamos que el usuario se haya registrado, pa eso tenemos
             //Que leer el users.json y buscarlo 
-            readFile("./data/users.json",  (error, json) => {
+            readFile(`${process.env.DB_PATH}/users.json`,  (error, json) => {
                 //Esperamos que el error sea nulo
                 expect(error).to.be.null
 
@@ -61,7 +62,7 @@ describe("registerUser", () => {
         const user = { id, name, email, password, avatar, savedPosts }
         const json = JSON.stringify([user], null, 4)
         //metemos un user 
-        writeFile("./data/users.json", json,  error => {
+        writeFile(`${process.env.DB_PATH}/users.json`, json,  error => {
             expect(error).to.be.null
 
             registerUser(name2, email2, password2, error => {
@@ -70,7 +71,7 @@ describe("registerUser", () => {
     
                 //esperamos que el usuario se haya registrado, pa eso tenemos
                 //Que leer el users.json y buscarlo 
-                readFile("./data/users.json",  (error, json) => {
+                readFile(`${process.env.DB_PATH}/users.json`,  (error, json) => {
                     //Esperamos que el error sea nulo
                     expect(error).to.be.null
     
@@ -102,7 +103,7 @@ describe("registerUser", () => {
         const user = { id, name, email, password, avatar, savedPosts }
         const json = JSON.stringify([user], null, 4)
         //metemos un user 
-        writeFile("./data/users.json", json,  error => {
+        writeFile(`${process.env.DB_PATH}/users.json`, json,  error => {
             expect(error).to.be.null
 
             registerUser(name, email, password, error => {
@@ -185,7 +186,7 @@ describe("registerUser", () => {
     })
 
     // Se ejecuta 1 vez luego de todos  los test para limpiar 
-    after(done => writeFile("./data/users.json", "[]",  error => done(error)))
+    after(done => writeFile(`${process.env.DB_PATH}/users.json`, "[]",  error => done(error)))
 })
 
 

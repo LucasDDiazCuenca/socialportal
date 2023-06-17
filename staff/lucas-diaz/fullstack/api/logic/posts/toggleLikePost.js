@@ -1,10 +1,11 @@
+require("dotenv").config()
 const { readFile, writeFile } = require("fs")
 const { validators: { validateId } } = require("com")
 
 module.exports = function toggleLikePost(userId, postId, callback) {
     validateId(userId)
 
-    readFile("./data/users.json", (error, json) => {
+    readFile(`${process.env.DB_PATH}/users.json`, (error, json) => {
         if (error) {
             callback(error)
             return
@@ -18,7 +19,7 @@ module.exports = function toggleLikePost(userId, postId, callback) {
             return
         }
 
-        readFile("./data/posts.json", (error, json) => {
+        readFile(`${process.env.DB_PATH}/posts.json`, (error, json) => {
             if (error) {
                 callback(error)
                 return
@@ -42,7 +43,7 @@ module.exports = function toggleLikePost(userId, postId, callback) {
 
             json = JSON.stringify(posts, null, 4)
 
-            writeFile("./data/posts.json", json, error => {
+            writeFile(`${process.env.DB_PATH}/posts.json`, json, error => {
                 if (error) {
                     callback(error)
                     return

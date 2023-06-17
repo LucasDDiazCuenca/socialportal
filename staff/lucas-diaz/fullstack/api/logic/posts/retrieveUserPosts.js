@@ -1,3 +1,4 @@
+require("dotenv").config()
 const { readFile } = require("fs")
 const { validators: {validateId} } = require('com') 
 
@@ -6,7 +7,7 @@ const { validators: {validateId} } = require('com')
 module.exports = function retrieveUserPosts(userId, callback){
     validateId(userId);
 
-    readFile("./data/users.json",  (error, json) => {
+    readFile(`${process.env.DB_PATH}/users.json`,  (error, json) => {
         if (error) {
             callback(error)
             return
@@ -42,7 +43,7 @@ module.exports = function retrieveUserPosts(userId, callback){
                 return post.author.id === foundUser.id
             })
             
-            callback(null, userPosts) 
+            callback(null, userPosts.reverse()) 
         })
     })
 }

@@ -1,3 +1,4 @@
+require("dotenv").config()
 const { readFile } = require("fs")
 const { validators: {validateId} } = require('com') 
 
@@ -6,7 +7,7 @@ const { validators: {validateId} } = require('com')
 module.exports = function retrieveSavedPosts(userId, callback){
     validateId(userId)
 
-    readFile("./data/users.json",  (error, json) => {
+    readFile(`${process.env.DB_PATH}/users.json`,  (error, json) => {
         if (error) {
             callback(error)
             return
@@ -41,7 +42,7 @@ module.exports = function retrieveSavedPosts(userId, callback){
             if (foundUser.savedPosts.length > 0) {
                 const savedPosts = posts.filter((post) => foundUser.savedPosts.includes(post.id));
         
-                callback(null,savedPosts);
+                callback(null,savedPosts.reverse());
             } else {
                 callback(null, []);
             }

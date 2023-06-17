@@ -1,3 +1,4 @@
+require("dotenv").config()
 const { readFile, writeFile } = require("fs")
 const {validators: {validateId, validateUrl} } = require("com")
 
@@ -6,7 +7,7 @@ module.exports = function updateUserAvatar(userId, avatar, callback) {
     validateUrl(avatar)
 
 
-    readFile("./data/users.json",  (error, json) => {
+    readFile(`${process.env.DB_PATH}/users.json`,  (error, json) => {
         if (error){
             callback(error)
             return
@@ -23,7 +24,7 @@ module.exports = function updateUserAvatar(userId, avatar, callback) {
         foundUser.avatar = avatar;
         json = JSON.stringify(users, null, 4)
 
-        writeFile("./data/users.json", json,  error => {
+        writeFile(`${process.env.DB_PATH}/users.json`, json,  error => {
             if(error){
                 callback(error)
                 return

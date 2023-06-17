@@ -1,3 +1,4 @@
+require("dotenv").config()
 const { expect } = require("chai")
 const authenticateUser = require("./authenticateUser")
 const { writeFile } = require("fs")
@@ -13,7 +14,7 @@ describe("authenticateUser", () => {
         avatar = `https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512${Math.floor(Math.random() * 101)}.png`
         savedPosts = []
 
-        writeFile("./data/users.json", "[]",  error => done(error))
+        writeFile(`${process.env.DB_PATH}/users.json`, "[]",  error => done(error))
     })
 
     it("should succed on authenticating user", done => {
@@ -29,7 +30,7 @@ describe("authenticateUser", () => {
         const json = JSON.stringify([user])
         //tenemos que escribir el archivo con un usuario 
 
-        writeFile("./data/users.json", json,  error => {
+        writeFile(`${process.env.DB_PATH}/users.json`, json,  error => {
             expect(error).to.be.null
             //tenemos que comprobar que la funcion authenticateUser lo haga ok buscando en BBDD 
             authenticateUser(user.email, user.password, (error, userId) => {
@@ -73,7 +74,7 @@ describe("authenticateUser", () => {
         const json = JSON.stringify([user])
         //tenemos que escribir el archivo con un usuario 
 
-        writeFile("./data/users.json", json,  error => {
+        writeFile(`${process.env.DB_PATH}/users.json`, json,  error => {
             expect(error).to.be.null
             //tenemos que comprobar que la funcion authenticateUser lo haga ok buscando en BBDD 
             authenticateUser(user.email, "helloFriends!22", (error, userId) => {
@@ -129,5 +130,5 @@ describe("authenticateUser", () => {
     })
 
 
-    after(done => writeFile("./data/users.json", "[]",  error => done(error)))
+    after(done => writeFile(`${process.env.DB_PATH}/users.json`, "[]",  error => done(error)))
 })

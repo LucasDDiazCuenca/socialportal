@@ -1,3 +1,4 @@
+require("dotenv").config()
 const { readFile, writeFile } = require("fs")
 const { validators: { validateId } } = require("com")
 
@@ -5,7 +6,7 @@ module.exports = function toggleSavePostInUser(userId, postId, callback) {
     validateId(userId)
     validateId(postId)
 
-    readFile("./data/users.json", (error, json) => {
+    readFile(`${process.env.DB_PATH}/users.json`, (error, json) => {
         if (error) {
             callback(error)
             return
@@ -19,7 +20,7 @@ module.exports = function toggleSavePostInUser(userId, postId, callback) {
             return
         }
 
-        readFile("./data/posts.json", (error, json) => {
+        readFile(`${process.env.DB_PATH}/posts.json`, (error, json) => {
             if (error) {
                 callback(error)
                 return
@@ -44,7 +45,7 @@ module.exports = function toggleSavePostInUser(userId, postId, callback) {
             
             json = JSON.stringify(users, null, 4)
 
-            writeFile("./data/users.json", json, error => {
+            writeFile(`${process.env.DB_PATH}/users.json`, json, error => {
                 if (error) {
                     callback(error)
                     return

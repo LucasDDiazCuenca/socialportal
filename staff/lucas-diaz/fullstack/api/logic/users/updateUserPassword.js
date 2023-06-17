@@ -1,3 +1,4 @@
+require("dotenv").config()
 const { readFile, writeFile } = require("fs")
 const {validators: {validateId, validatePassword} } = require("com")
 
@@ -15,7 +16,7 @@ module.exports = function updateUserPassword(userId, password, newPassword, newP
         throw new Error(`new password and new password confirmation does not match`)
     }
     
-    readFile("./data/users.json",  (error, json) => {
+    readFile(`${process.env.DB_PATH}/users.json`,  (error, json) => {
         if (error) {
             callback(error)
             return
@@ -38,7 +39,7 @@ module.exports = function updateUserPassword(userId, password, newPassword, newP
         foundUser.password = newPassword;
         json = JSON.stringify(users, null, 4)
 
-        writeFile("./data/users.json", json,  error => {
+        writeFile(`${process.env.DB_PATH}/users.json`, json,  error => {
             if (error) {
                 callback(error)
                 return
