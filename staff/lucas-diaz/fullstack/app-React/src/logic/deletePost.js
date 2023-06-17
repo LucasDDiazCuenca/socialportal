@@ -1,5 +1,5 @@
 import { validators } from 'com'
-const {validateId} = validators
+const { validateId } = validators
 
 export default function deletePost(userId, postId, callback) {
     validateId(userId);
@@ -11,8 +11,8 @@ export default function deletePost(userId, postId, callback) {
         if (status !== 204) {
             const { response: json } = xhr
             const { error } = JSON.parse(json)
-    
-            callback(new Error(error))    
+
+            callback(new Error(error))
             return
         }
 
@@ -24,7 +24,7 @@ export default function deletePost(userId, postId, callback) {
         callback(new Error('connection error'))
     }
 
-    xhr.open("PATCH",`${import.meta.env.VITE_API_URL}/posts/delete/${userId}/${postId}`)
+    xhr.open("PATCH", `${import.meta.env.VITE_API_URL}/posts/delete/${userId}/${postId}`)
     xhr.setRequestHeader('Content-Type', 'application/json')
 
     xhr.send()

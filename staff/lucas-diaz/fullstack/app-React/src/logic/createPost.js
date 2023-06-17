@@ -1,5 +1,5 @@
 import { validators } from 'com'
-const {validateId, validateUrl, validateText } = validators
+const { validateId, validateUrl, validateText } = validators
 
 export default function createPost(userId, image, text, callback) {
     validateId(userId);
@@ -10,12 +10,12 @@ export default function createPost(userId, image, text, callback) {
 
     xhr.onload = () => {
         const { status } = xhr
-    
+
         if (status !== 204) {
             const { response: json } = xhr
             const { error } = JSON.parse(json)
-    
-            callback(new Error(error))    
+
+            callback(new Error(error))
             return
         }
 
@@ -28,10 +28,10 @@ export default function createPost(userId, image, text, callback) {
     }
 
 
-    xhr.open('POST',`${import.meta.env.VITE_API_URL}/posts`)
+    xhr.open('POST', `${import.meta.env.VITE_API_URL}/posts`)
     xhr.setRequestHeader('Content-Type', 'application/json')
 
-    let data =  {userId, image, text}
+    let data = { userId, image, text }
 
     let json = JSON.stringify(data)
 

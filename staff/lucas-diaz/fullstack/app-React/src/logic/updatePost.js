@@ -1,5 +1,5 @@
 import { validators } from 'com'
-const {validateId, validateText, validateUrl} = validators
+const { validateId, validateText, validateUrl } = validators
 
 export default function updatePost(userId, postId, image, text, callback) {
     validateId(userId)
@@ -14,8 +14,8 @@ export default function updatePost(userId, postId, image, text, callback) {
         if (status !== 204) {
             const { response: json } = xhr
             const { error } = JSON.parse(json)
-    
-            callback(new Error(error))    
+
+            callback(new Error(error))
             return
         }
 
@@ -28,10 +28,10 @@ export default function updatePost(userId, postId, image, text, callback) {
     }
 
 
-    xhr.open("PATCH",`${import.meta.env.VITE_API_URL}/posts/update/${userId}/${postId}`)
+    xhr.open("PATCH", `${import.meta.env.VITE_API_URL}/posts/update/${userId}/${postId}`)
     xhr.setRequestHeader('Content-Type', 'application/json')
-    
-    const data = {image, text}
+
+    const data = { image, text }
     const json = JSON.stringify(data)
 
     xhr.send(json)

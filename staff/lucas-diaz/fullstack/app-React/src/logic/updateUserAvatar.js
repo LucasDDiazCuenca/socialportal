@@ -1,7 +1,7 @@
 import { validators } from 'com'
-const {validateId, validateUrl} = validators 
+const { validateId, validateUrl } = validators
 
-export default function updateUserAvatar(authenticatedUserId, avatarUrl, callback)  { 
+export default function updateUserAvatar(authenticatedUserId, avatarUrl, callback) {
     validateId(authenticatedUserId);
     validateUrl(avatarUrl);
 
@@ -9,12 +9,12 @@ export default function updateUserAvatar(authenticatedUserId, avatarUrl, callbac
 
     xhr.onload = () => {
         const { status } = xhr
-    
+
         if (status !== 204) {
             const { response: json } = xhr
             const { error } = JSON.parse(json)
-    
-            callback(new Error(error))    
+
+            callback(new Error(error))
             return
         }
 
@@ -27,10 +27,10 @@ export default function updateUserAvatar(authenticatedUserId, avatarUrl, callbac
     }
 
 
-    xhr.open('PATCH',`${import.meta.env.VITE_API_URL}/users/avatar/${authenticatedUserId}`)
+    xhr.open('PATCH', `${import.meta.env.VITE_API_URL}/users/avatar/${authenticatedUserId}`)
     xhr.setRequestHeader('Content-Type', 'application/json')
 
-    let data =  avatarUrl
+    let data = avatarUrl
     let json = JSON.stringify(data)
 
     xhr.send(json)

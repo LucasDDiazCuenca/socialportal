@@ -1,5 +1,5 @@
 import { validators } from 'com'
-const {validateId} = validators
+const { validateId } = validators
 
 
 export default function toggleLikePost(userId, postId, callback) {
@@ -14,8 +14,8 @@ export default function toggleLikePost(userId, postId, callback) {
         if (status !== 204) {
             const { response: json } = xhr
             const { error } = JSON.parse(json)
-    
-            callback(new Error(error))    
+
+            callback(new Error(error))
             return
         }
 
@@ -28,7 +28,7 @@ export default function toggleLikePost(userId, postId, callback) {
     }
 
 
-    xhr.open("PATCH",`${import.meta.env.VITE_API_URL}/posts/like/${userId}/${postId}`)
+    xhr.open("PATCH", `${import.meta.env.VITE_API_URL}/posts/like/${userId}/${postId}`)
     xhr.setRequestHeader('Content-Type', 'application/json')
 
     xhr.send()

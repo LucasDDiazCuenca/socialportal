@@ -1,6 +1,6 @@
 import { validators } from 'com'
 
-const {validateId} = validators
+const { validateId } = validators
 
 export default function retrieveSavedPosts(userId, callback) {
     validateId(userId);
@@ -10,12 +10,12 @@ export default function retrieveSavedPosts(userId, callback) {
     xhr.onload = () => {
         console.log(userId)
         const { status } = xhr
-    
+
         if (status !== 200) {
             const { response: json } = xhr
             const { error } = JSON.parse(json)
-    
-            callback(new Error(error))    
+
+            callback(new Error(error))
             return
         }
 
@@ -29,7 +29,7 @@ export default function retrieveSavedPosts(userId, callback) {
         callback(new Error('connection error'))
     }
 
-    xhr.open('GET',`${import.meta.env.VITE_API_URL}/posts/saved/${userId}`)
+    xhr.open('GET', `${import.meta.env.VITE_API_URL}/posts/saved/${userId}`)
     xhr.setRequestHeader('Content-Type', 'application/json')
 
     xhr.send()

@@ -1,27 +1,27 @@
 import { validators } from 'com'
-const {validateEmail, validatePassword} = validators 
+const { validateEmail, validatePassword } = validators
 
-export default function authenticateUser (email,password, callback) {
+export default function authenticateUser(email, password, callback) {
     validateEmail(email);
     validatePassword(password);
-    
+
 
     const xhr = new XMLHttpRequest
 
     xhr.onload = () => {
         const { status } = xhr
-    
+
         if (status !== 202) {
             const { response: json } = xhr
             const { error } = JSON.parse(json)
-    
-            callback(new Error(error))    
+
+            callback(new Error(error))
             return
         }
 
         const { response: json } = xhr
         const { userId } = JSON.parse(json)
-        
+
         callback(null, userId)
     }
 
@@ -30,7 +30,7 @@ export default function authenticateUser (email,password, callback) {
     }
 
 
-    xhr.open('POST',`${import.meta.env.VITE_API_URL}/users/auth`)
+    xhr.open('POST', `${import.meta.env.VITE_API_URL}/users/auth`)
     xhr.setRequestHeader('Content-Type', 'application/json')
 
     const user = { email, password }

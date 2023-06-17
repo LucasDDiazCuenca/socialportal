@@ -16,8 +16,8 @@ export default function registerUser(name, email, password, callback) {
         //si hay error lo gestionamos aqui, buscamos algo que no sea un estatus favorabl
         if (status !== 204) {
             const { response: json } = xhr
-            const { error } = JSON.parse(json) 
-   
+            const { error } = JSON.parse(json)
+
             callback(new Error(error))
             return
         }
@@ -28,13 +28,13 @@ export default function registerUser(name, email, password, callback) {
     xhr.onerror = () => {
         callback(new Error('connection error'))
     }
-    
-     //miramos en el server si es pot/get/... y luego miramos bien la ruta 
+
+    //miramos en el server si es pot/get/... y luego miramos bien la ruta 
     xhr.open('POST', `${import.meta.env.VITE_API_URL}/users`)
 
     //tenemos que enviar un header si o si y lo ponemos aqui --> especificamos el contenido de lo que se pretende enviar 
     xhr.setRequestHeader('Content-Type', 'application/json')
-    
+
     //configuramos el body-json que le queremos enviar 
     const user = { name, email, password }
     const json = JSON.stringify(user)

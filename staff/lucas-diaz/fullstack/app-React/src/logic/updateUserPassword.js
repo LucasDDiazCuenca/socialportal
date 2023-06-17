@@ -1,22 +1,22 @@
 import { validators } from 'com'
-const {validatePassword, validateId} = validators
+const { validatePassword, validateId } = validators
 
 export default function updateUserPassword(userId, password, newPassword, newPasswordConfirmation, callback) {
     validatePassword(password)
     validatePassword(newPassword)
-    validatePassword(newPasswordConfirmation) 
-    validateId( userId)
-    
+    validatePassword(newPasswordConfirmation)
+    validateId(userId)
+
     const xhr = new XMLHttpRequest
 
     xhr.onload = () => {
         const { status } = xhr
-    
+
         if (status !== 204) {
             const { response: json } = xhr
             const { error } = JSON.parse(json)
-    
-            callback(new Error(error))    
+
+            callback(new Error(error))
             return
         }
 
@@ -29,10 +29,10 @@ export default function updateUserPassword(userId, password, newPassword, newPas
     }
 
 
-    xhr.open('PATCH',`${import.meta.env.VITE_API_URL}/users/password/${userId}`)
+    xhr.open('PATCH', `${import.meta.env.VITE_API_URL}/users/password/${userId}`)
     xhr.setRequestHeader('Content-Type', 'application/json')
 
-    let data =  {password, newPassword, newPasswordConfirmation}
+    let data = { password, newPassword, newPasswordConfirmation }
 
     let json = JSON.stringify(data)
 
