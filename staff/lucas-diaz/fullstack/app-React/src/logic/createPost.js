@@ -11,7 +11,7 @@ export default function createPost(userId, image, text, callback) {
     xhr.onload = () => {
         const { status } = xhr
 
-        if (status !== 204) {
+        if (status !== 201) {
             const { response: json } = xhr
             const { error } = JSON.parse(json)
 

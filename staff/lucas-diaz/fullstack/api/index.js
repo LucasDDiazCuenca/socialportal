@@ -1,6 +1,7 @@
 require("dotenv").config()
 const express = require("express")
 const { registerUser, authenticateUser, retrieveUser, updateUserAvatar, updateUserPassword, createPost, retrievePosts, retrieveSavedPosts, retrievePostByPostId, retrieveUserPosts, toggleHidePost, toggleLikePost, toggleSavePostInUser, updatePost, deletePost } = require("./logic")
+const { extractUserId } = require("./helpers")
 
 const api = express()
 
@@ -14,16 +15,11 @@ api.use((req, res, next) => {
     next()
 })
 
-
-
 api.get("/", (req, res) => {
     res.send("Hello, World!")
 })
-api.get("/helloworld", (req, res) => res.json({ hello: "world" }))
 
 //!registerUSer
-//Ese users solo hace referencia a users.json, lo que lo obvia! 
-// Esta no devuelve nada, devuelve un body vacio 
 api.post("/users", (req, res) => {
     let json = ""
 
@@ -77,10 +73,9 @@ api.post("/users/auth", (req, res) => {
 })
 
 //!retrieveUser
-api.get("/users/:userId", (req, res) => {
-    //TODO call retrieveUser and return user (in json)
+api.get("/users", (req, res) => {
     try {
-        const { userId } = req.params
+        const userId = extractUserId(req)
 
         retrieveUser(userId, (error, user) => {
             if (error) {
@@ -96,9 +91,8 @@ api.get("/users/:userId", (req, res) => {
 })
 
 //!updateUserAvatar
-api.patch("/users/avatar/:userId", (req, res) => {
+api.patch("/users/avatar", (req, res) => {
     let json = "";
-
 
     req.on("data", chunk => {
         json += chunk
@@ -106,8 +100,8 @@ api.patch("/users/avatar/:userId", (req, res) => {
 
     req.on("end", () => {
         try {
-            const { userId } = req.params
-            const avatar = JSON.parse(json)
+            const userId = extractUserId(req)
+            const { avatar } = JSON.parse(json)
 
             updateUserAvatar(userId, avatar, error => {
                 if (error) {
@@ -124,7 +118,7 @@ api.patch("/users/avatar/:userId", (req, res) => {
 })
 
 //!updateUserPassword
-api.patch("/users/password/:userId", (req, res) => {
+api.patch("/users/password", (req, res) => {
     let json = "";
 
     req.on("data", chunk => {
@@ -132,10 +126,8 @@ api.patch("/users/password/:userId", (req, res) => {
     })
 
     req.on("end", () => {
-        debugger;
         try {
-            const { userId } = req.params
-
+            const userId = extractUserId(req)
             const { password, newPassword, newPasswordConfirmation } = JSON.parse(json)
 
             updateUserPassword(userId, password, newPassword, newPasswordConfirmation, error => {
@@ -160,10 +152,10 @@ api.post("/posts", (req, res) => {
         json += chunk
     })
 
-    req.on("end", () => {
+    req.on("end", () => { 
         try {
-            const { userId, image, text } = JSON.parse(json)
-
+            const userId = extractUserId(req)
+            const { image, text } = JSON.parse(json)
 
             createPost(userId, image, text, error => {
                 if (error) {
@@ -171,7 +163,7 @@ api.post("/posts", (req, res) => {
                     return
                 }
 
-                res.status(204).send()
+                res.status(201).send()
             })
 
         } catch (error) {
@@ -181,9 +173,9 @@ api.post("/posts", (req, res) => {
 })
 
 //! retrievePosts
-api.get("/posts/:userId", (req, res) => {
+api.get("/posts", (req, res) => {
     try {
-        const { userId } = req.params
+        const userId = extractUserId(req)
 
         retrievePosts(userId, (error, posts) => {
             if (error) {
@@ -199,9 +191,9 @@ api.get("/posts/:userId", (req, res) => {
 })
 
 //! retrieveSavedPosts
-api.get("/posts/saved/:userId", (req, res) => {
+api.get("/posts/saved", (req, res) => {
     try {
-        const { userId } = req.params
+        const userId = extractUserId(req)
 
         retrieveSavedPosts(userId, (error, savedPosts) => {
             if (error) {
@@ -217,9 +209,9 @@ api.get("/posts/saved/:userId", (req, res) => {
 })
 
 //! retrieveUserPosts
-api.get("/posts/users/:userId", (req, res) => {
+api.get("/posts/users", (req, res) => {
     try {
-        const { userId } = req.params
+        const userId = extractUserId(req)
 
         retrieveUserPosts(userId, (error, posts) => {
             if (error) {
@@ -235,9 +227,10 @@ api.get("/posts/users/:userId", (req, res) => {
 })
 
 //! retrievePostByPostId
-api.get("/posts/:userId/:postId", (req, res) => {
+api.get("/posts/:postId", (req, res) => {
     try {
-        const { userId, postId } = req.params
+        const { postId } = req.params
+        const userId = extractUserId(req)
 
         retrievePostByPostId(userId, postId, (error, post) => {
             if (error) {
@@ -253,9 +246,10 @@ api.get("/posts/:userId/:postId", (req, res) => {
 })
 
 //! toggleHidePost
-api.patch("/posts/hide/:userId/:postId", (req, res) => {
+api.patch("/posts/hide/:postId", (req, res) => {
     try {
-        const { userId, postId } = req.params
+        const userId = extractUserId(req)
+        const { postId } = req.params
 
         toggleHidePost(userId, postId, error => {
             if (error) {
@@ -271,9 +265,10 @@ api.patch("/posts/hide/:userId/:postId", (req, res) => {
 })
 
 //! toggleLikePost
-api.patch("/posts/like/:userId/:postId", (req, res) => {
+api.patch("/posts/like/:postId", (req, res) => {
     try {
-        const { userId, postId } = req.params
+        const userId = extractUserId(req)
+        const { postId } = req.params
 
         toggleLikePost(userId, postId, error => {
             if (error) {
@@ -288,9 +283,10 @@ api.patch("/posts/like/:userId/:postId", (req, res) => {
 })
 
 //! toggleSavePostInUser
-api.patch("/users/save/:userId/:postId", (req, res) => {
+api.patch("/users/save/:postId", (req, res) => {
     try {
-        const { userId, postId } = req.params
+        const userId = extractUserId(req)
+        const { postId } = req.params
 
         toggleSavePostInUser(userId, postId, error => {
             if (error) {
@@ -306,7 +302,7 @@ api.patch("/users/save/:userId/:postId", (req, res) => {
 })
 
 //! updatePost
-api.patch("/posts/update/:userId/:postId", (req, res) => {
+api.patch("/posts/update/:postId", (req, res) => {
     let json = "";
 
     req.on("data", chunk => {
@@ -315,7 +311,8 @@ api.patch("/posts/update/:userId/:postId", (req, res) => {
 
     req.on("end", () => {
         try {
-            const { userId, postId } = req.params
+            const userId = extractUserId(req)
+            const { postId } = req.params
             const { image, text } = JSON.parse(json)
 
             updatePost(userId, postId, image, text, error => {
@@ -333,9 +330,10 @@ api.patch("/posts/update/:userId/:postId", (req, res) => {
 })
 
 //! deletePost 
-api.delete("/posts/delete/:userId/:postId", (req, res) => {
+api.delete("/posts/delete/:postId", (req, res) => {
     try {
-        const { userId, postId } = req.params
+        const userId = extractUserId(req)
+        const { postId } = req.params
 
 
         deletePost(userId, postId, error => {
