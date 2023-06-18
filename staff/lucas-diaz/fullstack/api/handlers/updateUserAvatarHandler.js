@@ -4,7 +4,7 @@ const {extractUserId} = require("../helpers")
 module.exports = (req, res) => {
     try {
         const userId = extractUserId(req)
-        const { avatar } = req.body
+        const  avatar  = req.body
 
         updateUserAvatar(userId, avatar, error => {
             if (error) {

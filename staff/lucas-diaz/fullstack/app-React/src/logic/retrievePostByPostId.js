@@ -29,8 +29,9 @@ export default function retrievePostByPostId (userId, postId, callback){
     }
 
 
-    xhr.open('GET',`${import.meta.env.VITE_API_URL}/posts/${userId}/${postId}`)
+    xhr.open('GET',`${import.meta.env.VITE_API_URL}/posts/${postId}`)
     xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.setRequestHeader('Authorization', `Bearer ${userId}`)
 
     xhr.send()
     

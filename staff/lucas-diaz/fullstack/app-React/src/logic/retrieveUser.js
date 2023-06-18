@@ -30,8 +30,9 @@ export default function retrieveUser(userId, callback) {
     }
 
 
-    xhr.open("GET",`${import.meta.env.VITE_API_URL}/users/${userId}`)
+    xhr.open("GET",`${import.meta.env.VITE_API_URL}/users`)
     xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.setRequestHeader('Authorization', `Bearer ${userId}`)
 
     xhr.send()
 }
