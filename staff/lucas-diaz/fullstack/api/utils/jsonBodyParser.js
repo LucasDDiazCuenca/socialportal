@@ -1,12 +1,10 @@
 module.exports = (req, res, next) => {
-    
     const { "content-type": contentType } = req.headers
 
     if (contentType !== "application/json"){
         res.status(400).json({error: "no application/json header"})
         return
     }
-
 
     let json = ""
 
@@ -21,6 +19,5 @@ module.exports = (req, res, next) => {
         }catch(error){
             res.status(400).json({error: error.message})
         }
-
     })
 }
