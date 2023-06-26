@@ -1,54 +1,18 @@
 require("dotenv").config()
-const { readFile, writeFile } = require("fs")
-const {validators: {validateId, validateUrl} } = require("com")
+const { validators: { validateId, validateUrl } } = require("com")
+const context = require("../context")
+const { ObjectId } = require("mongodb")
 
-module.exports = function updateUserAvatar(userId, avatar, callback) {
+module.exports = function updateUserAvatar(userId, avatar) {
     validateId(userId)
     validateUrl(avatar)
 
+    const { users } = context
 
-    readFile(`${process.env.DB_PATH}/users.json`,  (error, json) => {
-        if (error){
-            callback(error)
-            return
-        }
+    return users.findOne({ _id: new ObjectId(userId) })
+        .then(user => {
+            if (!user) throw new Error("user not found")
 
-        const users = JSON.parse(json)
-        let foundUser = users.find(user => user.id === userId)
-
-        if(!foundUser){
-            callback(new Error("user not found"))
-            return
-        }
-
-        foundUser.avatar = avatar;
-        json = JSON.stringify(users, null, 4)
-
-        writeFile(`${process.env.DB_PATH}/users.json`, json,  error => {
-            if(error){
-                callback(error)
-                return
-            }
-            callback(null)
+            return users.updateOne({ _id: new ObjectId(userId) }, { $set: { avatar: avatar } })
         })
-    } )
-
-
-
-
-
-
-
-
-/*     findUserById(authenticatedUserId, foundUser => {
-        
-        if (!foundUser){
-            callback(new Error("user not found"));
-            return;
-        } 
-    
-        foundUser.avatar = avatarUrl;
-        
-        saveUser(foundUser, () => callback(null));
-    }); */
 }

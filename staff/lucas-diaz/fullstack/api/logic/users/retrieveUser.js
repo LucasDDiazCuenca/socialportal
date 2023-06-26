@@ -1,31 +1,46 @@
 require("dotenv").config()
-const { readFile } = require("fs")
-const {validators: {validateId} } = require("com")
+const { validators: { validateId } } = require("com")
+const context = require("../context")
+const { ObjectId } = require("mongodb")
 
-module.exports = function retrieveUser(userId, callback) {
+module.exports = function retrieveUser(userId) {
     validateId(userId)
 
-    //leer archivo 
-    readFile(`${process.env.DB_PATH}/users.json`,  (error, json) => {
-        if (error) {
-            callback(error)
-            return
-        }
-        const users = JSON.parse(json)
-        //buscar user 
-        const user = users.find(user => user.id === userId)
+    const { users } = context
 
-        if (!user) {
-            callback(new Error("User not found"))
-            return
-        }
+    return users.findOne({ _id: new ObjectId(userId) })
+        .then(user => {
+            if (!user) throw new Error("user not found")
 
-        const _user = {
-            name: user.name,
-            avatar: user.avatar,
-            savedPosts: user.savedPosts
-        }
-        //guardar y devolverlo en la callback 
-        callback(null, _user)
-    })
+            //sanitaze
+            delete user._id
+            delete user.password
+            delete user.email
+
+            return user
+        })
+
+    // //leer archivo 
+    // readFile(`${process.env.DB_PATH}/users.json`,  (error, json) => {
+    //     if (error) {
+    //         callback(error)
+    //         return
+    //     }
+    //     const users = JSON.parse(json)
+    //     //buscar user 
+    //     const user = users.find(user => user.id === userId)
+
+    //     if (!user) {
+    //         callback(new Error("User not found"))
+    //         return
+    //     }
+
+    //     const _user = {
+    //         name: user.name,
+    //         avatar: user.avatar,
+    //         savedPosts: user.savedPosts
+    //     }
+    //     //guardar y devolverlo en la callback 
+    //     callback(null, _user)
+    // })
 }

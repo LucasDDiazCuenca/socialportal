@@ -1,18 +1,23 @@
 const { updateUserAvatar } = require("../logic")
-const {extractUserId} = require("../helpers")
+const { extractUserId } = require("../helpers")
 
 module.exports = (req, res) => {
     try {
         const userId = extractUserId(req)
-        const  avatar  = req.body
+        const { avatar } = req.body
 
-        updateUserAvatar(userId, avatar, error => {
-            if (error) {
-                res.status(404).json({ error: error.message })
-                return
-            }
-            res.status(204).send()
-        })
+        updateUserAvatar(userId, avatar)
+            .then(() => res.status(204).send())
+            .catch(error => res.status(404).json({ error: error.message }))
+
+
+        // updateUserAvatar(userId, avatar, error => {
+        //     if (error) {
+        //         res.status(404).json({ error: error.message })
+        //         return
+        //     }
+        //     res.status(204).send()
+        // })
 
     } catch (error) {
         res.status(404).json({ error: error.message })
