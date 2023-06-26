@@ -6,14 +6,10 @@ module.exports = (req, res) => {
         const { postId } = req.params
         const userId = extractUserId(req)
 
-        retrievePostByPostId(userId, postId, (error, post) => {
-            if (error) {
-                res.status(400).json({ error: error.message })
-                return
-            }
+        retrievePostByPostId(userId, postId)
+            .then(post => res.status(200).json(post))
+            .catch(error => res.status(400).json({ error: error.message }))
 
-            res.status(200).json(post)
-        })
     } catch (error) {
         res.status(400).json({ error: error.message })
     }

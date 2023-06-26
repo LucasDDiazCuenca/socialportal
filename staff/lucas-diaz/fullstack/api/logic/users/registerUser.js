@@ -12,4 +12,9 @@ module.exports = function registerUser(name, email, password) {
     const savedPosts = []
 
     return users.insertOne({name, email, password, avatar, savedPosts})
+        .catch(error => {
+            if (error.message.includes("E11000"))
+                throw new Error(`user with email ${email} already exists`)
+                throw error
+        })
 } 

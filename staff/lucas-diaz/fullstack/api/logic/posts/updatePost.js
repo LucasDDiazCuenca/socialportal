@@ -1,57 +1,26 @@
 require("dotenv").config()
-const { readFile, writeFile } = require("fs")
-const { validators: { validateId, validateUrl, validateText} } = require("com")
+const { validators: { validateId, validateUrl, validateText } } = require("com")
+const context = require("../context")
+const { ObjectId } = require("mongodb")
 
-module.exports = function updatePost(userId, postId, image, text, callback){
+module.exports = function updatePost(userId, postId, image, text) {
     validateId(userId);
     validateUrl(image);
     validateText(text);
 
-    readFile(`${process.env.DB_PATH}/users.json`, (error, json) => {
-        if (error) {
-            callback(error)
-            return
-        }
+    const { users, posts } = context
 
-        const users = JSON.parse(json)
-        const foundUser = users.find(_user => _user.id === userId)
+    return users.findOne({ _id: new ObjectId(userId) })
+        .then(user => {
+            if (!user) throw new Error("user not found")
 
-        if (!foundUser) {
-            callback(new Error("user not found"))
-            return
-        }
-
-        readFile(`${process.env.DB_PATH}/posts.json`, (error, json) => {
-            if (error) {
-                callback(error)
-                return
-            }
-            const posts = JSON.parse(json)
-            const foundPost = posts.find(post => post.id === postId)
-
-            if (!foundPost) {
-                callback(new Error("post not found"))
-                return
-            }
-
-            if (foundUser.id !== foundPost.author) {
-                callback(new Error("The current user Id doesnt belong to post Id"))
-                return
-            }
-
-            foundPost.image = image
-            foundPost.text = text
+            return posts.findOne({ _id: new ObjectId(postId) })
+                .then(post => {
+                    if (!post) throw new Error("post not found")
+                    if (user._id.toString() !== post.author) throw new Error("The current user Id doesnt belong to post Id")
 
 
-            json = JSON.stringify(posts, null, 4)
-
-            writeFile(`${process.env.DB_PATH}/posts.json`, json, error => {
-                if (error) {
-                    callback(error)
-                    return
-                }
-                callback(null)
-            })
+                    return posts.updateOne({ _id: new ObjectId(postId) }, { $set: { image: image, text: text } })
+                })
         })
-    })
 }

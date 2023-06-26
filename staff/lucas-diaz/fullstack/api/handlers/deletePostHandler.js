@@ -6,13 +6,18 @@ module.exports = (req, res) => {
         const userId = extractUserId(req)
         const { postId } = req.params
 
-        deletePost(userId, postId, error => {
-            if (error) {
-                res.status(404).json({ error: error.message })
-                return
-            }
-            res.status(204).send()
-        })
+
+        deletePost(userId, postId)
+            .then(() => res.status(204).send())
+            .catch(error => res.status(404).json({ error: error.message }))
+
+        // deletePost(userId, postId, error => {
+        //     if (error) {
+        //         res.status(404).json({ error: error.message })
+        //         return
+        //     }
+        //     res.status(204).send()
+        // })
 
     } catch (error) {
         res.status(404).json({ error: error.message })

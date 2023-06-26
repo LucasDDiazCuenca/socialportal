@@ -1,42 +1,20 @@
 require("dotenv").config()
-const { readFile, writeFile } = require("fs")
 const { validators: { validateId, validateUrl, validateText } } = require("com")
+const context = require("../context")
+const { ObjectId } = require("mongodb")
 
-module.exports = function createPost(userId, image, text, callback) {
+module.exports = function createPost(userId, image, text) {
     validateId(userId)
     validateUrl(image)
     validateText(text)
 
-    readFile(`${process.env.DB_PATH}/users.json`, (error, json) => {
-        if (error) {
-            callback(error)
-            return
-        }
+    const { users, posts } = context
 
-        const users = JSON.parse(json)
-        let user = users.find(user => user.id === userId)
+    return users.findOne({ _id: new ObjectId(userId) })
+        .then(user => {
+            if (!user) throw new Error("user not found")
 
-        if (!user) {
-            callback(new Error("User not found"))
-            return
-        }
-
-        readFile(`${process.env.DB_PATH}/posts.json`, (error, json) => {
-            if (error) {
-                callback(error)
-                return
-            }
-            const posts = JSON.parse(json)
-
-            let id = "post-1"
-
-            const lastPost = posts.at(-1)
-
-            if (lastPost)
-                id = "post-" + (parseInt(lastPost.id.slice(5)) + 1)
-
-            const post = {
-                id,
+            return posts.insertOne({
                 author: userId,
                 userName: user.name,
                 image,
@@ -44,25 +22,11 @@ module.exports = function createPost(userId, image, text, callback) {
                 date: new Date,
                 likeCounter: [],
                 visibility: "public"
-            }
-
-            posts.push(post)
-
-            json = JSON.stringify(posts, null, 4)
-            
-            writeFile(`${process.env.DB_PATH}/posts.json`, json, error => {
-                if (error){
-                    callback(error)
-                    return
-                }
-                callback(null)
             })
+                .catch(error => {
+                    if (error.message.includes("E11000"))
+                        throw new Error("fail on some data in insertOne function")
+                    throw error
+                })
         })
-    })
-
-
-
-
-
-
 }

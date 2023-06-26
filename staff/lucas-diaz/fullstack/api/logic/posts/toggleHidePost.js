@@ -1,58 +1,28 @@
 require("dotenv").config()
-const { readFile, writeFile } = require("fs")
 const { validators: { validateId } } = require("com")
+const context = require("../context")
+const { ObjectId } = require("mongodb")
 
-module.exports = function toggleHidePost(userId, postId, callback) {
+
+module.exports = function toggleHidePost(userId, postId) {
     validateId(userId)
     validateId(postId)
 
-    readFile(`${process.env.DB_PATH}/users.json`, (error, json) => {
-        if (error) {
-            callback(error)
-            return
-        }
+    const { users, posts } = context
 
-        const users = JSON.parse(json)
-        const user = users.find(_user => _user.id === userId)
+    return users.findOne({ _id: new ObjectId(userId) })
+        .then(user => {
+            if (!user) throw new Error("user not found")
 
-        if (!user) {
-            callback(new Error("user not found"))
-            return
-        }
+            return posts.findOne({ _id: new ObjectId(postId) })
+                .then(post => {
+                    if (user._id.toString() !== post.author) throw new Error("this user has not permition to hide this post")
 
-        readFile(`${process.env.DB_PATH}/posts.json`, (error, json) => {
-            if (error) {
-                callback(error)
-                return
-            }
-            const posts = JSON.parse(json)
-            const foundPost = posts.find(post => post.id === postId)
-
-            if (!foundPost) {
-                callback(new Error("post not found"))
-                return
-            }
-
-            if (foundPost.author !== userId) {
-                callback(new Error("this user has not permition to hide this post"))
-                return
-            }
-
-            if(foundPost.visibility !== "private"){
-                foundPost.visibility = "private";
-            } else {
-                foundPost.visibility = "public";
-            }
-
-            json = JSON.stringify(posts, null, 4)
-
-            writeFile(`${process.env.DB_PATH}/posts.json`, json, error => {
-                if (error) {
-                    callback(error)
-                    return
-                }
-                callback(null)
-            })
+                    if (post.visibility !== "private") {
+                        return posts.updateOne({ _id: new ObjectId(postId) }, { $set: { visibility: "private" } })
+                    } else {
+                        return posts.updateOne({ _id: new ObjectId(postId) }, { $set: { visibility: "public" } })
+                    }
+                })
         })
-    })
 }

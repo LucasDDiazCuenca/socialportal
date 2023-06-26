@@ -1,58 +1,24 @@
 require("dotenv").config()
-const { readFile, writeFile } = require("fs")
 const { validators: { validateId } } = require("com")
+const context = require("../context")
+const { ObjectId } = require("mongodb")
 
-module.exports = function deletePost(userId, postId, callback) {
+module.exports = function deletePost(userId, postId) {
     validateId(userId)
     validateId(postId)
 
-    readFile(`${process.env.DB_PATH}/users.json`, (error, json) => {
-        if (error) {
-            callback(error)
-            return
-        }
+    const { users, posts } = context
 
-        const users = JSON.parse(json)
-        const user = users.find(_user => _user.id === userId)
+    return users.findOne({ _id: new ObjectId(userId) })
+        .then(user => {
+            if (!user) throw new Error("user not found")
 
-        if (!user) {
-            callback(new Error("User not found"))
-            return
-        }
-
-        readFile(`${process.env.DB_PATH}/posts.json`, (error, json) => {
-            if (error) {
-                callback(error)
-                return
-            }
-
-            const posts = JSON.parse(json)
-            const foundPost = posts.find(post => post.id === postId)
-            const foundPostIndex = posts.findIndex(post => post.id === postId)
-
-            if (!foundPost) {
-                callback(new Error("post not found"))
-                return
-            }
-
-            if (foundPost.author !== userId) {
-                callback(new Error("this user has not permition to delete this post"))
-                return
-            }
-
-            if (foundPostIndex !== -1) {
-                posts.splice(foundPostIndex, 1);
-            }
-
-            json = JSON.stringify(posts, null, 4)
-
-            writeFile(`${process.env.DB_PATH}/posts.json`, json, error => {
-                if (error) {
-                    callback(error)
-                    return
-                }
-                callback(null)
-            })
+            return posts.findOne({ _id: new ObjectId(postId) })
         })
-    })
+        .then(post => {
+            if (!post) throw new Error("post not found")
+            if (post.author !== userId) throw new Error("this user has not permition to delete this post")
+
+            return posts.deleteOne({ _id: new ObjectId(postId) })
+        })
 }

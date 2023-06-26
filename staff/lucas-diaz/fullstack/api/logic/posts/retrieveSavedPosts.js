@@ -1,51 +1,40 @@
 require("dotenv").config()
-const { readFile } = require("fs")
-const { validators: {validateId} } = require('com') 
+const { validators: { validateId } } = require('com')
+const context = require("../context")
+const { ObjectId } = require("mongodb")
 
 //those posts comes from retrievePosts
 
-module.exports = function retrieveSavedPosts(userId, callback){
+module.exports = function retrieveSavedPosts(userId) {
     validateId(userId)
 
-    readFile(`${process.env.DB_PATH}/users.json`,  (error, json) => {
-        if (error) {
-            callback(error)
-            return
-        }
-        const users = JSON.parse(json)
-        //buscar user 
-        const foundUser = users.find(user => user.id === userId)
+    const { users, posts } = context
 
-        if (!foundUser) {
-            callback(new Error("User not found"))
-            return
-        }
+    return users.findOne({ _id: new ObjectId(userId) })
+        .then(user => {
+            if (!user) throw new Error("user not found")
 
-        readFile("data/posts.json", (error, json) => {
-            if (error) {
-                callback(error)
-                return
-            }
-            const posts = JSON.parse(json)
+            return users.find().toArray()
+                .then(users => {
+                    return posts.find().toArray()
+                        .then(posts => {
+                            posts.forEach(post => {
+                                const _user = users.find(user => user._id.toString() === post.author)
 
-            posts.forEach(post => {
-                // para c/post vamos a buscar su user propio
-                const _user = users.find(user => user.id === post.author)
-                //en esta propiedad, le agregamos un objeto con 3 datos mas, includio el avatar, la id y el nombre. 
-                post.author = {
-                    id: _user.id,
-                    name: _user.name,
-                    avatar: _user.avatar
-                }
-            })
+                                post.author = {
+                                    id: _user._id.toString(),
+                                    name: _user.name,
+                                    avatar: _user.avatar
+                                }
+                            });
 
-            if (foundUser.savedPosts.length > 0) {
-                const savedPosts = posts.filter((post) => foundUser.savedPosts.includes(post.id));
-        
-                callback(null,savedPosts.reverse());
-            } else {
-                callback(null, []);
-            }
-        })
-    })
+                            if (user.savedPosts.length > 0) {
+                                const savedPosts = posts.filter(post => user.savedPosts.includes(post._id.toString()))
+                                return savedPosts
+                            } else {
+                                return []
+                            }
+                        })
+                });
+        });
 }

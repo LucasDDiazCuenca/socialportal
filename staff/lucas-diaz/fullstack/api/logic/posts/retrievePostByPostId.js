@@ -1,40 +1,34 @@
 require("dotenv").config()
-const { readFile } = require("fs")
-const { validators: {validateId} } = require('com') 
+const { validators: { validateId } } = require('com')
+const context = require("../context")
+const { ObjectId } = require("mongodb")
 
-module.exports = function retrievePostByPostId (userId, postId, callback) {
+module.exports = function retrievePostByPostId(userId, postId) {
     validateId(userId)
     validateId(postId)
 
-    readFile(`${process.env.DB_PATH}/users.json`,  (error, json) => {
-        if (error) {
-            callback(error)
-            return
-        }
-        const users = JSON.parse(json)
-        //buscar user 
-        const user = users.find(user => user.id === userId)
+    const { users, posts } = context
 
-        if (!user) {
-            callback(new Error("User not found"))
-            return
-        }
+    return users.findOne({ _id: new ObjectId(userId) })
+        .then(user => {
+            if (!user) throw new Error("user not found")
 
-        readFile(`${process.env.DB_PATH}/posts.json`, (error, json) => {
-            if(error){
-                callback(error)
-                return
-            }
-            
-            const posts = JSON.parse(json)
-            const post = posts.find(post => post.id === postId)
+            return users.find().toArray()
+                .then(users => {
+                    return posts.find().toArray()
+                        .then(posts => {
+                            posts.forEach(post => {
+                                const _user = users.find(user => user._id.toString() === post.author)
 
-            if(userId !== post.author){
-                callback(new Error("user id diferent than post author"))
-                return
-            }
+                                post.author = {
+                                    id: _user._id.toString(),
+                                    name: _user.name,
+                                    avatar: _user.avatar
+                                }
+                            });
 
-            callback(null, post)
-        })
-    })
+                            return posts.find(post => post._id.toString() === postId)
+                        })
+                });
+        });
 } 
