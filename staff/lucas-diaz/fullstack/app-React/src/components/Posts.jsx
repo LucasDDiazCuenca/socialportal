@@ -144,8 +144,8 @@ export default function Posts({ onEditPostButtonClick, lastPostsUpdate, view }) 
     }, [lastPostsUpdate])
 
     return <section className="home-posts-content">
-        {posts.map((post, index) => <Post
-            key={index}
+        {posts.map((post) => <Post
+            key={post._id}
             post={post}
             user={user}
             onDeleteClick={handleDeletePost}

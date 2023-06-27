@@ -10,15 +10,6 @@ module.exports = (req, res) => {
             .then(() => res.status(204).send())
             .catch(error => res.status(404).json({ error: error.message }))
 
-
-        // updateUserAvatar(userId, avatar, error => {
-        //     if (error) {
-        //         res.status(404).json({ error: error.message })
-        //         return
-        //     }
-        //     res.status(204).send()
-        // })
-
     } catch (error) {
         res.status(404).json({ error: error.message })
     }

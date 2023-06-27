@@ -31,7 +31,7 @@ export default function updateUserAvatar(userId, avatarUrl, callback) {
     xhr.setRequestHeader('Content-Type', 'application/json')
     xhr.setRequestHeader('Authorization', `Bearer ${userId}`)
 
-    let data = avatarUrl
+    let data = {avatar: avatarUrl}
     let json = JSON.stringify(data)
 
     xhr.send(json)

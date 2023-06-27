@@ -14,7 +14,7 @@ describe("updateUserAvatar", () => {
         avatar = `https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512${Math.floor(Math.random() * 101)}.png`
         newAvatar = "https://archello.s3.eu-central-1.amazonaws.com/images/2018/05/11/tobiarchitects1.1526035990.6946.jpg"
         savedPosts = []
-        writeFile(`${process.env.DB_PATH}/users.json`, "[]",  error => done(error))
+        writeFile(`${process.env.DB_PATH}/users.json`, "[]", error => done(error))
     })
 
     it("should suceed on changing user avatar", done => {
@@ -23,19 +23,19 @@ describe("updateUserAvatar", () => {
             id,
             name,
             email,
-            password, 
+            password,
             avatar,
             savedPosts
         }
         const json = JSON.stringify([user])
 
-        writeFile(`${process.env.DB_PATH}/users.json`, json,  error => {
+        writeFile(`${process.env.DB_PATH}/users.json`, json, error => {
             expect(error).to.be.null
 
             updateUserAvatar(user.id, newAvatar, error => {
                 expect(error).to.be.null
 
-                readFile(`${process.env.DB_PATH}/users.json`,  (error, json) => {
+                readFile(`${process.env.DB_PATH}/users.json`, (error, json) => {
                     expect(error).to.be.null
 
                     const users = JSON.parse(json)
@@ -83,7 +83,7 @@ describe("updateUserAvatar", () => {
     it("should fail on blank space in avatar's url", () => {
         expect(() => updateUserAvatar(id, " ", () => { })).to.throw(Error, "url cant be a blankSpace")
     })
-    
+
     it("should fail on invalid format in avatar's url", () => {
         expect(() => updateUserAvatar(id, "hello", () => { })).to.throw(Error, 'Image format invalid')
     })

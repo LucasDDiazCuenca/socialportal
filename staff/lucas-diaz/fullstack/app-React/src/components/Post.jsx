@@ -11,7 +11,7 @@ export default function Post(props) {
     //destructuring de props, para no hacer todo el tiempo props.post.userName
     const { post, user } = props
     const { alert, freeze, unFreeze } = useContext(Context)
-    
+
     const day = new Date(post.date).getDate();
     const month = new Date(post.date).getMonth() + 1;
     const year = new Date(post.date).getFullYear();
@@ -20,13 +20,13 @@ export default function Post(props) {
     const fullDate = `${day}/${month}/${year} ${hour}:${minutes} `
 
     function openEditPostModal() {
-        props.onEditPostButton(props.post.id);
+        props.onEditPostButton(props.post._id);
     }
 
     function handleHeartClick() {
         try {
             freeze()
-            toggleLikePost(context.userId, post.id, error => {
+            toggleLikePost(context.userId, post._id, error => {
                 unFreeze()
                 if (error) {
                     alert(error.message)
@@ -37,12 +37,12 @@ export default function Post(props) {
             })
         } catch (error) {
             alert(error.message)
+            unFreeze()
         }
     }
     function handleDeleteClick() {
         try {
-
-            deletePost(context.userId, post.id, error => {
+            deletePost(context.userId, post._id, error => {
                 if (error) {
                     alert(error.message)
                     return;
@@ -58,7 +58,7 @@ export default function Post(props) {
     function handleSavePostClick() {
         freeze()
         try {
-            toggleSavePostInUser(context.userId, post.id, (error) => {
+            toggleSavePostInUser(context.userId, post._id, (error) => {
                 unFreeze()
                 if (error) {
                     alert(error.message)
@@ -74,7 +74,7 @@ export default function Post(props) {
     function handleHidePostClick() {
         freeze()
         try {
-            toggleHidePost(context.userId, post.id, error => {
+            toggleHidePost(context.userId, post._id, error => {
                 unFreeze()
                 if (error) {
                     alert(error.message)
@@ -112,7 +112,7 @@ export default function Post(props) {
             <p className="self-center text-sm">{post.likeCounter.length} {post.likeCounter.length === 1 ? "like" : "likes"}</p>
         </div>
 
-        <button className="bg-transparent border-none text-right" onClick={handleSavePostClick}><span className={`material-symbols-rounded ${user?.savedPosts.includes(post.id) ? "filled" : ""}`}>bookmark</span></button>
+        <button className="bg-transparent border-none text-right" onClick={handleSavePostClick}><span className={`material-symbols-rounded ${user?.savedPosts.includes(post._id) ? "filled" : ""}`}>bookmark</span></button>
 
         <p className="text-white text-sm basis-full text-left bg-zinc-800 p-1.5 pl-3">{post.text}</p>
         <time className="basis-full text-right text-xs text-gray-500 pr-3 pb-2">{fullDate}</time>
