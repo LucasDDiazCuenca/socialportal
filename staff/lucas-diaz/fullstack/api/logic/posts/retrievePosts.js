@@ -40,18 +40,3 @@ module.exports = function retrievePosts(userId) {
                 });
         });
 }
-
-
-    //         const _posts = posts.filter(post=> {
-    //             //trae tu post (uno a uno con el filter)
-    //             if (post.author.id === userId){
-    //                 return post.author.id === userId
-    //             // si no es tu post, trae el que tenga visibilidad
-    //             } else if (post.author.id !== userId){
-    //                 return post.visibility === "public"
-    //             }
-    //         })
-
-    //         callback(null, _posts.reverse())
-    //     })
-    // })
