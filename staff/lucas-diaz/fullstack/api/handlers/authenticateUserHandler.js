@@ -1,4 +1,5 @@
 const { authenticateUser } = require("../logic")
+const jwt = require("jsonwebtoken")
 
 
 module.exports = (req, res) => {
@@ -6,16 +7,14 @@ module.exports = (req, res) => {
         const { email, password } = req.body
         
         authenticateUser(email, password)
-            .then( userId => res.status(202).json({ userId }) )
+            .then( userId => {
+
+                const payload = { sub: userId}
+                const token = jwt.sign(payload, process.env.SECRET)
+
+                res.status(202).json({ token })
+            } )
             .catch(error => res.status(404).json({ error: error.message }))
-        
-        // authenticateUser(email, password, (error, userId) => {
-        //     if (error) {
-        //         res.status(404).json({ error: error.message })
-        //         return
-        //     }
-        //     res.status(202).json({ userId })
-        // })
 
     } catch (error) {
         res.status(404).json({ error: error.message })

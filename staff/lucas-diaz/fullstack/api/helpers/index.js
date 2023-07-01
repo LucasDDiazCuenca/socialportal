@@ -1,3 +1,3 @@
 module.exports = {
-    extractUserId : require("./extractUserId")
+    extractToken : require("./extractToken")
 }

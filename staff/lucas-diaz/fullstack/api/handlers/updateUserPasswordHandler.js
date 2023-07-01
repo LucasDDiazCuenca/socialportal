@@ -1,9 +1,9 @@
 const { updateUserPassword } = require("../logic")
-const {extractUserId} = require("../helpers")
+const {extractToken} = require("../helpers")
 
 module.exports = (req, res) => {
     try {
-        const userId = extractUserId(req)
+        const userId = extractToken(req)
         const { password, newPassword, newPasswordConfirmation } = req.body
 
         updateUserPassword(userId, password, newPassword, newPasswordConfirmation)
