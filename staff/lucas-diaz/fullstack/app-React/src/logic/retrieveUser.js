@@ -1,10 +1,9 @@
 import { validators } from 'com'
-const {validateId} = validators
+const { validateToken } = validators
 
-// NOS DA EL USER SIN PASSWORD NI EMAIL , PARA ELLO LO HACEMOS CON UN FIND(() => {})
 
-export default function retrieveUser(userId, callback) {
-    validateId(userId);
+export default function retrieveUser(token, callback) {
+    validateToken(token);
 
     const xhr = new XMLHttpRequest
 
@@ -13,14 +12,14 @@ export default function retrieveUser(userId, callback) {
         if (status !== 200) {
             const { response: json } = xhr
             const { error } = JSON.parse(json)
-    
-            callback(new Error(error))    
+
+            callback(new Error(error))
             return
         }
 
         const { response: json } = xhr
-        const  user = JSON.parse(json)
-        
+        const user = JSON.parse(json)
+
         callback(null, user)
     }
 
@@ -30,7 +29,7 @@ export default function retrieveUser(userId, callback) {
     }
 
 
-    xhr.open("GET",`${import.meta.env.VITE_API_URL}/users`)
+    xhr.open("GET", `${import.meta.env.VITE_API_URL}/users`)
     xhr.setRequestHeader('Content-Type', 'application/json')
     xhr.setRequestHeader('Authorization', `Bearer ${userId}`)
 

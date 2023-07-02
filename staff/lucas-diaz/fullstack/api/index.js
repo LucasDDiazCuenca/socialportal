@@ -3,7 +3,9 @@ const express = require("express")
 
 const { MongoClient } = require("mongodb")
 
-const { cors, jsonBodyParser } = require("./utils")
+const  cors  = require("cors")
+const bodyParser = require("body-parser")
+
 const { helloApiHandler, registerUserHandler, authenticateUserHandler, retrieveUserHandler, updateUserAvatarHandler, updateUserPasswordHandler, createPostHandler, retrievePostsHandler, retrieveSavedPostsHandler, retrieveUserPostsHandler, retrievePostByPostIdHandler, toggleHidePostHandler, toggleLikePostHandler, toggleSavePostInUserHandler, updatePostHandler, deletePostHandler } = require("./handlers")
 
 const context = require("./logic/context")
@@ -21,7 +23,10 @@ client.connect()
         context.posts = posts
 
         const api = express()
-        api.use(cors)
+
+        const jsonBodyParser = bodyParser.json()
+
+        api.use(cors())
         api.get("/", helloApiHandler)
 
         //!USERS

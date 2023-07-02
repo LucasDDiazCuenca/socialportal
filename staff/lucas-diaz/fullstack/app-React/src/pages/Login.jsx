@@ -37,13 +37,13 @@ export default function Login(props) {
         const password = event.target.password.value 
 
         try {
-            authenticateUser(email, password, (error, userId) => {
+            authenticateUser(email, password, (error, token) => {
                 if (error) {
                     setErrorMessage(error.message)
                     return;
                 }
 
-                context.userId = userId;
+                context.token = token;
                 props.onUserLogedin();
 
             })
