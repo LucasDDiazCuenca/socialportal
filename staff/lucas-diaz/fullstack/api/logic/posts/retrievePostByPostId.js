@@ -13,22 +13,20 @@ module.exports = function retrievePostByPostId(userId, postId) {
         .then(user => {
             if (!user) throw new Error("user not found")
 
-            return users.find().toArray()
-                .then(users => {
-                    return posts.find().toArray()
-                        .then(posts => {
-                            posts.forEach(post => {
-                                const _user = users.find(user => user._id.toString() === post.author)
+            return Promise.all([users.find().toArray(), posts.find().toArray()])
+                .then(([users, posts]) => {
+                    posts.forEach(post => {
+                        const _user = users.find(user => user._id.toString() === post.author)
 
-                                post.author = {
-                                    id: _user._id.toString(),
-                                    name: _user.name,
-                                    avatar: _user.avatar
-                                }
-                            });
+                        post.author = {
+                            id: _user._id.toString(),
+                            name: _user.name,
+                            avatar: _user.avatar
+                        }
+                    });
 
-                            return posts.find(post => post._id.toString() === postId)
-                        })
-                });
+                    return posts.find(post => post._id.toString() === postId)
+                })
+
         });
 } 

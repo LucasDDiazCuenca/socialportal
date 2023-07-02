@@ -14,26 +14,25 @@ module.exports = function retrieveUserPosts(userId) {
         .then(user => {
             if (!user) throw new Error("user not found")
 
-            return users.find().toArray()
-                .then(users => {
-                    return posts.find().toArray()
-                        .then(posts => {
-                            posts.forEach(post => {
-                                const _user = users.find(user => user._id.toString() === post.author)
+            return Promise.all([users.find().toArray(), posts.find().toArray()])
+                .then(([users, posts]) => {
 
-                                post.author = {
-                                    id: _user._id.toString(),
-                                    name: _user.name,
-                                    avatar: _user.avatar
-                                }
-                            });
+                    posts.forEach(post => {
+                        const _user = users.find(user => user._id.toString() === post.author)
 
-                            const userPosts = posts.filter(post => {
-                                return post.author.id === user._id.toString()
-                            })
+                        post.author = {
+                            id: _user._id.toString(),
+                            name: _user.name,
+                            avatar: _user.avatar
+                        }
+                    });
 
-                            return userPosts
-                        })
+                    const userPosts = posts.filter(post => {
+                        return post.author.id === user._id.toString()
+                    })
+
+                    return userPosts
+
                 });
         });
 
