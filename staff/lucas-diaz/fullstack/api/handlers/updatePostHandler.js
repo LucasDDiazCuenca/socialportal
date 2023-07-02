@@ -1,10 +1,15 @@
 const { updatePost } = require("../logic")
 const {extractToken} = require("../helpers")
+const jwt = require("jsonwebtoken")
 
 module.exports = (req, res) => {
     try {
-        const userId = extractToken(req)
+        const token = extractToken(req)
+        const payload = jwt.verify(token, process.env.SECRET)
+        const {sub: userId} = payload
+
         const { postId } = req.params
+        
         const { image, text } = req.body
 
         updatePost(userId, postId, image, text)
