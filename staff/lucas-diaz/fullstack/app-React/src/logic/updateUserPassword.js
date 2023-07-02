@@ -1,11 +1,11 @@
 import { validators } from 'com'
-const { validatePassword, validateId } = validators
+const { validatePassword, validateToken } = validators
 
-export default function updateUserPassword(userId, password, newPassword, newPasswordConfirmation, callback) {
+export default function updateUserPassword(token, password, newPassword, newPasswordConfirmation, callback) {
     validatePassword(password)
     validatePassword(newPassword)
     validatePassword(newPasswordConfirmation)
-    validateId(userId)
+    validateToken(token)
 
     const xhr = new XMLHttpRequest
 
@@ -31,7 +31,7 @@ export default function updateUserPassword(userId, password, newPassword, newPas
 
     xhr.open('PATCH', `${import.meta.env.VITE_API_URL}/users/password`)
     xhr.setRequestHeader('Content-Type', 'application/json')
-    xhr.setRequestHeader('Authorization', `Bearer ${userId}`)
+    xhr.setRequestHeader('Authorization', `Bearer ${token}`)
 
     let data = { password, newPassword, newPasswordConfirmation }
 

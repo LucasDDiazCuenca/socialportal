@@ -12,7 +12,7 @@ export default function UpdateAvatar(props) {
 
         try {
             let url = event.target.url.value
-            updateUserAvatar(context.userId, url, (error) => {
+            updateUserAvatar(context.token, url, (error) => {
                 if(error){
                     setErrorMessage(error.message)
                     return;

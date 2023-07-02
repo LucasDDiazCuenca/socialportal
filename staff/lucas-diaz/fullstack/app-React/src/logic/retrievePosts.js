@@ -1,8 +1,8 @@
 import { validators } from 'com'
-const {validateId} = validators 
+const {validateToken} = validators 
 
-export default function retrievePosts(userId, callback) {
-    validateId(userId);
+export default function retrievePosts(token, callback) {
+    validateToken(token);
 
     const xhr = new XMLHttpRequest
 
@@ -29,9 +29,8 @@ export default function retrievePosts(userId, callback) {
 
     xhr.open('GET',`${import.meta.env.VITE_API_URL}/posts`)
     xhr.setRequestHeader('Content-Type', 'application/json')
-    xhr.setRequestHeader('Authorization', `Bearer ${userId}`)
+    xhr.setRequestHeader('Authorization', `Bearer ${token}`)
 
     xhr.send()
 }
 
-// de esta forma no modificamos el array original de posts, solamente modificamos la logica que almacena temporalmente estos posts con un poco mas de informacion. 

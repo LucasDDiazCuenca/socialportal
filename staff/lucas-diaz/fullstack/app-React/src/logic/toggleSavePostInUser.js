@@ -1,8 +1,8 @@
 import { validators } from 'com'
-const { validateId } = validators
+const { validateId, validateToken } = validators
 
-export default function toggleSavePostInUser(userId, postId, callback) {
-    validateId(userId)
+export default function toggleSavePostInUser(token, postId, callback) {
+    validateToken(token)
     validateId(postId)
 
     const xhr = new XMLHttpRequest
@@ -28,7 +28,7 @@ export default function toggleSavePostInUser(userId, postId, callback) {
 
     xhr.open("PATCH", `${import.meta.env.VITE_API_URL}/users/save/${postId}`)
     xhr.setRequestHeader('Content-Type', 'application/json')
-    xhr.setRequestHeader('Authorization', `Bearer ${userId}`)
+    xhr.setRequestHeader('Authorization', `Bearer ${token}`)
 
     xhr.send()
 

@@ -44,6 +44,7 @@ export default function Login(props) {
                 }
 
                 context.token = token;
+                console.log(token)
                 props.onUserLogedin();
 
             })

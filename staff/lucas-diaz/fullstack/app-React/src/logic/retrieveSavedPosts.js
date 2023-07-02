@@ -1,9 +1,8 @@
 import { validators } from 'com'
+const { validateToken } = validators
 
-const { validateId } = validators
-
-export default function retrieveSavedPosts(userId, callback) {
-    validateId(userId);
+export default function retrieveSavedPosts(token, callback) {
+    validateToken(token);
 
     const xhr = new XMLHttpRequest
 
@@ -30,7 +29,7 @@ export default function retrieveSavedPosts(userId, callback) {
 
     xhr.open('GET', `${import.meta.env.VITE_API_URL}/posts/saved`)
     xhr.setRequestHeader('Content-Type', 'application/json')
-    xhr.setRequestHeader('Authorization', `Bearer ${userId}`)
+    xhr.setRequestHeader('Authorization', `Bearer ${token}`)
 
     xhr.send()
 }

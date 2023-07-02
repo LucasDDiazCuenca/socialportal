@@ -20,7 +20,7 @@ export default function Home({ onLogOutClick }) {
 
     useEffect(() => {
         try {
-            retrieveUser(context.userId, (error, user) => {
+            retrieveUser(context.token, (error, user) => {
                 if (error) {
                     alert(error.message)
                     return;
@@ -36,7 +36,7 @@ export default function Home({ onLogOutClick }) {
     //? SETTINGS, LOG OUT Y HOME
     const handleSettingsClick = () => setView(null);
     const handleLogOutClick = () => {
-        delete context.userId
+        delete context.token
         onLogOutClick();
     }
     const handleHomeClick = () => setView("posts")
@@ -101,7 +101,7 @@ export default function Home({ onLogOutClick }) {
                     <h2 className="text-xl">{user.name}</h2>
                 </>}
             </div>
-            <nav className={`home-menu ${view === null ? "home-menu-transition" : ""} ${view === "avatar" || view === "posts" || view === "password" || view === "savedPosts" || view === "userPosts"? "" : "home-menu-transition"}`}>
+            <nav className={`home-menu ${view === null ? "home-menu-transition" : ""} ${view === "avatar" || view === "posts" || view === "password" || view === "savedPosts" || view === "userPosts" ? "" : "home-menu-transition"}`}>
                 <ul className="basis-full flex gap-6 bg-zinc-700 p-4 rounded-md">
                     <li><a href="" className="hover:green" onClick={handlePasswordAnchor}>change password</a></li>
                     <li><a href="" className="hover:green" onClick={handleAvatarAnchor}>Avatar</a></li>

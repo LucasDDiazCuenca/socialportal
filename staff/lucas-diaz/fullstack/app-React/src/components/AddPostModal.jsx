@@ -17,7 +17,7 @@ export default function AddPostModal(props) {
         let text = event.target.text.value 
 
         try{
-            createPost(context.userId, image, text, (error) => {
+            createPost(context.token, image, text, (error) => {
                 if (error){
                     setErrorMesagge(error.message)
                     return;

@@ -20,6 +20,7 @@ export default function Posts({ onEditPostButtonClick, lastPostsUpdate, view }) 
         try {
             checkPostType();
         } catch (error) {
+            unFreeze()
             alert(error.message);
         }
     }, []);
@@ -30,7 +31,7 @@ export default function Posts({ onEditPostButtonClick, lastPostsUpdate, view }) 
         switch (view) {
 
             case "posts":
-                retrievePosts(context.userId, (error, _posts) => {
+                retrievePosts(context.token, (error, _posts) => {
                     if (error) {
                         alert(error)
                         return;
@@ -38,7 +39,7 @@ export default function Posts({ onEditPostButtonClick, lastPostsUpdate, view }) 
                     setPosts(_posts)
                 })
 
-                retrieveUser(context.userId, (error, _user) => {
+                retrieveUser(context.token, (error, _user) => {
                     unFreeze()
                     if (error) {
                         alert(error)
@@ -50,14 +51,14 @@ export default function Posts({ onEditPostButtonClick, lastPostsUpdate, view }) 
                 break;
 
             case "savedPosts":
-                retrieveSavedPosts(context.userId, (error, _posts) => {
+                retrieveSavedPosts(context.token, (error, _posts) => {
                     if (error) {
                         alert(error)
                         return;
                     }
                     setPosts(_posts)
                 })
-                retrieveUser(context.userId, (error, user) => {
+                retrieveUser(context.token, (error, user) => {
                     unFreeze()
                     if (error) {
                         alert(error)
@@ -68,7 +69,7 @@ export default function Posts({ onEditPostButtonClick, lastPostsUpdate, view }) 
                 break;
 
             case "userPosts":
-                retrieveUserPosts(context.userId, (error, _posts) => {
+                retrieveUserPosts(context.token, (error, _posts) => {
                     if (error) {
                         alert(error)
                         return;
@@ -76,7 +77,7 @@ export default function Posts({ onEditPostButtonClick, lastPostsUpdate, view }) 
                     setPosts(_posts)
                 })
 
-                retrieveUser(context.userId, (error, user) => {
+                retrieveUser(context.token, (error, user) => {
                     unFreeze()
                     if (error) {
                         alert(error)

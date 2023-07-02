@@ -12,7 +12,7 @@ export default function UpdatePost({ postId, onUpdatedPost, onCancelClick }) {
 
     useEffect(() => {
         try {
-            retrievePostByPostId(context.userId, postId, (error, post) => {
+            retrievePostByPostId(context.token, postId, (error, post) => {
                 if (error) {
                     alert(error.message);
                     return;
@@ -31,7 +31,7 @@ export default function UpdatePost({ postId, onUpdatedPost, onCancelClick }) {
         try {
             let image = event.target.url.value
             let text = event.target.text.value
-            updatePost(context.userId, postId, image, text, error => {
+            updatePost(context.token, postId, image, text, error => {
                 if (error) {
                     alert(error.message);
                     return;

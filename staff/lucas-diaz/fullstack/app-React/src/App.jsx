@@ -8,7 +8,7 @@ import Context from "./Context";
 import CreateCube from "./components/CreateCube";
 
 export default function App() {
-  const [view, setView] = useState(context.userId ? "home" : "login")
+  const [view, setView] = useState(context.token ? "home" : "login")
   const [feedback, setFeedback] = useState(null)
   const [loader, setLoader] = useState(false)
 

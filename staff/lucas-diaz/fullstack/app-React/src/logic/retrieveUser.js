@@ -6,7 +6,7 @@ export default function retrieveUser(token, callback) {
     validateToken(token);
 
     const xhr = new XMLHttpRequest
-
+    
     xhr.onload = () => {
         const { status } = xhr
         if (status !== 200) {
@@ -23,15 +23,13 @@ export default function retrieveUser(token, callback) {
         callback(null, user)
     }
 
-
     xhr.onerror = () => {
         callback(new Error('connection error'))
     }
 
-
     xhr.open("GET", `${import.meta.env.VITE_API_URL}/users`)
     xhr.setRequestHeader('Content-Type', 'application/json')
-    xhr.setRequestHeader('Authorization', `Bearer ${userId}`)
+    xhr.setRequestHeader('Authorization', `Bearer ${token}`)
 
     xhr.send()
 }

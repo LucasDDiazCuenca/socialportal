@@ -1,8 +1,8 @@
 import { validators } from 'com'
-const { validateId, validateUrl, validateText } = validators
+const { validateToken, validateUrl, validateText } = validators
 
-export default function createPost(userId, image, text, callback) {
-    validateId(userId);
+export default function createPost(token, image, text, callback) {
+    validateToken(token);
     validateUrl(image);
     validateText(text);
 
@@ -30,7 +30,7 @@ export default function createPost(userId, image, text, callback) {
 
     xhr.open('POST', `${import.meta.env.VITE_API_URL}/posts`)
     xhr.setRequestHeader('Content-Type', 'application/json')
-    xhr.setRequestHeader('Authorization', `Bearer ${userId}`)
+    xhr.setRequestHeader('Authorization', `Bearer ${token}`)
 
 
     let data = { image, text }

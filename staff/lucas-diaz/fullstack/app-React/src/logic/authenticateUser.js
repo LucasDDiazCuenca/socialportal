@@ -18,10 +18,10 @@ export default function authenticateUser(email, password, callback) {
             callback(new Error(error))
             return
         }
-
+        
         const { response: json } = xhr
         const { token } = JSON.parse(json)
-
+        console.log(token)
         callback(null, token)
     }
 
