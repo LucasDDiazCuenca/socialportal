@@ -41,7 +41,7 @@ module.exports = function retrieveSavedPosts(userId) {
                     if (user.savedPosts.length > 0) {
                         const savedPosts = posts.filter(post => user.savedPosts.some(savedPostId => savedPostId.equals(post._id)));
                         savedPosts.forEach(post => delete post.author.id)
-                        return savedPosts
+                        return savedPosts.reverse()
                     } else {
                         return []
                     }

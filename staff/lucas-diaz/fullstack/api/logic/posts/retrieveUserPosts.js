@@ -42,7 +42,7 @@ module.exports = function retrieveUserPosts(userId) {
                         return post.author.id === user._id.toString()
                     })
                     userPosts.forEach(post => delete post.author.id)
-                    return userPosts
+                    return userPosts.reverse()
 
                 });
         });

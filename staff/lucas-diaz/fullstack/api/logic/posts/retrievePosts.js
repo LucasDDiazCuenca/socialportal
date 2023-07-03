@@ -47,7 +47,7 @@ module.exports = function retrievePosts(userId) {
                     })
 
                     _posts.forEach(post => delete post.author.id)
-                    return _posts
+                    return _posts.reverse()
                 });
         });
 }
