@@ -18,17 +18,29 @@ module.exports = function retrieveSavedPosts(userId) {
                 .then(([users, posts]) => {
 
                     posts.forEach(post => {
-                        const _user = users.find(user => user._id.toString() === post.author)
+                        const _user = users.find(user => user._id.toString() === post.author.toString())
 
                         post.author = {
                             id: _user._id.toString(),
                             name: _user.name,
                             avatar: _user.avatar
                         }
+                        post.likeCounterNumber = post.likeCounter.length
+                        if (post.likeCounter.some(userId => userId.equals(user._id))) {
+                            post.likeCounter = true
+                        } else {
+                            post.likeCounter = false
+                        }
+                        if (user._id.toString() === post.author.id.toString()) {
+                            post.userProperty = true
+                        } else {
+                            post.userProperty = false
+                        }
                     });
 
                     if (user.savedPosts.length > 0) {
-                        const savedPosts = posts.filter(post => user.savedPosts.includes(post._id.toString()))
+                        const savedPosts = posts.filter(post => user.savedPosts.some(savedPostId => savedPostId.equals(post._id)));
+                        savedPosts.forEach(post => delete post.author.id)
                         return savedPosts
                     } else {
                         return []

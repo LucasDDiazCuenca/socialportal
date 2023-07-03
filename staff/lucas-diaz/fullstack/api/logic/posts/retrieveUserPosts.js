@@ -18,19 +18,30 @@ module.exports = function retrieveUserPosts(userId) {
                 .then(([users, posts]) => {
 
                     posts.forEach(post => {
-                        const _user = users.find(user => user._id.toString() === post.author)
+                        const _user = users.find(user => user._id.toString() === post.author.toString())
 
                         post.author = {
                             id: _user._id.toString(),
                             name: _user.name,
                             avatar: _user.avatar
                         }
+                        post.likeCounterNumber = post.likeCounter.length
+                        if (post.likeCounter.some(userId => userId.equals(user._id))) {
+                            post.likeCounter = true
+                        } else {
+                            post.likeCounter = false
+                        }
+                        if (user._id.toString() === post.author.id.toString()) {
+                            post.userProperty = true
+                        } else {
+                            post.userProperty = false
+                        }
                     });
 
                     const userPosts = posts.filter(post => {
                         return post.author.id === user._id.toString()
                     })
-
+                    userPosts.forEach(post => delete post.author.id)
                     return userPosts
 
                 });

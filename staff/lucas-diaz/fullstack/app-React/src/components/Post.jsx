@@ -7,9 +7,7 @@ import { useContext } from "react";
 import Context from "../Context.js";
 
 
-export default function Post(props) {
-    //destructuring de props, para no hacer todo el tiempo props.post.userName
-    const { post, user } = props
+export default function Post({post, user,onEditPostButton, onLikeClick, onDeleteClick, OnSavedPostClick, onHidenPostClick }) {
     const { alert, freeze, unFreeze } = useContext(Context)
 
     const day = new Date(post.date).getDate();
@@ -20,7 +18,7 @@ export default function Post(props) {
     const fullDate = `${day}/${month}/${year} ${hour}:${minutes} `
 
     function openEditPostModal() {
-        props.onEditPostButton(props.post._id);
+        onEditPostButton(post._id);
     }
 
     function handleHeartClick() {
@@ -33,13 +31,14 @@ export default function Post(props) {
                     return
                 }
 
-                props.onLikeClick();
+                onLikeClick();
             })
         } catch (error) {
             alert(error.message)
             unFreeze()
         }
     }
+
     function handleDeleteClick() {
         try {
             deletePost(context.token, post._id, error => {
@@ -47,7 +46,7 @@ export default function Post(props) {
                     alert(error.message)
                     return;
                 }
-                props.onDeleteClick();
+                onDeleteClick();
             });
 
         } catch (error) {
@@ -64,7 +63,7 @@ export default function Post(props) {
                     alert(error.message)
                     return
                 }
-                props.OnSavedPostClick();
+                OnSavedPostClick();
             });
         } catch (error) {
             alert(error.message)
@@ -80,7 +79,7 @@ export default function Post(props) {
                     alert(error.message)
                     return
                 }
-                props.onHidenPostClick();
+                onHidenPostClick();
             })
         } catch (error) {
             alert(error.message)

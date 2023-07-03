@@ -6,8 +6,6 @@ import Form from "./library/Form";
 
 
 export default function UpdatePost({ postId, onUpdatedPost, onCancelClick }) {
-
-
     const [post, setPost] = useState()
 
     useEffect(() => {
@@ -31,6 +29,12 @@ export default function UpdatePost({ postId, onUpdatedPost, onCancelClick }) {
         try {
             let image = event.target.url.value
             let text = event.target.text.value
+
+            console.log(image)
+            console.log(text)
+            console.log(context.token)
+            console.log(postId)
+
             updatePost(context.token, postId, image, text, error => {
                 if (error) {
                     alert(error.message);

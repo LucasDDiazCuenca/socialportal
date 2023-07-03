@@ -14,10 +14,12 @@ module.exports = function toggleLikePost(userId, postId) {
 
             return posts.findOne({ _id: new ObjectId(postId) })
                 .then(post => {
-                    if (post.likeCounter.includes(userId)) {
-                        return posts.updateOne({ _id: new ObjectId(postId) }, { $pull: { likeCounter: userId } })
+
+
+                    if (post.likeCounter.some(userId => userId.equals(user._id))) {
+                        return posts.updateOne({ _id: new ObjectId(postId) }, { $pull: { likeCounter: user._id } })
                     } else {
-                        return posts.updateOne({ _id: new ObjectId(postId) }, { $push: { likeCounter: userId } })
+                        return posts.updateOne({ _id: new ObjectId(postId) }, { $push: { likeCounter: user._id } })
                     }
                 })
         })

@@ -17,7 +17,7 @@ module.exports = function deletePost(userId, postId) {
         })
         .then(post => {
             if (!post) throw new Error("post not found")
-            if (post.author !== userId) throw new Error("this user has not permition to delete this post")
+            if (post.author.toString() !== userId) throw new Error("this user has not permition to delete this post")
 
             return posts.deleteOne({ _id: new ObjectId(postId) })
         })
