@@ -12,13 +12,10 @@ export default function UpdateAvatar(props) {
 
         try {
             let url = event.target.url.value
-            updateUserAvatar(context.token, url, (error) => {
-                if(error){
-                    setErrorMessage(error.message)
-                    return;
-                }
-                props.onUpdatedAvatar(url);
-            });
+
+            updateUserAvatar(context.token, url)
+                .then(() => props.onUpdatedAvatar(url))
+                .catch(error => alert(error))
 
         } catch (error) {
             setErrorMessage(error.message)

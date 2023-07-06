@@ -31,60 +31,42 @@ export default function Posts({ onEditPostButtonClick, lastPostsUpdate, view }) 
         switch (view) {
 
             case "posts":
-                retrievePosts(context.token, (error, _posts) => {
-                    if (error) {
-                        alert(error)
-                        return;
-                    }
-                    setPosts(_posts)
-                })
+                retrievePosts(context.token)
+                    .then(_posts => setPosts(_posts))
+                    .catch(error => alert(error))
 
-                retrieveUser(context.token, (error, _user) => {
-                    unFreeze()
-                    if (error) {
-                        alert(error)
-                        return;
-                    }
-
-                    setUser(_user);
-                })
+                retrieveUser(context.token)
+                    .then(_user => {
+                        unFreeze()
+                        setUser(_user);
+                    })
+                    .catch(error => console.log(error))
                 break;
 
             case "savedPosts":
-                retrieveSavedPosts(context.token, (error, _posts) => {
-                    if (error) {
-                        alert(error)
-                        return;
-                    }
-                    setPosts(_posts)
-                })
-                retrieveUser(context.token, (error, user) => {
-                    unFreeze()
-                    if (error) {
-                        alert(error)
-                        return;
-                    }
-                    setUser(user);
-                })
+                retrieveSavedPosts(context.token)
+                    .then(_posts => setPosts(_posts))
+                    .catch(error => alert(error))
+
+                retrieveUser(context.token)
+                    .then(_user => {
+                        unFreeze()
+                        setUser(_user);
+                    })
+                    .catch(error => console.log(error))
                 break;
 
             case "userPosts":
-                retrieveUserPosts(context.token, (error, _posts) => {
-                    if (error) {
-                        alert(error)
-                        return;
-                    }
-                    setPosts(_posts)
-                })
+                retrieveUserPosts(context.token)
+                    .then(_posts => setPosts(_posts))
+                    .catch(error => alert(error))
 
-                retrieveUser(context.token, (error, user) => {
-                    unFreeze()
-                    if (error) {
-                        alert(error)
-                        return;
-                    }
-                    setUser(user);
-                });
+                retrieveUser(context.token)
+                    .then(_user => {
+                        unFreeze()
+                        setUser(_user);
+                    })
+                    .catch(error => console.log(error))
                 break;
         }
 

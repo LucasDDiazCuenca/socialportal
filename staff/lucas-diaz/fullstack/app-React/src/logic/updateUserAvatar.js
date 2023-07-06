@@ -1,38 +1,21 @@
 import { validators } from 'com'
 const { validateToken, validateUrl } = validators
 
-export default function updateUserAvatar(token, avatarUrl, callback) {
+export default function updateUserAvatar(token, avatarUrl) {
     validateToken(token);
     validateUrl(avatarUrl);
 
-    const xhr = new XMLHttpRequest
-
-    xhr.onload = () => {
-        const { status } = xhr
-
-        if (status !== 204) {
-            const { response: json } = xhr
-            const { error } = JSON.parse(json)
-
-            callback(new Error(error))
-            return
-        }
-
-        callback(null)
-    }
-
-
-    xhr.onerror = () => {
-        callback(new Error('connection error'))
-    }
-
-
-    xhr.open('PATCH', `${import.meta.env.VITE_API_URL}/users/avatar`)
-    xhr.setRequestHeader('Content-Type', 'application/json')
-    xhr.setRequestHeader('Authorization', `Bearer ${token}`)
-
-    let data = {avatar: avatarUrl}
-    let json = JSON.stringify(data)
-
-    xhr.send(json)
+    return fetch(`${import.meta.env.VITE_API_URL}/users/avatar`, {
+        method: "PATCH",
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ avatar: avatarUrl })
+    })
+        .then(res => {
+            if (res.status !== 204) {
+                return res.json().then(({ error: message }) => { throw new Error(message) })
+            }
+        })
 }

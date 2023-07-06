@@ -18,17 +18,10 @@ export default function Register(props) {
         const temporalEmail = event.target.email.value;
         const temporalPassword = event.target.password.value;
 
-
         try {
-            registerUser(temporalUserName, temporalEmail, temporalPassword, error => {
-                if (error) {
-                    console.log(error)
-                    setErrorMessage(error.message);
-                    return;
-                }
-
-                props.onUserRegistered()
-            });
+            registerUser(temporalUserName, temporalEmail, temporalPassword)
+                .then(() => props.onUserRegistered())
+                .catch(error => alert(error.message))
 
             event.target.reset();
 

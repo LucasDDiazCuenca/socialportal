@@ -17,14 +17,9 @@ export default function AddPostModal(props) {
         let text = event.target.text.value 
 
         try{
-            createPost(context.token, image, text, (error) => {
-                if (error){
-                    setErrorMesagge(error.message)
-                    return;
-                }
-                props.onCreatedPost();
-            });
-            
+            createPost(context.token, image, text)
+            .then(() => props.onCreatedPost())
+            .catch(error => alert(error))
             
         }catch(error){
             setErrorMesagge(error.message)

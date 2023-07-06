@@ -24,15 +24,13 @@ export default function Post({post, user,onEditPostButton, onLikeClick, onDelete
     function handleHeartClick() {
         try {
             freeze()
-            toggleLikePost(context.token, post._id, error => {
-                unFreeze()
-                if (error) {
-                    alert(error.message)
-                    return
-                }
+            toggleLikePost(context.token, post._id)
+                .then(() => {
+                    unFreeze()
+                    onLikeClick()
+                })
+                .catch(error => alert(error))
 
-                onLikeClick();
-            })
         } catch (error) {
             alert(error.message)
             unFreeze()
@@ -41,13 +39,9 @@ export default function Post({post, user,onEditPostButton, onLikeClick, onDelete
 
     function handleDeleteClick() {
         try {
-            deletePost(context.token, post._id, error => {
-                if (error) {
-                    alert(error.message)
-                    return;
-                }
-                onDeleteClick();
-            });
+            deletePost(context.token, post._id)
+            .then(() =>  onDeleteClick())
+            .catch(error => alert(error))
 
         } catch (error) {
             alert(error.message)
@@ -55,32 +49,30 @@ export default function Post({post, user,onEditPostButton, onLikeClick, onDelete
     }
 
     function handleSavePostClick() {
-        freeze()
         try {
-            toggleSavePostInUser(context.token, post._id, (error) => {
-                unFreeze()
-                if (error) {
-                    alert(error.message)
-                    return
-                }
-                OnSavedPostClick();
-            });
+            freeze()
+            toggleSavePostInUser(context.token, post._id)
+                .then(() => {
+                    unFreeze()
+                    OnSavedPostClick()
+                })
+                .catch(error => alert(error))
+
         } catch (error) {
             alert(error.message)
         }
     }
 
     function handleHidePostClick() {
-        freeze()
         try {
-            toggleHidePost(context.token, post._id, error => {
-                unFreeze()
-                if (error) {
-                    alert(error.message)
-                    return
-                }
-                onHidenPostClick();
-            })
+            freeze()
+            toggleHidePost(context.token, post._id)
+                .then(() => {
+                    unFreeze()
+                    onHidenPostClick()
+                })
+                .catch(error => alert(error))
+
         } catch (error) {
             alert(error.message)
         }

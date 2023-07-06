@@ -8,7 +8,6 @@ import UpdatePassword from "../components/UpdatePassword";
 import UpdatePost from "../components/UpdatePost";
 
 
-
 export default function Home({ onLogOutClick }) {
     const [view, setView] = useState("posts");
     const [modal, setModal] = useState(null);
@@ -20,13 +19,10 @@ export default function Home({ onLogOutClick }) {
 
     useEffect(() => {
         try {
-            retrieveUser(context.token, (error, user) => {
-                if (error) {
-                    alert(error.message)
-                    return;
-                }
-                setUser(user);
-            })
+            retrieveUser(context.token)
+                .then(user => setUser(user))
+                .catch(error => console.log(error))
+
         } catch (error) {
             alert(error.message)
         }

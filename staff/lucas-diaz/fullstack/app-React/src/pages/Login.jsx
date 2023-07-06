@@ -12,13 +12,13 @@ export default function Login(props) {
 
     useEffect(() => {
         try {
-            retrieveLanzaroteWeather((error, weather) => {
-                if (error) {
-                    alert(error.message)
-                    return
-                }
-                setWeatherMessage(`We're in ${weather.name}, with ${Math.round(weather.main.temp - 273.15)} celsius grades of temperature, but it actually feels like ${Math.round(weather.main.feels_like - 273.15)} grades. In terms of forecast, we are in presence of ${weather.weather[0].main}.`)
-            })
+
+            retrieveLanzaroteWeather()
+                .then(weather => {
+                    setWeatherMessage(`We're in ${weather.name}, with ${Math.round(weather.main.temp - 273.15)} celsius grades of temperature, but it actually feels like ${Math.round(weather.main.feels_like - 273.15)} grades. In terms of forecast, we are in presence of ${weather.weather[0].main}.`)
+                })
+                .catch(error => console.log(error))
+
         } catch (error) {
             alert(error.message)
         }
@@ -33,21 +33,17 @@ export default function Login(props) {
     function handleLogin(event) {
         event.preventDefault();
 
-        const email = event.target.email.value 
-        const password = event.target.password.value 
+        const email = event.target.email.value
+        const password = event.target.password.value
 
         try {
-            authenticateUser(email, password, (error, token) => {
-                if (error) {
-                    setErrorMessage(error.message)
-                    return;
-                }
+            authenticateUser(email, password)
+                .then(token => {
+                    context.token = token;
+                    props.onUserLogedin();
+                })
+                .catch(error => alert(error.message, "error"))
 
-                context.token = token;
-                console.log(token)
-                props.onUserLogedin();
-
-            })
         } catch (error) {
             setErrorMessage(error.message)
         }
@@ -84,6 +80,6 @@ export default function Login(props) {
                 <p className="weather-message text-white text-center m-8 text-sm">{weatherMessage}</p>
             </section>
         </div>
-        <Plane3dFigure/>
+        <Plane3dFigure />
     </>
 }

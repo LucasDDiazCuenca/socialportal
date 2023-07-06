@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken")
 
 
 function extractUserIdFromToken(req) {
+    debugger
     const { authorization } = req.headers
     const token = authorization.slice(7)
     

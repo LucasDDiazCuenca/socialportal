@@ -13,13 +13,9 @@ export default function UpdatePassword(props) {
             const newPassword = event.target.elements["new-password"].value
             const newPasswordRepetition = event.target.elements["new-password-repetition"].value
 
-            updateUserPassword(context.token, oldPassword, newPassword, newPasswordRepetition, error => {
-                if(error){
-                    setErrorMessage(error.message)
-                    return;
-                }
-                props.onUpdatedPassword();
-            });
+            updateUserPassword(context.token, oldPassword, newPassword, newPasswordRepetition)
+                .then(() => props.onUpdatedPassword())
+                .catch(error => alert(error))
 
         } catch (error) {
             setErrorMessage(error.message)

@@ -10,14 +10,10 @@ export default function UpdatePost({ postId, onUpdatedPost, onCancelClick }) {
 
     useEffect(() => {
         try {
-            retrievePostByPostId(context.token, postId, (error, post) => {
-                if (error) {
-                    alert(error.message);
-                    return;
-                }
-                setPost(post)
+            retrievePostByPostId(context.token, postId)
+                .then(post => setPost(post))
+                .catch(error => alert(error))
 
-            });
         } catch (error) {
             alert(error.message);
         }
@@ -30,18 +26,10 @@ export default function UpdatePost({ postId, onUpdatedPost, onCancelClick }) {
             let image = event.target.url.value
             let text = event.target.text.value
 
-            console.log(image)
-            console.log(text)
-            console.log(context.token)
-            console.log(postId)
+            updatePost(context.token, postId, image, text)
+                .then(() => onUpdatedPost())
+                .catch(error => alert(error))
 
-            updatePost(context.token, postId, image, text, error => {
-                if (error) {
-                    alert(error.message);
-                    return;
-                }
-                onUpdatedPost()
-            });
         } catch (error) {
             alert(error.message);
         }
