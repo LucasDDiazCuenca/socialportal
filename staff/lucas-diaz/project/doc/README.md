@@ -26,8 +26,8 @@ In this chat room we can interact with other person's avatar via chat, explore t
 
 ### USE CASES IN A ROOM
 
-- Move 
-- Send texts 
+- Move the avatar
+- Send texts in a chat space 
 - interact with "x" object
 - do certain movements 
 
@@ -51,6 +51,8 @@ Avatar
 - clothing (??)
 - commplement (??)
 - actions (??)
+
+
 
 
 
