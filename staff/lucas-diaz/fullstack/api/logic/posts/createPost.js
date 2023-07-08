@@ -1,7 +1,24 @@
 require("dotenv").config()
-const { validators: { validateId, validateUrl, validateText } } = require("com")
+const {
+    validators: { validateId, validateUrl, validateText },
+    errors: { ExistenceError }
+} = require("com")
 const context = require("../context")
 const { ObjectId } = require("mongodb")
+
+/**
+ * 
+ * @param {string} userId The user's id 
+ * @param {string} image  The user's image url 
+ * @param {string} text  The user's post text 
+ * @returns {void} Doesn't return anything
+ * 
+ * @throws {ContentError } On empty name, email or password (sync)
+ * @throws {TypeError} On non-string name, email or password (sync)
+ * @throws {FormatError} On wrong format in url (sync)
+ * 
+ * @throws {ExistenceError} On user not found (async)
+ */
 
 module.exports = function createPost(userId, image, text) {
     validateId(userId)
@@ -12,7 +29,7 @@ module.exports = function createPost(userId, image, text) {
 
     return users.findOne({ _id: new ObjectId(userId) })
         .then(user => {
-            if (!user) throw new Error("user not found")
+            if (!user) throw new ExistenceError("user not found")
 
             return posts.insertOne({
                 author: new ObjectId(userId),
@@ -23,10 +40,5 @@ module.exports = function createPost(userId, image, text) {
                 likeCounter: [],
                 visibility: "public"
             })
-                .catch(error => {
-                    if (error.message.includes("E11000"))
-                        throw new Error("fail on some data in insertOne function")
-                    throw error
-                })
         })
 }

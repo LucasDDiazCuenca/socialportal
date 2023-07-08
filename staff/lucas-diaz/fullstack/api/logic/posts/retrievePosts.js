@@ -1,8 +1,21 @@
 require("dotenv").config()
-const { validators: { validateId } } = require("com")
+const { 
+    validators: { validateId },
+    errors: {ExistenceError}
+} = require("com")
 const context = require("../context")
 const { ObjectId } = require("mongodb")
 
+/**
+ * 
+ * @param {string} userId The user's id
+ * @returns {Promise<Object>} Returns all the public posts
+ * 
+ * @throws {ContentError } On empty id (sync)
+ * @throws {TypeError} On non-string id (sync)
+ * 
+ * @throws {ExistenceError} On user not found (async)
+ */
 
 module.exports = function retrievePosts(userId) {
     validateId(userId);
@@ -11,7 +24,7 @@ module.exports = function retrievePosts(userId) {
 
     return users.findOne({ _id: new ObjectId(userId) })
         .then(user => {
-            if (!user) throw new Error("user not found")
+            if (!user) throw new ExistenceError("user not found")
 
             return Promise.all([users.find().toArray(), posts.find().toArray()])
                 .then(([users, posts]) => {
