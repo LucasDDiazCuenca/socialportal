@@ -25,7 +25,7 @@ module.exports = function registerUser(name, email, password) {
     validateUsername(name)
     validateEmail(email)
     validatePassword(password)
-    
+
     let avatar = "https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png"
 
     return User.create({ name, email, password, avatar, savedPosts: [] })

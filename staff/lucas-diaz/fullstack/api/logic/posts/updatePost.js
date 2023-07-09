@@ -41,7 +41,7 @@ module.exports = function updatePost(userId, postId, image, text) {
                     if (!post) throw new ExistenceError("post not found")
                     if (user._id.toString() !== post.author.toString()) throw new AuthError("The current user Id doesnt belong to post Id")
 
-                    return post.updateOne({image: image, text: text})
+                    return post.updateOne({ image: image, text: text })
                 })
         })
 }

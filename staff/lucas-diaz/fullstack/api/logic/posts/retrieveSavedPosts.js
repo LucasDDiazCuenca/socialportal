@@ -1,7 +1,7 @@
 require("dotenv").config()
-const { 
+const {
     validators: { validateId },
-    errors: {ExistenceError} 
+    errors: { ExistenceError }
 } = require('com')
 const { User, Post } = require("../../data/models")
 
@@ -42,7 +42,7 @@ module.exports = function retrieveSavedPosts(userId) {
                         } else {
                             post.likeCounter = false
                         }
-                        
+
                         if (user._id.toString() === post.author.id) {
                             post.userProperty = true
                         } else {
@@ -52,7 +52,7 @@ module.exports = function retrieveSavedPosts(userId) {
 
                     if (user.savedPosts.length > 0) {
                         const savedPosts = posts.filter(post => user.savedPosts.some(savedPostId => savedPostId.equals(post._id)));
-                        
+
                         savedPosts.forEach(post => delete post.author.id)
                         return savedPosts.reverse()
                     } else {

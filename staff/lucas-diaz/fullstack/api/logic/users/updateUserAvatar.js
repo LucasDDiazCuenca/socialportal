@@ -1,7 +1,7 @@
 require("dotenv").config()
-const { 
+const {
     validators: { validateId, validateUrl },
-    errors: {ExistenceError}
+    errors: { ExistenceError }
 } = require("com")
 const { User } = require("../../data/models")
 

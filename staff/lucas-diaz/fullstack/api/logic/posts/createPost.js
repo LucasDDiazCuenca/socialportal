@@ -32,7 +32,7 @@ module.exports = function createPost(userId, image, text) {
 
             return Post.create({
                 author: userId,
-                userName: user.name, 
+                userName: user.name,
                 image,
                 text,
                 date: new Date(),

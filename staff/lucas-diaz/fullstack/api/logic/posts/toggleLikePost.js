@@ -1,7 +1,7 @@
 require("dotenv").config()
-const { 
+const {
     validators: { validateId },
-    errors: {ExistenceError} 
+    errors: { ExistenceError }
 } = require("com")
 const { User, Post } = require("../../data/models")
 
@@ -27,10 +27,9 @@ module.exports = function toggleLikePost(userId, postId) {
             return Post.findById(postId)
                 .then(post => {
                     if (post.likeCounter.some(userId => userId.equals(user._id))) {
-                        console.log("hola")
-                        return Post.updateOne({ _id:postId }, { $pull: { likeCounter: user._id } })
+                        return Post.updateOne({ _id: postId }, { $pull: { likeCounter: user._id } })
+
                     } else {
-                        console.log("chau")
                         return Post.updateOne({ _id: postId }, { $push: { likeCounter: user._id } })
                     }
                 })

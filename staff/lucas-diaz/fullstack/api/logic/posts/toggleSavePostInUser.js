@@ -1,7 +1,7 @@
 require("dotenv").config()
-const { 
+const {
     validators: { validateId },
-    errors: {ExistenceError} 
+    errors: { ExistenceError }
 } = require("com")
 
 const { User, Post } = require("../../data/models")
@@ -30,9 +30,9 @@ module.exports = function toggleSavePostInUser(userId, postId) {
                 .then(post => {
 
                     if (user.savedPosts.some(postId => postId.equals(post._id))) {
-                        
+
                         return User.updateOne({ _id: userId }, { $pull: { savedPosts: post._id } })
-                        
+
                     } else {
                         return User.updateOne({ _id: userId }, { $push: { savedPosts: post._id } })
                     }
