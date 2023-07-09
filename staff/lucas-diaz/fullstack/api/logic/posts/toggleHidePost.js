@@ -30,13 +30,17 @@ module.exports = function toggleHidePost(userId, postId) {
 
             return Post.findById(postId)
                 .then(post => {
+                    console.log(post.author.toString())
+                    console.log(user._id.toString())
+                    console.log(post.visibility)
+
                     if (user._id.toString() !== post.author.toString()) throw new AuthError("this user has not permition to hide this post")
 
-                    if (post.visibility !== "private") {
-                        return Post.updateOne({ visibility: "private" })
+                    if (post.visibility === "public") {
+                        return post.updateOne({ visibility: "private" })
 
                     } else {
-                        return Post.updateOne({ visibility: "public" })
+                        return post.updateOne({ visibility: "public" })
                     }
                 })
         })
