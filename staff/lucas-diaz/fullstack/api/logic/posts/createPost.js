@@ -1,10 +1,9 @@
-require("dotenv").config()
+require("dotenv").config();
 const {
     validators: { validateId, validateUrl, validateText },
     errors: { ExistenceError }
-} = require("com")
-const context = require("../context")
-const { ObjectId } = require("mongodb")
+} = require("com");
+const { User, Post } = require("../../data/models");
 
 /**
  * 
@@ -13,32 +12,32 @@ const { ObjectId } = require("mongodb")
  * @param {string} text  The user's post text 
  * @returns {void} Doesn't return anything
  * 
- * @throws {ContentError } On empty name, email or password (sync)
- * @throws {TypeError} On non-string name, email or password (sync)
- * @throws {FormatError} On wrong format in url (sync)
+ * @throws {ContentError } On empty name, email, or password (sync)
+ * @throws {TypeError} On non-string name, email, or password (sync)
+ * @throws {FormatError} On wrong format in URL (sync)
  * 
  * @throws {ExistenceError} On user not found (async)
  */
 
 module.exports = function createPost(userId, image, text) {
-    validateId(userId)
-    validateUrl(image)
-    validateText(text)
+    validateId(userId);
+    validateUrl(image);
+    validateText(text);
 
-    const { users, posts } = context
-
-    return users.findOne({ _id: new ObjectId(userId) })
+    return User.findById(userId)
         .then(user => {
-            if (!user) throw new ExistenceError("user not found")
+            if (!user) throw new ExistenceError("user not found");
 
-            return posts.insertOne({
-                author: new ObjectId(userId),
-                userName: user.name,
+            console.log(user.name);
+
+            return Post.create({
+                author: userId,
+                userName: user.name, 
                 image,
                 text,
-                date: new Date,
+                date: new Date(),
                 likeCounter: [],
                 visibility: "public"
-            })
-        })
-}
+            });
+        });
+};

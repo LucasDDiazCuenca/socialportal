@@ -3,8 +3,8 @@ const {
     validators: { validateId, validateUrl },
     errors: {ExistenceError}
 } = require("com")
-const context = require("../context")
-const { ObjectId } = require("mongodb")
+const { User } = require("../../data/models")
+
 
 /**
  * @param {string} userId The user's id
@@ -23,12 +23,11 @@ module.exports = function updateUserAvatar(userId, avatar) {
     validateId(userId)
     validateUrl(avatar)
 
-    const { users } = context
 
-    return users.findOne({ _id: new ObjectId(userId) })
+    return User.findById(userId)
         .then(user => {
             if (!user) throw new ExistenceError("user not found")
 
-            return users.updateOne({ _id: new ObjectId(userId) }, { $set: { avatar: avatar } })
+            return user.updateOne({ avatar: avatar })
         })
 }

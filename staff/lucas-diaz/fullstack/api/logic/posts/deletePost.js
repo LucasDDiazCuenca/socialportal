@@ -1,13 +1,12 @@
 require("dotenv").config()
-const { 
+const {
     validators: { validateId },
-    errors: {ExistenceError, AuthError} 
+    errors: { ExistenceError, AuthError }
 } = require("com")
-const context = require("../context")
-const { ObjectId } = require("mongodb")
+
+const { User, Post } = require("../../data/models")
 
 /**
- * 
  * @param {string} userId The user's id 
  * @param {string} postId The post's id
  * @returns 
@@ -23,18 +22,38 @@ module.exports = function deletePost(userId, postId) {
     validateId(userId)
     validateId(postId)
 
-    const { users, posts } = context
 
-    return users.findOne({ _id: new ObjectId(userId) })
+    return User.findById(userId)
         .then(user => {
             if (!user) throw new ExistenceError("user not found")
 
-            return posts.findOne({ _id: new ObjectId(postId) })
-        })
-        .then(post => {
-            if (!post) throw new ExistenceError("post not found")
-            if (post.author.toString() !== userId) throw new AuthError("this user has not permition to delete this post")
+            return Post.findById(postId)
+                .then(post => {
+                    if (!post) throw new ExistenceError("post not found")
 
-            return posts.deleteOne({ _id: new ObjectId(postId) })
+                    if (post.author.toString() !== userId) throw new AuthError("this user has not permition to delete this post")
+
+                    return User.find()
+                        .then(users => {
+                            const modifyUsers = []
+
+                            users.forEach(user => {
+                                if (user.savedPosts) {
+                                    const index = user.savedPosts.findIndex(postIndex => postIndex.toString() === postId)
+
+                                    if (index > -1) {
+                                        users.savedPosts.splice(index, 1)
+
+                                        modifyUsers.push(user)
+                                    }
+                                }
+                            })
+
+                            const usersUpdated = modifyUsers.map(user => user.save())
+
+                            return Promise.all([...usersUpdated, Post.deleteOne({ _id: postId })])
+                                .then(() => { })
+                        })
+                })
         })
 }

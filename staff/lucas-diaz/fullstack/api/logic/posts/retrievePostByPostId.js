@@ -1,10 +1,10 @@
 require("dotenv").config()
-const { 
+const {
     validators: { validateId },
-    errors: {ExistenceError} 
+    errors: { ExistenceError }
 } = require('com')
-const context = require("../context")
-const { ObjectId } = require("mongodb")
+
+const { User, Post } = require("../../data/models")
 
 /**
  * 
@@ -22,13 +22,11 @@ module.exports = function retrievePostByPostId(userId, postId) {
     validateId(userId)
     validateId(postId)
 
-    const { users, posts } = context
-
-    return users.findOne({ _id: new ObjectId(userId) })
+    return User.findById(userId)
         .then(user => {
             if (!user) throw new ExistenceError("user not found")
 
-            return Promise.all([users.find().toArray(), posts.find().toArray()])
+            return Promise.all([User.find().lean(), Post.find().lean()])
                 .then(([users, posts]) => {
                     posts.forEach(post => {
                         const _user = users.find(user => user._id.toString() === post.author.toString())
@@ -39,21 +37,21 @@ module.exports = function retrievePostByPostId(userId, postId) {
                             avatar: _user.avatar
                         }
                         post.likeCounterNumber = post.likeCounter.length
-                        if (post.likeCounter.includes(user._id.toString())){
-                            post.likeCounter = true 
-                        } else{
-                            post.likeCounter  = false
+                        
+                        if (post.likeCounter.includes(user._id.toString())) {
+                            post.likeCounter = true
+                        } else {
+                            post.likeCounter = false
                         }
-                        if (user._id.toString() === post.author.id.toString()){
-                            post.userProperty = true 
+                        if (user._id.toString() === post.author.id.toString()) {
+                            post.userProperty = true
                         } else {
                             post.userProperty = false
                         }
-                    });
-
+                    })
                     posts.forEach(post => delete post.author.id)
+
                     return posts.find(post => post._id.toString() === postId)
                 })
-
         });
-} 
+}

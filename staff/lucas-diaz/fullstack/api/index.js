@@ -1,28 +1,14 @@
 require("dotenv").config()
-
+const mongoose = require("mongoose")
 const express = require("express") 
-
-const { MongoClient } = require("mongodb")
-
 const  cors  = require("cors")
 const bodyParser = require("body-parser")
 
 const { helloApiHandler, registerUserHandler, authenticateUserHandler, retrieveUserHandler, updateUserAvatarHandler, updateUserPasswordHandler, createPostHandler, retrievePostsHandler, retrieveSavedPostsHandler, retrieveUserPostsHandler, retrievePostByPostIdHandler, toggleHidePostHandler, toggleLikePostHandler, toggleSavePostInUserHandler, updatePostHandler, deletePostHandler } = require("./handlers")
 
-const context = require("./logic/context")
 
-
-const client = new MongoClient(process.env.MONGODB_URL)
-
-client.connect()
-    .then(connection => {
-        const db = connection.db()
-        const users = db.collection("users")
-        const posts = db.collection("posts")
-
-        context.users = users
-        context.posts = posts
-
+mongoose.connect(process.env.MONGODB_URL)
+    .then(() => {
         const api = express()
 
         const jsonBodyParser = bodyParser.json()

@@ -3,8 +3,7 @@ const {
     validators: { validateId },
     errors: {ExistenceError} 
 } = require("com")
-const context = require("../context")
-const { ObjectId } = require("mongodb")
+const { User, Post } = require("../../data/models")
 
 /**
  * 
@@ -20,20 +19,19 @@ const { ObjectId } = require("mongodb")
 module.exports = function toggleLikePost(userId, postId) {
     validateId(userId)
 
-    const { users, posts } = context
 
-    return users.findOne({ _id: new ObjectId(userId) })
+    return User.findById(userId)
         .then(user => {
             if (!user) throw new ExistenceError("user not found")
 
-            return posts.findOne({ _id: new ObjectId(postId) })
+            return Post.findById(postId)
                 .then(post => {
-
-
                     if (post.likeCounter.some(userId => userId.equals(user._id))) {
-                        return posts.updateOne({ _id: new ObjectId(postId) }, { $pull: { likeCounter: user._id } })
+                        console.log("hola")
+                        return Post.updateOne({ _id:postId }, { $pull: { likeCounter: user._id } })
                     } else {
-                        return posts.updateOne({ _id: new ObjectId(postId) }, { $push: { likeCounter: user._id } })
+                        console.log("chau")
+                        return Post.updateOne({ _id: postId }, { $push: { likeCounter: user._id } })
                     }
                 })
         })

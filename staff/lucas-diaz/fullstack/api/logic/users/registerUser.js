@@ -3,7 +3,8 @@ const {
     validators: { validateUsername, validateEmail, validatePassword },
     errors: { DuplicityError }
 } = require("com")
-const context = require("../context")
+
+const { User } = require("../../data/models")
 
 /**
  * @param {string} name The users's name
@@ -24,12 +25,10 @@ module.exports = function registerUser(name, email, password) {
     validateUsername(name)
     validateEmail(email)
     validatePassword(password)
+    
+    let avatar = "https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png"
 
-    const { users } = context
-    const avatar = "https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png"
-    const savedPosts = []
-
-    return users.insertOne({ name, email, password, avatar, savedPosts })
+    return User.create({ name, email, password, avatar, savedPosts: [] })
         .catch(error => {
             if (error.message.includes('E11000'))
                 throw new DuplicityError(`user with email ${email} already exists`)

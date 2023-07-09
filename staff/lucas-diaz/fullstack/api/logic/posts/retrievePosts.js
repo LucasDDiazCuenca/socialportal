@@ -3,8 +3,7 @@ const {
     validators: { validateId },
     errors: {ExistenceError}
 } = require("com")
-const context = require("../context")
-const { ObjectId } = require("mongodb")
+const { User, Post } = require("../../data/models")
 
 /**
  * 
@@ -20,19 +19,17 @@ const { ObjectId } = require("mongodb")
 module.exports = function retrievePosts(userId) {
     validateId(userId);
 
-    const { users, posts } = context
-
-    return users.findOne({ _id: new ObjectId(userId) })
+    return User.findById(userId)
         .then(user => {
             if (!user) throw new ExistenceError("user not found")
 
-            return Promise.all([users.find().toArray(), posts.find().toArray()])
+            return Promise.all([User.find().lean(), Post.find().lean()])
                 .then(([users, posts]) => {
                     posts.forEach(post => {
                         const _user = users.find(user => user._id.toString() === post.author.toString())
 
                         post.author = {
-                            id: _user._id,
+                            id: _user._id.toString(),
                             name: _user.name,
                             avatar: _user.avatar
                         }
@@ -44,17 +41,16 @@ module.exports = function retrievePosts(userId) {
                             post.likeCounter = false
                         }
 
-                        if (user._id.toString() === post.author.id.toString()) {
+                        if (user._id.toString() === post.author.id) {
                             post.userProperty = true
                         } else {
                             post.userProperty = false
                         }
                     });
-
                     const _posts = posts.filter(post => {
-                        if (post.author.id.toString() === userId) {
-                            return post.author.id.toString() === userId
-                        } else if (post.author.id.toString() !== userId) {
+                        if (post.author.id === userId) {
+                            return post.author.id === userId
+                        } else if (post.author.id !== userId) {
                             return post.visibility === "public"
                         }
                     })

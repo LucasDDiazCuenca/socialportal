@@ -1,10 +1,10 @@
 require("dotenv").config()
-const { 
+const {
     validators: { validateId, validateUrl, validateText },
-    errors: {ExistenceError, AuthError} 
+    errors: { ExistenceError, AuthError }
 } = require("com")
-const context = require("../context")
-const { ObjectId } = require("mongodb")
+const { User, Post } = require("../../data/models")
+
 
 /**
  * 
@@ -30,18 +30,18 @@ module.exports = function updatePost(userId, postId, image, text) {
     validateUrl(image);
     validateText(text);
 
-    const { users, posts } = context
-
-    return users.findOne({ _id: new ObjectId(userId) })
+    return User.findById(userId)
         .then(user => {
             if (!user) throw new ExistenceError("user not found")
 
-            return posts.findOne({ _id: new ObjectId(postId) })
+            console.log(user._id)
+            return Post.findById(postId)
                 .then(post => {
+                    console.log(post.author)
                     if (!post) throw new ExistenceError("post not found")
                     if (user._id.toString() !== post.author.toString()) throw new AuthError("The current user Id doesnt belong to post Id")
 
-                    return posts.updateOne({ _id: new ObjectId(postId) }, { $set: { image: image, text: text } })
+                    return post.updateOne({image: image, text: text})
                 })
         })
 }

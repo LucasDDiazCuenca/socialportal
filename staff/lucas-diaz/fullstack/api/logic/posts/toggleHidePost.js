@@ -1,10 +1,9 @@
 require("dotenv").config()
-const { 
+const {
     validators: { validateId },
-    errors: {ExistenceError, AuthError} 
+    errors: { ExistenceError, AuthError }
 } = require("com")
-const context = require("../context")
-const { ObjectId } = require("mongodb")
+const { User, Post } = require("../../data/models")
 
 /**
  * 
@@ -24,20 +23,20 @@ module.exports = function toggleHidePost(userId, postId) {
     validateId(userId)
     validateId(postId)
 
-    const { users, posts } = context
 
-    return users.findOne({ _id: new ObjectId(userId) })
+    return User.findById(userId)
         .then(user => {
             if (!user) throw new ExistenceError("user not found")
 
-            return posts.findOne({ _id: new ObjectId(postId) })
+            return Post.findById(postId)
                 .then(post => {
                     if (user._id.toString() !== post.author.toString()) throw new AuthError("this user has not permition to hide this post")
 
                     if (post.visibility !== "private") {
-                        return posts.updateOne({ _id: new ObjectId(postId) }, { $set: { visibility: "private" } })
+                        return Post.updateOne({ visibility: "private" })
+
                     } else {
-                        return posts.updateOne({ _id: new ObjectId(postId) }, { $set: { visibility: "public" } })
+                        return Post.updateOne({ visibility: "public" })
                     }
                 })
         })

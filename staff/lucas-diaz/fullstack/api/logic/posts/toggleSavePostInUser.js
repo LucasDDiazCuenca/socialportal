@@ -3,8 +3,8 @@ const {
     validators: { validateId },
     errors: {ExistenceError} 
 } = require("com")
-const context = require("../context")
-const { ObjectId } = require("mongodb")
+
+const { User, Post } = require("../../data/models")
 
 /**
  * 
@@ -20,21 +20,21 @@ const { ObjectId } = require("mongodb")
 module.exports = function toggleSavePostInUser(userId, postId) {
     validateId(userId)
     validateId(postId)
-    const { users, posts } = context
 
-    return users.findOne({ _id: new ObjectId(userId) })
+
+    return User.findById(userId)
         .then(user => {
             if (!user) throw new ExistenceError("user not found")
 
-            return posts.findOne({ _id: new ObjectId(postId) })
+            return Post.findById(postId)
                 .then(post => {
 
-
                     if (user.savedPosts.some(postId => postId.equals(post._id))) {
-                        return users.updateOne({ _id: new ObjectId(userId) }, { $pull: { savedPosts: post._id } })
+                        
+                        return User.updateOne({ _id: userId }, { $pull: { savedPosts: post._id } })
                         
                     } else {
-                        return users.updateOne({ _id: new ObjectId(userId) }, { $push: { savedPosts: post._id } })
+                        return User.updateOne({ _id: userId }, { $push: { savedPosts: post._id } })
                     }
                 })
         })

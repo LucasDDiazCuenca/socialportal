@@ -3,8 +3,7 @@ const {
     validators: { validateId },
     errors: {ExistenceError} 
 } = require('com')
-const context = require("../context")
-const { ObjectId } = require("mongodb")
+const { User, Post } = require("../../data/models")
 
 /**
  * 
@@ -21,13 +20,11 @@ const { ObjectId } = require("mongodb")
 module.exports = function retrieveUserPosts(userId) {
     validateId(userId);
 
-    const { users, posts } = context
-
-    return users.findOne({ _id: new ObjectId(userId) })
+    return User.findById(userId)
         .then(user => {
             if (!user) throw new ExistenceError("user not found")
 
-            return Promise.all([users.find().toArray(), posts.find().toArray()])
+            return Promise.all([User.find().lean(), Post.find().lean()])
                 .then(([users, posts]) => {
 
                     posts.forEach(post => {
@@ -39,11 +36,13 @@ module.exports = function retrieveUserPosts(userId) {
                             avatar: _user.avatar
                         }
                         post.likeCounterNumber = post.likeCounter.length
+
                         if (post.likeCounter.some(userId => userId.equals(user._id))) {
                             post.likeCounter = true
                         } else {
                             post.likeCounter = false
                         }
+
                         if (user._id.toString() === post.author.id.toString()) {
                             post.userProperty = true
                         } else {
@@ -56,10 +55,8 @@ module.exports = function retrieveUserPosts(userId) {
                     })
                     userPosts.forEach(post => delete post.author.id)
                     return userPosts.reverse()
-
                 });
         });
-
 }
 
 

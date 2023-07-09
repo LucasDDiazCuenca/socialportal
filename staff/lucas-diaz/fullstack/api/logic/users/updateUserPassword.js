@@ -1,10 +1,9 @@
 require("dotenv").config()
 const {
     validators: { validateId, validatePassword },
-    errors: {ExistenceError, ContentError}
+    errors: { ExistenceError, ContentError }
 } = require("com")
-const context = require("../context")
-const { ObjectId } = require("mongodb")
+const { User } = require("../../data/models")
 
 /**
  * @param {string} userId The user's id 
@@ -28,9 +27,8 @@ module.exports = function updateUserPassword(userId, password, newPassword, newP
     validatePassword(newPassword)
     validatePassword(newPasswordConfirmation)
 
-    const { users } = context
 
-    return users.findOne({ _id: new ObjectId(userId) })
+    return User.findById(userId)
         .then(user => {
             if (!user) throw new ExistenceError("user not found")
 
@@ -40,6 +38,6 @@ module.exports = function updateUserPassword(userId, password, newPassword, newP
 
             if (newPassword !== newPasswordConfirmation) throw new ContentError("new password and new password confirmation does not match")
 
-            return users.updateOne({ _id: new ObjectId(userId) }, { $set: { password: newPassword } })
+            return user.updateOne({ password: newPassword })
         })
 }
