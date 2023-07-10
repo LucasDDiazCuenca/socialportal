@@ -1,7 +1,7 @@
 require("dotenv").config()
-const { 
+const {
     validators: { validateId },
-    errors: {ExistenceError}
+    errors: { ExistenceError }
 } = require("com")
 const { User, Post } = require("../../data/models")
 
@@ -19,20 +19,15 @@ const { User, Post } = require("../../data/models")
 module.exports = function retrievePosts(userId) {
     validateId(userId);
 
-    return User.findById(userId)
+    return User.findById(userId).lean()
         .then(user => {
             if (!user) throw new ExistenceError("user not found")
 
-            return Promise.all([User.find().lean(), Post.find().lean()])
-                .then(([users, posts]) => {
+            return Post.find().populate("author", "-password -savedPosts").lean()
+                .then(posts => {
                     posts.forEach(post => {
-                        const _user = users.find(user => user._id.toString() === post.author.toString())
+                        post.author._id = post.author._id.toString()
 
-                        post.author = {
-                            id: _user._id.toString(),
-                            name: _user.name,
-                            avatar: _user.avatar
-                        }
                         post.likeCounterNumber = post.likeCounter.length
 
                         if (post.likeCounter.some(userId => userId.equals(user._id))) {
@@ -41,22 +36,25 @@ module.exports = function retrievePosts(userId) {
                             post.likeCounter = false
                         }
 
-                        if (user._id.toString() === post.author.id) {
+                        if (user._id.toString() === post.author._id) {
                             post.userProperty = true
                         } else {
                             post.userProperty = false
                         }
-                    });
+                    })
                     const _posts = posts.filter(post => {
-                        if (post.author.id === userId) {
-                            return post.author.id === userId
-                        } else if (post.author.id !== userId) {
+                        if (post.author._id === userId) {
+                            return post.author._id === userId
+                        } else if (post.author._id !== userId) {
                             return post.visibility === "public"
                         }
                     })
-
-                    _posts.forEach(post => delete post.author.id)
+                    _posts.forEach(post => {
+                        delete post.author._id
+                        delete post.__v
+                    })
                     return _posts.reverse()
-                });
+                })
         });
 }
+

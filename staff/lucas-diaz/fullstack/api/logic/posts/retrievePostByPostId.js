@@ -22,36 +22,30 @@ module.exports = function retrievePostByPostId(userId, postId) {
     validateId(userId)
     validateId(postId)
 
-    return User.findById(userId)
+    return User.findById(userId).lean()
         .then(user => {
             if (!user) throw new ExistenceError("user not found")
 
-            return Promise.all([User.find().lean(), Post.find().lean()])
-                .then(([users, posts]) => {
-                    posts.forEach(post => {
-                        const _user = users.find(user => user._id.toString() === post.author.toString())
+            return Post.findById(postId).populate("author", "-password -savedPosts").lean()
+                .then((post) => {
+                    post.author._id = post.author._id.toString()
+                    post.likeCounterNumber = post.likeCounter.length
 
-                        post.author = {
-                            id: _user._id.toString(),
-                            name: _user.name,
-                            avatar: _user.avatar
-                        }
-                        post.likeCounterNumber = post.likeCounter.length
-                        
-                        if (post.likeCounter.includes(user._id.toString())) {
-                            post.likeCounter = true
-                        } else {
-                            post.likeCounter = false
-                        }
-                        if (user._id.toString() === post.author.id.toString()) {
-                            post.userProperty = true
-                        } else {
-                            post.userProperty = false
-                        }
-                    })
-                    posts.forEach(post => delete post.author.id)
+                    if (post.likeCounter.some(userId => userId.equals(user._id))) {
+                        post.likeCounter = true
+                    } else {
+                        post.likeCounter = false
+                    }
+                    if (user._id.toString() === post.author._id) {
+                        post.userProperty = true
+                    } else {
+                        post.userProperty = false
+                    }
 
-                    return posts.find(post => post._id.toString() === postId)
+                    delete post.author._id
+                    delete post.__v
+
+                    return post
                 })
         });
 }
