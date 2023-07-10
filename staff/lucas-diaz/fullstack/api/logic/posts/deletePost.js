@@ -40,9 +40,9 @@ module.exports = function deletePost(userId, postId) {
                             users.forEach(user => {
                                 if (user.savedPosts) {
                                     const index = user.savedPosts.findIndex(postIndex => postIndex.toString() === postId)
-
+                                    
                                     if (index > -1) {
-                                        users.savedPosts.splice(index, 1)
+                                        user.savedPosts.splice(index, 1)
 
                                         modifyUsers.push(user)
                                     }

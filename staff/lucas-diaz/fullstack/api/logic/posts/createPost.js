@@ -28,16 +28,12 @@ module.exports = function createPost(userId, image, text) {
         .then(user => {
             if (!user) throw new ExistenceError("user not found");
 
-            console.log(user.name);
-
             return Post.create({
                 author: userId,
                 userName: user.name,
                 image,
-                text,
-                date: new Date(),
-                likeCounter: [],
-                visibility: "public"
+                text
             });
-        });
+        })
+        .then(() => { })
 };

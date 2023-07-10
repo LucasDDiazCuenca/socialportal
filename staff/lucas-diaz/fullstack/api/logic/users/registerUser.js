@@ -35,4 +35,5 @@ module.exports = function registerUser(name, email, password) {
 
             throw error
         })
+        .then(() => {})
 } 
