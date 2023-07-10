@@ -43,8 +43,9 @@ module.exports = function retrievePostByPostId(userId, postId) {
                     }
 
                     delete post.author._id
+                    delete post.author.__v
                     delete post.__v
-
+                    console.log(post)
                     return post
                 })
         });

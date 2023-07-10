@@ -24,9 +24,8 @@ module.exports = function retrieveUserPosts(userId) {
         .then(user => {
             if (!user) throw new ExistenceError("user not found")
 
-            return Post.find().populate("author", "-password -savedPosts").lean()
+            return Post.find({author: user._id}).populate("author", "-password -savedPosts").lean()
                 .then(posts => {
-
                     posts.forEach(post => {
                         post.author._id = post.author._id.toString()
                         post.likeCounterNumber = post.likeCounter.length
@@ -44,14 +43,12 @@ module.exports = function retrieveUserPosts(userId) {
                         }
                     });
 
-                    const userPosts = posts.filter(post => {
-                        return post.author._id === user._id.toString()
-                    })
-                    userPosts.forEach(post => {
+                    posts.forEach(post => {
                         delete post.author._id
+                        delete post.author.__v
                         delete post.__v
                     })
-                    return userPosts.reverse()
+                    return posts.reverse()
                 });
         });
 }

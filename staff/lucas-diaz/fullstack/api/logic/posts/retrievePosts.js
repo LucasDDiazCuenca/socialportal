@@ -51,8 +51,10 @@ module.exports = function retrievePosts(userId) {
                     })
                     _posts.forEach(post => {
                         delete post.author._id
+                        delete post.author.__v
                         delete post.__v
                     })
+                    
                     return _posts.reverse()
                 })
         });

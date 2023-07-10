@@ -24,7 +24,7 @@ module.exports = function retrieveSavedPosts(userId) {
         .then(user => {
             if (!user) throw new ExistenceError("user not found")
 
-            return Post.find().populate("author", "-password -savedPosts").lean()
+            return Post.find({ _id: { $in: user.savedPosts } }).populate("author", "-password -savedPosts").lean()
                 .then(posts => {
 
                     posts.forEach(post => {
@@ -44,18 +44,13 @@ module.exports = function retrieveSavedPosts(userId) {
                         }
                     });
 
-                    if (user.savedPosts.length > 0) {
-                        const savedPosts = posts.filter(post => user.savedPosts.some(savedPostId => savedPostId.equals(post._id)));
-
-                        savedPosts.forEach(post => {
-                            delete post.author._id
-                            delete post.__v
-                        })
-                        return savedPosts.reverse()
-                    } else {
-                        return []
-                    }
-
+                    posts.forEach(post => {
+                        delete post.author._id
+                        delete post.author.__v
+                        delete post.__v
+                    })
+                    
+                    return posts.reverse()
                 });
         });
 }
