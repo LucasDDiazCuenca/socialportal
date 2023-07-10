@@ -75,12 +75,15 @@ function validateText(text) {
 
 /**
  * 
- * @param {string} token An token
+ * @param {string} token A token
  */
 
 function validateToken(token) {
-    if (typeof token !== "string") throw new TypeError("token is not a string")
-    if (token.split(".").length !== 3) throw new ContentError("provided token has no token's format")
+    const hexaRegex = /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+$/;
+    if (typeof token !== "string") throw new TypeError("token is not a string");
+    console.log(token);
+    if (!hexaRegex.test(token)) throw new FormatError('provided token has not token hex format');
+    if (token.length !== 172) throw new ContentError("provided token has not 24 characters");
 }
 
 

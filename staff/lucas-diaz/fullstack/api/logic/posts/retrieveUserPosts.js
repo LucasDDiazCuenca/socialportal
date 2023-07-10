@@ -24,7 +24,7 @@ module.exports = function retrieveUserPosts(userId) {
         .then(user => {
             if (!user) throw new ExistenceError("user not found")
 
-            return Post.find({author: user._id}).populate("author", "-password -savedPosts").lean()
+            return Post.find({ author: user._id }).populate("author", "-password -savedPosts").lean()
                 .then(posts => {
                     posts.forEach(post => {
                         post.author._id = post.author._id.toString()

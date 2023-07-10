@@ -28,6 +28,8 @@ module.exports = function retrievePostByPostId(userId, postId) {
 
             return Post.findById(postId).populate("author", "-password -savedPosts").lean()
                 .then((post) => {
+                    if (!post) throw new ExistenceError("post not found")
+                    
                     post.author._id = post.author._id.toString()
                     post.likeCounterNumber = post.likeCounter.length
 
@@ -45,7 +47,7 @@ module.exports = function retrievePostByPostId(userId, postId) {
                     delete post.author._id
                     delete post.author.__v
                     delete post.__v
-                    console.log(post)
+
                     return post
                 })
         });
