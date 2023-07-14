@@ -5,7 +5,7 @@ import retrieveUser from "../logic/retrieveUser.js";
 import { useState, useEffect, useContext } from "react";
 import retrieveSavedPosts from "../logic/retrieveSavedPosts.js";
 import retrieveUserPosts from "../logic/retrieveUserPosts.js";
-import Context from "../Context.js";
+import Context from "../AppContext.js";
 
 
 export default function Posts({ onEditPostButtonClick, lastPostsUpdate, view }) {

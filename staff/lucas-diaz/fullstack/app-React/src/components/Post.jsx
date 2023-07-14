@@ -4,7 +4,7 @@ import toggleSavePostInUser from "../logic/toggleSavePostInUser.js";
 import toggleHidePost from "../logic/toggleHidePost.js";
 import { context } from "../ui.js";
 import { useContext } from "react";
-import Context from "../Context.js";
+import Context from "../AppContext.js";
 
 
 export default function Post({post, user,onEditPostButton, onLikeClick, onDeleteClick, OnSavedPostClick, onHidenPostClick }) {

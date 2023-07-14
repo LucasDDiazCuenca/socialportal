@@ -6,16 +6,17 @@ import AddPostModal from "../components/AddPostModal";
 import UpdateAvatar from "../components/UpdateAvatar";
 import UpdatePassword from "../components/UpdatePassword";
 import UpdatePost from "../components/UpdatePost";
+import { useAppContext } from "../hooks"
 
 
-export default function Home({ onLogOutClick }) {
+export default function Home() {
     const [view, setView] = useState("posts");
     const [modal, setModal] = useState(null);
     const [postId, setPostId] = useState(null);
     const [lastPostUpdate, setLastPostUpdate] = useState(Date.now())
     const [user, setUser] = useState();
     const [avatar, setAvatar] = useState(null)
-
+    const { navigate } = useAppContext()
 
     useEffect(() => {
         try {
@@ -28,14 +29,14 @@ export default function Home({ onLogOutClick }) {
         }
     }, [])
 
-
     //? SETTINGS, LOG OUT Y HOME
     const handleSettingsClick = () => setView(null);
     const handleLogOutClick = () => {
         delete context.token
-        onLogOutClick();
+        navigate("/login")
     }
     const handleHomeClick = () => setView("posts")
+
     //? SETTINGS --> AVATAR 
     const handleAvatarAnchor = (event) => {
         event.preventDefault();
@@ -46,7 +47,6 @@ export default function Home({ onLogOutClick }) {
         setAvatar(url)
         setView("posts")
     }
-
     const handleCancelUpdatedAvatar = () => setView("posts")
 
     //? SETTINGS --> PASSWORD 
@@ -80,7 +80,6 @@ export default function Home({ onLogOutClick }) {
     const handleFooterFavButtonClick = () => setView("savedPosts")
     //? USER POSTS
     const handleFooterUserPostsClick = () => setView("userPosts")
-
 
     console.log("Home -> render")
 
