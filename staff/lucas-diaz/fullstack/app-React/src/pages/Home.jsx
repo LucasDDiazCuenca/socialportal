@@ -1,5 +1,4 @@
 import retrieveUser from "../logic/retrieveUser";
-import context from "../logic/context"
 import { useState, useEffect } from "react";
 import Posts from "../components/Posts"
 import AddPostModal from "../components/AddPostModal";
@@ -7,6 +6,7 @@ import UpdateAvatar from "../components/UpdateAvatar";
 import UpdatePassword from "../components/UpdatePassword";
 import UpdatePost from "../components/UpdatePost";
 import { useAppContext } from "../hooks"
+import logOutUser from "../logic/logOutUser";
 
 
 export default function Home() {
@@ -32,7 +32,7 @@ export default function Home() {
     //? SETTINGS, LOG OUT Y HOME
     const handleSettingsClick = () => setView(null);
     const handleLogOutClick = () => {
-        delete context.token
+        logOutUser()
         navigate("/login")
     }
     const handleHomeClick = () => setView("posts")
