@@ -1,16 +1,16 @@
 import { validators } from 'com'
-const { validateId, validateToken } = validators
+import context from "./context"
 
+const { validateId } = validators
 
-export default function toggleLikePost(token, postId) {
-    validateToken(token);
+export default function toggleLikePost(postId) {
     validateId(postId)
 
     return fetch(`${import.meta.env.VITE_API_URL}/posts/like/${postId}`, {
         method: "PATCH",
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${context.token}`
         }
     })
         .then(res => {

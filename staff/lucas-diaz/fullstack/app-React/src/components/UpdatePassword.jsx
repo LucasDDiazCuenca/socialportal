@@ -1,5 +1,4 @@
 import updateUserPassword from "../logic/updateUserPassword.js"
-import { context } from "../ui.js";
 import { useState } from "react";
 import Form from "./library/Form.jsx";
 
@@ -13,7 +12,7 @@ export default function UpdatePassword(props) {
             const newPassword = event.target.elements["new-password"].value
             const newPasswordRepetition = event.target.elements["new-password-repetition"].value
 
-            updateUserPassword(context.token, oldPassword, newPassword, newPasswordRepetition)
+            updateUserPassword(oldPassword, newPassword, newPasswordRepetition)
                 .then(() => props.onUpdatedPassword())
                 .catch(error => alert(error))
 

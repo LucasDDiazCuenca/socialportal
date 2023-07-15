@@ -1,13 +1,10 @@
-import { validators } from 'com'
-const {validateToken} = validators 
+import context from "./context"
 
-export default function retrievePosts(token) {
-    validateToken(token);
-
+export default function retrievePosts() {
     return fetch(`${import.meta.env.VITE_API_URL}/posts`, {
         method: "GET",
         headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${context.token}`
         }
     })
         .then(res => {

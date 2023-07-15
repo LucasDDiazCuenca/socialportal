@@ -1,8 +1,9 @@
 import { validators } from 'com'
-const { validateId, validateText, validateUrl, validateToken } = validators
+import context from "./context"
 
-export default function updatePost(token, postId, image, text) {
-    validateToken(token)
+const { validateId, validateText, validateUrl } = validators
+
+export default function updatePost(postId, image, text) {
     validateId(postId)
     validateUrl(image)
     validateText(text)
@@ -11,7 +12,7 @@ export default function updatePost(token, postId, image, text) {
         method: "PATCH",
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${context.token}`
         },
         body: JSON.stringify({image, text})
     })

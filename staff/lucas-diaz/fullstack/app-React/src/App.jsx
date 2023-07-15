@@ -2,7 +2,7 @@ import { useState } from "react";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
-import { context } from "./ui";
+import context from "./logic/context";
 import Alert from "./components/Alert";
 import AppContext from "./AppContext";
 import CreateCube from "./components/CreateCube";

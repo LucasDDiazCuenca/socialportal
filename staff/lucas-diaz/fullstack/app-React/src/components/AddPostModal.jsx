@@ -1,6 +1,5 @@
 import { useState } from "react";
 import createPost from "../logic/createPost.js"
-import { context } from "../ui.js";
 import Form from "./library/Form.jsx";
 
 export default function AddPostModal(props) {
@@ -17,7 +16,7 @@ export default function AddPostModal(props) {
         let text = event.target.text.value 
 
         try{
-            createPost(context.token, image, text)
+            createPost(image, text)
             .then(() => props.onCreatedPost())
             .catch(error => alert(error))
             

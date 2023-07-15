@@ -2,12 +2,10 @@ import deletePost from "../logic/deletePost.js";
 import toggleLikePost from "../logic/toggleLikePost.js";
 import toggleSavePostInUser from "../logic/toggleSavePostInUser.js";
 import toggleHidePost from "../logic/toggleHidePost.js";
-import { context } from "../ui.js";
 import { useContext } from "react";
 import Context from "../AppContext.js";
 
-
-export default function Post({post, user,onEditPostButton, onLikeClick, onDeleteClick, OnSavedPostClick, onHidenPostClick }) {
+export default function Post({ post, user, onEditPostButton, onLikeClick, onDeleteClick, OnSavedPostClick, onHidenPostClick }) {
     const { alert, freeze, unFreeze } = useContext(Context)
 
     const day = new Date(post.date).getDate();
@@ -24,7 +22,7 @@ export default function Post({post, user,onEditPostButton, onLikeClick, onDelete
     function handleHeartClick() {
         try {
             freeze()
-            toggleLikePost(context.token, post._id)
+            toggleLikePost(post._id)
                 .then(() => {
                     unFreeze()
                     onLikeClick()
@@ -39,9 +37,9 @@ export default function Post({post, user,onEditPostButton, onLikeClick, onDelete
 
     function handleDeleteClick() {
         try {
-            deletePost(context.token, post._id)
-            .then(() =>  onDeleteClick())
-            .catch(error => alert(error))
+            deletePost(post._id)
+                .then(() => onDeleteClick())
+                .catch(error => alert(error))
 
         } catch (error) {
             alert(error.message)
@@ -51,7 +49,7 @@ export default function Post({post, user,onEditPostButton, onLikeClick, onDelete
     function handleSavePostClick() {
         try {
             freeze()
-            toggleSavePostInUser(context.token, post._id)
+            toggleSavePostInUser(post._id)
                 .then(() => {
                     unFreeze()
                     OnSavedPostClick()
@@ -66,7 +64,7 @@ export default function Post({post, user,onEditPostButton, onLikeClick, onDelete
     function handleHidePostClick() {
         try {
             freeze()
-            toggleHidePost(context.token, post._id)
+            toggleHidePost(post._id)
                 .then(() => {
                     unFreeze()
                     onHidenPostClick()

@@ -1,4 +1,3 @@
-import { context } from "../ui";
 import updatePost from "../logic/updatePost";
 import retrievePostByPostId from "../logic/retrievePostByPostId";
 import { useEffect, useState } from "react";
@@ -10,7 +9,7 @@ export default function UpdatePost({ postId, onUpdatedPost, onCancelClick }) {
 
     useEffect(() => {
         try {
-            retrievePostByPostId(context.token, postId)
+            retrievePostByPostId(postId)
                 .then(post => setPost(post))
                 .catch(error => alert(error))
 
@@ -26,7 +25,7 @@ export default function UpdatePost({ postId, onUpdatedPost, onCancelClick }) {
             let image = event.target.url.value
             let text = event.target.text.value
 
-            updatePost(context.token, postId, image, text)
+            updatePost(postId, image, text)
                 .then(() => onUpdatedPost())
                 .catch(error => alert(error))
 

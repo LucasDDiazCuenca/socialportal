@@ -1,5 +1,5 @@
 import retrieveUser from "../logic/retrieveUser";
-import { context } from "../ui"
+import context from "../logic/context"
 import { useState, useEffect } from "react";
 import Posts from "../components/Posts"
 import AddPostModal from "../components/AddPostModal";
@@ -20,7 +20,7 @@ export default function Home() {
 
     useEffect(() => {
         try {
-            retrieveUser(context.token)
+            retrieveUser()
                 .then(user => setUser(user))
                 .catch(error => console.log(error))
 

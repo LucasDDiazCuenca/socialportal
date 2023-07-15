@@ -1,14 +1,15 @@
 import { validators } from 'com'
-const { validateToken } = validators
+import context from "./context"
+const { validateId } = validators
 
-export default function deletePost(token, postId) {
-    validateToken(token);
+export default function deletePost(postId) {
+    validateId(postId)
 
     return fetch(`${import.meta.env.VITE_API_URL}/posts/delete/${postId}`, {
         method: "DELETE",
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${context.token}`
         }
     })
         .then(res => {
@@ -16,5 +17,4 @@ export default function deletePost(token, postId) {
                 return res.json().then(({ error: message }) => { throw new Error(message) })
             }
         })
-
 }

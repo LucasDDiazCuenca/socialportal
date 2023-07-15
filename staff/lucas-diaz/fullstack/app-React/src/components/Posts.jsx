@@ -1,6 +1,5 @@
 import retrievePosts from "../logic/retrievePosts.js"
 import Post from "./Post.jsx";
-import { context } from "../ui.js";
 import retrieveUser from "../logic/retrieveUser.js";
 import { useState, useEffect, useContext } from "react";
 import retrieveSavedPosts from "../logic/retrieveSavedPosts.js";
@@ -31,11 +30,11 @@ export default function Posts({ onEditPostButtonClick, lastPostsUpdate, view }) 
         switch (view) {
 
             case "posts":
-                retrievePosts(context.token)
+                retrievePosts()
                     .then(_posts => setPosts(_posts))
                     .catch(error => alert(error))
 
-                retrieveUser(context.token)
+                retrieveUser()
                     .then(_user => {
                         unFreeze()
                         setUser(_user);
@@ -44,11 +43,11 @@ export default function Posts({ onEditPostButtonClick, lastPostsUpdate, view }) 
                 break;
 
             case "savedPosts":
-                retrieveSavedPosts(context.token)
+                retrieveSavedPosts()
                     .then(_posts => setPosts(_posts))
                     .catch(error => alert(error))
 
-                retrieveUser(context.token)
+                retrieveUser()
                     .then(_user => {
                         unFreeze()
                         setUser(_user);
@@ -57,11 +56,11 @@ export default function Posts({ onEditPostButtonClick, lastPostsUpdate, view }) 
                 break;
 
             case "userPosts":
-                retrieveUserPosts(context.token)
+                retrieveUserPosts()
                     .then(_posts => setPosts(_posts))
                     .catch(error => alert(error))
 
-                retrieveUser(context.token)
+                retrieveUser()
                     .then(_user => {
                         unFreeze()
                         setUser(_user);

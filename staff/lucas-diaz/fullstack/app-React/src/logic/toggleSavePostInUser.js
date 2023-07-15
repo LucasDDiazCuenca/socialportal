@@ -1,15 +1,16 @@
 import { validators } from 'com'
-const { validateId, validateToken } = validators
+import context from "./context"
 
-export default function toggleSavePostInUser(token, postId) {
-    validateToken(token)
+const { validateId } = validators
+
+export default function toggleSavePostInUser(postId) {
     validateId(postId)
 
     return fetch(`${import.meta.env.VITE_API_URL}/users/save/${postId}`, {
         method: "PATCH",
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${context.token}`
         }
     })
         .then(res => {

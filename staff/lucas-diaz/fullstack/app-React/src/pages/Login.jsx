@@ -1,5 +1,4 @@
-import { context } from "../ui.js";
-import authenticateUser from "../logic/authenticateUser.js"
+import loginUser from "../logic/loginUser.js"
 import { useState, useEffect } from "react";
 import retrieveLanzaroteWeather from "../logic/retrieveLanzaroteWeather.js"
 import Form from "../components/library/Form.jsx"
@@ -33,11 +32,8 @@ export default function Login() {
         const password = event.target.password.value
 
         try {
-            authenticateUser(email, password)
-                .then(token => {
-                    context.token = token;
-                    navigate("/");
-                })
+            loginUser(email, password)
+                .then(() => navigate("/"))
                 .catch(error => alert(error.message, "error"))
 
         } catch (error) {
