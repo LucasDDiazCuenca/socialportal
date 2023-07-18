@@ -27,12 +27,9 @@ module.exports = function updateUserPassword(userId, password, newPassword, newP
     validatePassword(newPassword)
     validatePassword(newPasswordConfirmation)
 
-    return(async() => {
-        let user
 
-        try{
-            user = await User.findById(userId)
-
+    return User.findById(userId)
+        .then(user => {
             if (!user) throw new ExistenceError("user not found")
 
             if (user.password !== password) throw new ContentError("typed password isn't actual password user's value")
@@ -41,12 +38,6 @@ module.exports = function updateUserPassword(userId, password, newPassword, newP
 
             if (newPassword !== newPasswordConfirmation) throw new ContentError("new password and new password confirmation does not match")
 
-            const updatedUser = await user.updateOne({ password: newPassword })
-            
-            return updatedUser
-            
-        }catch(error){
-            throw error
-        }
-    })()
+            return user.updateOne({ password: newPassword })
+        })
 }
