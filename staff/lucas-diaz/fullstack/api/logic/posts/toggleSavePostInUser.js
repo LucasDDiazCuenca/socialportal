@@ -21,21 +21,19 @@ module.exports = function toggleSavePostInUser(userId, postId) {
     validateId(userId)
     validateId(postId)
 
+    return (async () => {
+        const user = await User.findById(userId)
+        if (!user) throw new ExistenceError("user not found")
 
-    return User.findById(userId)
-        .then(user => {
-            if (!user) throw new ExistenceError("user not found")
+        let post = await Post.findById(postId)
+        if (!post) throw new ExistenceError("post not found")
 
-            return Post.findById(postId)
-                .then(post => {
+        if (user.savedPosts.some(postId => postId.equals(post._id))) {
 
-                    if (user.savedPosts.some(postId => postId.equals(post._id))) {
+            await User.updateOne({ _id: userId }, { $pull: { savedPosts: post._id } })
 
-                        return User.updateOne({ _id: userId }, { $pull: { savedPosts: post._id } })
-
-                    } else {
-                        return User.updateOne({ _id: userId }, { $push: { savedPosts: post._id } })
-                    }
-                })
-        })
+        } else {
+            await User.updateOne({ _id: userId }, { $push: { savedPosts: post._id } })
+        }
+    })()
 }

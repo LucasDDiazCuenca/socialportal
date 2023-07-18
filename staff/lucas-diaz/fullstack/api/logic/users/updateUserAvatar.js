@@ -23,20 +23,11 @@ module.exports = function updateUserAvatar(userId, avatar) {
     validateId(userId)
     validateUrl(avatar)
 
-    return(async() => {
-        let user 
+    return (async () => {
+        const user = await User.findById(userId)
 
-        try{
-            user = await User.findById(userId)
+        if (!user) throw new ExistenceError("user not found")
 
-            if (!user) throw new ExistenceError("user not found")
-
-            const updatedUser = await user.updateOne({ avatar: avatar })
-
-            return updatedUser
-        
-        }catch(error){
-            throw error
-        }
+        await user.updateOne({ avatar: avatar })
     })()
 }

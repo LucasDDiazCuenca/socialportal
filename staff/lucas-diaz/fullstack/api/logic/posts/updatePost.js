@@ -30,18 +30,14 @@ module.exports = function updatePost(userId, postId, image, text) {
     validateUrl(image);
     validateText(text);
 
-    return User.findById(userId)
-        .then(user => {
-            if (!user) throw new ExistenceError("user not found")
+    return(async() => {
+        const user = await User.findById(userId)
+        if (!user) throw new ExistenceError("user not found")
 
-            console.log(user._id)
-            return Post.findById(postId)
-                .then(post => {
-                    console.log(post.author)
-                    if (!post) throw new ExistenceError("post not found")
-                    if (user._id.toString() !== post.author.toString()) throw new AuthError("The current user Id doesnt belong to post Id")
+        let post = await Post.findById(postId)
+        if (!post) throw new ExistenceError("post not found")
+        if (user._id.toString() !== post.author.toString()) throw new AuthError("The current user Id doesnt belong to post Id")
 
-                    return post.updateOne({ image: image, text: text })
-                })
-        })
+        await post.updateOne({ image: image, text: text })
+    })()
 }

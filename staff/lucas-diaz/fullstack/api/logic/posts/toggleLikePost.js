@@ -19,19 +19,18 @@ const { User, Post } = require("../../data/models")
 module.exports = function toggleLikePost(userId, postId) {
     validateId(userId)
 
+    return (async () => {
+        const user = await User.findById(userId)
+        if (!user) throw new ExistenceError("user not found")
 
-    return User.findById(userId)
-        .then(user => {
-            if (!user) throw new ExistenceError("user not found")
+        let post = await Post.findById(postId)
+        if (!post) throw new ExistenceError("post not found")
 
-            return Post.findById(postId)
-                .then(post => {
-                    if (post.likeCounter.some(userId => userId.equals(user._id))) {
-                        return Post.updateOne({ _id: postId }, { $pull: { likeCounter: user._id } })
+        if (post.likeCounter.some(userId => userId.equals(user._id))) {
+            await Post.updateOne({ _id: postId }, { $pull: { likeCounter: user._id } })
 
-                    } else {
-                        return Post.updateOne({ _id: postId }, { $push: { likeCounter: user._id } })
-                    }
-                })
-        })
+        } else {
+            await Post.updateOne({ _id: postId }, { $push: { likeCounter: user._id } })
+        }
+    })()
 }

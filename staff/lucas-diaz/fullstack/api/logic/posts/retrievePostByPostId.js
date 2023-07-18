@@ -22,33 +22,31 @@ module.exports = function retrievePostByPostId(userId, postId) {
     validateId(userId)
     validateId(postId)
 
-    return User.findById(userId).lean()
-        .then(user => {
-            if (!user) throw new ExistenceError("user not found")
+    return (async () => {
+        const user = await User.findById(userId).lean()
+        if (!user) throw new ExistenceError("user not found")
 
-            return Post.findById(postId).populate("author", "-password -savedPosts").lean()
-                .then((post) => {
-                    if (!post) throw new ExistenceError("post not found")
-                    
-                    post.author._id = post.author._id.toString()
-                    post.likeCounterNumber = post.likeCounter.length
+        let post = await Post.findById(postId).populate("author", "-password -savedPosts").lean()
+        if (!post) throw new ExistenceError("post not found")
 
-                    if (post.likeCounter.some(userId => userId.equals(user._id))) {
-                        post.likeCounter = true
-                    } else {
-                        post.likeCounter = false
-                    }
-                    if (user._id.toString() === post.author._id) {
-                        post.userProperty = true
-                    } else {
-                        post.userProperty = false
-                    }
+        post.author._id = post.author._id.toString()
+        post.likeCounterNumber = post.likeCounter.length
 
-                    delete post.author._id
-                    delete post.author.__v
-                    delete post.__v
+        if (post.likeCounter.some(userId => userId.equals(user._id))) {
+            post.likeCounter = true
+        } else {
+            post.likeCounter = false
+        }
+        if (user._id.toString() === post.author._id) {
+            post.userProperty = true
+        } else {
+            post.userProperty = false
+        }
 
-                    return post
-                })
-        });
+        delete post.author._id
+        delete post.author.__v
+        delete post.__v
+
+        return post
+    })()
 }

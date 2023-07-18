@@ -18,26 +18,23 @@ const { User, Post } = require("../../data/models")
  * @throws {AuthError} On failed correlation on db and provided data in order to authorize this action(async)
  */
 
-
 module.exports = function toggleHidePost(userId, postId) {
     validateId(userId)
     validateId(postId)
 
+    return (async () => {
+        const user = await User.findById(userId)
+        if (!user) throw new ExistenceError("user not found")
 
-    return User.findById(userId)
-        .then(user => {
-            if (!user) throw new ExistenceError("user not found")
+        let post = await Post.findById(postId)
+        if (!post) throw new ExistenceError("post not found")
+        if (user._id.toString() !== post.author.toString()) throw new AuthError("this user has not permition to hide this post")
 
-            return Post.findById(postId)
-                .then(post => {
-                    if (user._id.toString() !== post.author.toString()) throw new AuthError("this user has not permition to hide this post")
+        if (post.visibility === "public") {
+            await post.updateOne({ visibility: "private" })
 
-                    if (post.visibility === "public") {
-                        return post.updateOne({ visibility: "private" })
-
-                    } else {
-                        return post.updateOne({ visibility: "public" })
-                    }
-                })
-        })
+        } else {
+            await post.updateOne({ visibility: "public" })
+        }
+    })()
 }

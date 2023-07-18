@@ -26,19 +26,13 @@ module.exports = function authenticateUser(email, password) {
 
 
     return (async () => {
-        let user
-        
-        try {
-            user = await User.findOne({ email: email })
-            
-            if (!user) throw new ExistenceError(`there is no user with email: ${email}`)
+        const user = await User.findOne({ email: email })
 
-            if (user.password !== password) throw new AuthError("wrong credentials")
+        if (!user) throw new ExistenceError(`there is no user with email: ${email}`)
 
-            return user.id
-        } catch (error) {
-            throw error 
-        }
+        if (user.password !== password) throw new AuthError("wrong credentials")
+
+        return user.id
     })()
 }
 

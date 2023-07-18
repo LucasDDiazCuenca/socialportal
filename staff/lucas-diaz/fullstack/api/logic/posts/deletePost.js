@@ -22,38 +22,36 @@ module.exports = function deletePost(userId, postId) {
     validateId(userId)
     validateId(postId)
 
+    return (async () => {
 
-    return User.findById(userId)
-        .then(user => {
-            if (!user) throw new ExistenceError("user not found")
+        const user = await User.findById(userId)
 
-            return Post.findById(postId)
-                .then(post => {
-                    if (!post) throw new ExistenceError("post not found")
+        if (!user) throw new ExistenceError("user not found")
 
-                    if (post.author.toString() !== userId) throw new AuthError("this user has not permition to delete this post")
+        const post = await Post.findById(postId)
 
-                    return User.find()
-                        .then(users => {
-                            const modifyUsers = []
+        if (!post) throw new ExistenceError("post not found")
 
-                            users.forEach(user => {
-                                if (user.savedPosts) {
-                                    const index = user.savedPosts.findIndex(postIndex => postIndex.toString() === postId)
-                                    
-                                    if (index > -1) {
-                                        user.savedPosts.splice(index, 1)
+        if (post.author.toString() !== userId) throw new AuthError("this user has not permition to delete this post")
 
-                                        modifyUsers.push(user)
-                                    }
-                                }
-                            })
+        const users = await User.find()
+        const modifyUsers = []
 
-                            const usersUpdated = modifyUsers.map(user => user.save())
+        users.forEach(user => {
+            if (user.savedPosts) {
+                const index = user.savedPosts.findIndex(postIndex => postIndex.toString() === postId)
 
-                            return Promise.all([...usersUpdated, Post.deleteOne({ _id: postId })])
-                                .then(() => { })
-                        })
-                })
+                if (index > -1) {
+                    user.savedPosts.splice(index, 1)
+
+                    modifyUsers.push(user)
+                }
+            }
         })
+
+        const usersUpdated = modifyUsers.map(user => user.save())
+
+        return await Promise.all([...usersUpdated, Post.deleteOne({ _id: postId })])
+    })()
 }
+

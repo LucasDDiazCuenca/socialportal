@@ -1,7 +1,7 @@
 require("dotenv").config()
 const {
     validators: { validateUsername, validateEmail, validatePassword },
-    errors: { DuplicityError }
+    errors: { DuplicityError, UnknownError }
 } = require("com")
 
 const { User } = require("../../data/models")
@@ -31,11 +31,12 @@ module.exports = function registerUser(name, email, password) {
     return (async () => {
         try {
             await User.create({ name, email, password, avatar, savedPosts: [] })
+            
         } catch (error) {
             if (error.message.includes('E11000'))
                 throw new DuplicityError(`user with email ${email} already exists`)
 
-            throw error
+            throw new UnknownError(error.message)
         }
     })()
 } 

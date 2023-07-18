@@ -20,37 +20,36 @@ const { User, Post } = require("../../data/models")
 module.exports = function retrieveUserPosts(userId) {
     validateId(userId);
 
-    return User.findById(userId).lean()
-        .then(user => {
-            if (!user) throw new ExistenceError("user not found")
+    return (async () => {
+        const user = await User.findById(userId).lean()
+        if (!user) throw new ExistenceError("user not found")
 
-            return Post.find({ author: user._id }).populate("author", "-password -savedPosts").lean()
-                .then(posts => {
-                    posts.forEach(post => {
-                        post.author._id = post.author._id.toString()
-                        post.likeCounterNumber = post.likeCounter.length
+        let userPosts = await Post.find({ author: user._id }).populate("author", "-password -savedPosts").lean()
 
-                        if (post.likeCounter.some(userId => userId.equals(user._id))) {
-                            post.likeCounter = true
-                        } else {
-                            post.likeCounter = false
-                        }
+        userPosts.forEach(post => {
+            post.author._id = post.author._id.toString()
+            post.likeCounterNumber = post.likeCounter.length
 
-                        if (user._id.toString() === post.author._id) {
-                            post.userProperty = true
-                        } else {
-                            post.userProperty = false
-                        }
-                    });
+            if (post.likeCounter.some(userId => userId.equals(user._id))) {
+                post.likeCounter = true
+            } else {
+                post.likeCounter = false
+            }
 
-                    posts.forEach(post => {
-                        delete post.author._id
-                        delete post.author.__v
-                        delete post.__v
-                    })
-                    return posts.reverse()
-                });
+            if (user._id.toString() === post.author._id) {
+                post.userProperty = true
+            } else {
+                post.userProperty = false
+            }
         });
+
+        userPosts.forEach(post => {
+            delete post.author._id
+            delete post.author.__v
+            delete post.__v
+        })
+        return userPosts.reverse()
+    })()
 }
 
 

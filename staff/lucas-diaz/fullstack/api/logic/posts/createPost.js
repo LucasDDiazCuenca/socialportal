@@ -24,16 +24,16 @@ module.exports = function createPost(userId, image, text) {
     validateUrl(image);
     validateText(text);
 
-    return User.findById(userId)
-        .then(user => {
-            if (!user) throw new ExistenceError("user not found");
+    return (async () => {
+        const user = await User.findById(userId)
 
-            return Post.create({
-                author: userId,
-                userName: user.name,
-                image,
-                text
-            });
+        if (!user) throw new ExistenceError("user not found")
+
+        await Post.create({
+            author: userId,
+            userName: user.name,
+            image,
+            text
         })
-        .then(() => { })
+    })()
 };
