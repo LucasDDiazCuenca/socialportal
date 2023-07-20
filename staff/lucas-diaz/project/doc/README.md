@@ -11,7 +11,7 @@ In this room we will be able to interact with other person's avatar via chat (__
 
 We can also admin friends area, adding and deleting friends, see who's online and where. 
 
-We can use this app just for fun comma interact with others with an immersive 3D experience or we can use it as a communication Tools in workspaces
+We can use this app just for fun, interact with others with an immersive 3D experience or we can use it as a communication Tools in workspaces
 
 ---
 ---
