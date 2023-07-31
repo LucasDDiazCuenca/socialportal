@@ -4,14 +4,20 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host --force",
     "build": "vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-three/drei": "9.70",
+    "@react-three/fiber": "8.13",
+    "@react-three/rapier": "1.0",
+    "leva": "^0.9.35",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.14.2",
+    "three": "^0.153.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",

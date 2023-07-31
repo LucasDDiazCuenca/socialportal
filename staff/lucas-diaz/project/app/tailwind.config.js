@@ -8,7 +8,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        image: "url('../image/IsoLink-logo.png')",
+      }
+    },
   },
   plugins: [tailwindCustomAppStylesPlugin],
 }

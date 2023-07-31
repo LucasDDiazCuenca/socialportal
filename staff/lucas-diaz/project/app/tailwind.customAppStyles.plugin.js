@@ -12,15 +12,17 @@ export default plugin(({ addBase, addComponents, addUtilities, theme }) => {
             flexBasis: "80%",
             height: "20%",
             display: "flex",
-            flexFlow: "wrap row"
+            flexFlow: "row wrap",
+            justifyContent: "center"
         },
         ".form-button": {
-            backgroundColor: "rgb(0 36 36)",
-            color: "white",
-            borderRadius: ".6rem",
+            backgroundColor: "rgb(245,195,239)",
+            color: "black",
+            borderRadius: "1rem",
             border: "none",
-            marginTop: ".2rem",
-            padding: ".6rem 1rem",
+            marginTop: "1.6rem",
+            padding: ".4rem 3.5rem",
+            fontWeight: "bold",
             cursor: "pointer"
         },
         ".edit-button": {
@@ -48,26 +50,6 @@ export default plugin(({ addBase, addComponents, addUtilities, theme }) => {
             transition: "all 400ms",
             margin: ".2rem"
         },
-        ".home-posts-content": {
-            padding: "1rem",
-            display: "flex",
-            flexFlow: "row wrap",
-            justifyContent: "center",
-            gap: "1rem",
-            backgroundColor: "#0d1a15",
-            marginTop: "1.7rem",
-            paddingBottom: "5rem",
-        },
-        ".home-post-content-article": {
-            flexBasis: "100%",
-            display: "flex",
-            flexFlow: "row wrap",
-            justifyContent: "space-between",
-            backgroundColor: "#313338",
-            borderRadius: ".3rem",
-            color: "white",
-            gap: ".4rem"
-        },
         ".footerArea": {
             position: "fixed",
             bottom: "0",
@@ -79,22 +61,6 @@ export default plugin(({ addBase, addComponents, addUtilities, theme }) => {
             justifyContent: "center",
             alignItems: "center",
             gap: "1rem",
-        },
-        ".post-modal":{
-            width: "80%",
-            position: "fixed",
-            bottom: "170px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            display: "flex",
-            flexFlow: "row wrap",
-            justifyContent: "center",
-            alignContent: "center",
-            alignItems: "center",
-            borderRadius: "0.3rem",
-            backgroundColor: "#313338",
-            padding: "0.5rem",
-            boxShadow: "0.5rem 0.5rem 2rem black"
         }
     })
 
