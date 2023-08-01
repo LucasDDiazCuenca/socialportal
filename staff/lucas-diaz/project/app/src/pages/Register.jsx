@@ -1,54 +1,48 @@
+import { Canvas } from "@react-three/fiber"
+import RegisterExperience from "../components/RegisterExperience"
 import Form from "../components/library/Form"
-import { Canvas } from '@react-three/fiber'
-import LoginExperience from "../components/LoginExperience"
 
 
-export default function Login() {
+export default function Register() {
 
-    const handleLogin = event => {
-        event.preventDefault()
-        console.log("go to home")
-
-        const email = event.target.email.value
-        const password = event.target.password.value
-
-        console.log(email)
-        console.log(password)
-    }
 
     return <>
-        <div className="fixed w-screen h-5/6 top-52 z-0">
+        <div className="fixed w-full h-full z-0">
             <Canvas
-                className="z-0 fixed w-full h-80"
                 shadows
                 camera={{
-                    fov: 80,
+                    fov: 45,
                     near: 0.1,
                     far: 200,
-                    position: [0, 2, 5]
+                    position: [-4.5, 3, 30]
                 }}
             >
-                <LoginExperience />
+                <RegisterExperience />
             </Canvas>
         </div>
-
-        <div className="w-screen h-screen bg-[#452b8e]">
+        
+        <div className="w-screen h-screen mt-32" >
             <section className="text-white flex flex-row flex-wrap justify-center">
-                <div className="w-3/4 h-60 sm:w-1/3 sm:h-64 bg-cover bg-center bg-image flex items-center justify-center" >
-                    <h1 className="text-center text-5xl font-bold">Iso Link</h1>
-                </div>
-                <Form onSubmit={handleLogin}>
+                <Form>
+                    <div className="box-input sm:basis-96">
+                        <label className="basis-full p-1">Username:</label>
+                        <input
+                            type="text"
+                            className="basis-full rounded-lg p-2 pl-3 text-black bg-purple-200"
+                            name="name"
+                            placeholder="Enter an username"
+                        />
+                    </div>
                     <div className="box-input sm:basis-96">
                         <label className="basis-full p-1">Email:</label>
                         <input
                             type="email"
                             className="basis-full rounded-lg p-2 pl-3 text-black bg-purple-200"
                             name="email"
-                            placeholder="Enter your email"
+                            placeholder="Enter an email"
                             autoComplete="current-password"
                         />
                     </div>
-
                     <div className="box-input sm:basis-96">
                         <label className="basis-full p-1">Password:</label>
                         <input
@@ -59,12 +53,10 @@ export default function Login() {
                             autoComplete="current-password"
                         />
                     </div>
-
-                    <button type="submit" className="form-button">Login</button>
-                    <p className="basis-full text-center pt-2">Go to register</p>
+                    <button type="submit" className="form-button">Register</button>
+                    <p className="basis-full text-center pt-2">Sign in</p>
                 </Form>
             </section>
         </div>
-
     </>
-}
+} 
