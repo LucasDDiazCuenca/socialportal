@@ -34,9 +34,11 @@ export default function Login() {
 
         <div className="w-screen h-screen bg-[#452b8e]">
             <section className="text-white flex flex-row flex-wrap justify-center">
+
                 <div className="w-3/4 h-60 sm:w-1/3 sm:h-64 bg-cover bg-center bg-image flex items-center justify-center" >
                     <h1 className="text-center text-5xl font-bold">Iso Link</h1>
                 </div>
+
                 <Form onSubmit={handleLogin}>
                     <div className="box-input sm:basis-96">
                         <label className="basis-full p-1">Email:</label>
@@ -63,7 +65,9 @@ export default function Login() {
                     <button type="submit" className="form-button">Login</button>
                     <p className="basis-full text-center pt-2">Go to register</p>
                 </Form>
+
             </section>
+            
         </div>
 
     </>
