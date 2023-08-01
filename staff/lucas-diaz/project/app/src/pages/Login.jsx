@@ -1,19 +1,27 @@
 import Form from "../components/library/Form"
 import { Canvas } from '@react-three/fiber'
 import LoginExperience from "../components/LoginExperience"
+import { Link } from "react-router-dom"
+import loginUser from "../logic/loginUser"
 
 
 export default function Login() {
-
+    
     const handleLogin = event => {
         event.preventDefault()
-        console.log("go to home")
 
         const email = event.target.email.value
         const password = event.target.password.value
 
-        console.log(email)
-        console.log(password)
+        try{
+            loginUser(email,password)
+                .then(() => console.log("yes"))
+                .catch(error => alert(error.message, "error"))
+
+        }catch(error){
+            alert(error.message)
+        }
+
     }
 
     return <>
@@ -33,29 +41,29 @@ export default function Login() {
         </div>
 
         <div className="w-screen h-screen bg-[#452b8e]">
-            <section className="text-white flex flex-row flex-wrap justify-center">
+            <section className="text-white flex flex-col flex-wrap justify-center content-center h-full">
 
-                <div className="w-3/4 h-60 sm:w-1/3 sm:h-64 bg-cover bg-center bg-image flex items-center justify-center" >
+                <div className="w-3/4 sm:w-1/3 sm:h-64 bg-cover bg-center bg-image flex items-center justify-center h-2/5 z-10 mx-auto" >
                     <h1 className="text-center text-5xl font-bold">Iso Link</h1>
                 </div>
 
                 <Form onSubmit={handleLogin}>
-                    <div className="box-input sm:basis-96">
-                        <label className="basis-full p-1">Email:</label>
+                    <div className="box-input sm:flex-col">
+                        <label className=" p-1">Email:</label>
                         <input
                             type="email"
-                            className="basis-full rounded-lg p-2 pl-3 text-black bg-purple-200"
+                            className=" rounded-lg p-2 pl-3 text-black bg-purple-200"
                             name="email"
                             placeholder="Enter your email"
                             autoComplete="current-password"
                         />
                     </div>
 
-                    <div className="box-input sm:basis-96">
-                        <label className="basis-full p-1">Password:</label>
+                    <div className="box-input">
+                        <label className=" p-1">Password:</label>
                         <input
                             type="password"
-                            className="basis-full rounded-lg p-2 pl-3 text-black bg-purple-200"
+                            className=" rounded-lg p-2 pl-3 text-black bg-purple-200"
                             name="password"
                             placeholder="Enter your password"
                             autoComplete="current-password"
@@ -63,12 +71,12 @@ export default function Login() {
                     </div>
 
                     <button type="submit" className="form-button">Login</button>
-                    <p className="basis-full text-center pt-2">Go to register</p>
+                    <p className=" text-center pt-2"><Link to="/register">Go to register</Link></p>
                 </Form>
 
             </section>
-            
-        </div>
 
+        </div>
     </>
 }
+

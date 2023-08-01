@@ -1,9 +1,31 @@
 import { Canvas } from "@react-three/fiber"
 import RegisterExperience from "../components/RegisterExperience"
 import Form from "../components/library/Form"
+import registerUser from "../logic/registerUser"
+import { Link } from "react-router-dom"
+import { useAppContext } from "../hooks"
+
 
 
 export default function Register() {
+    const { navigate } = useAppContext()
+
+    const handleRegister = event => {
+        event.preventDefault()
+
+        const temporalUserName = event.target.name.value;
+        const temporalEmail = event.target.email.value;
+        const temporalPassword = event.target.password.value;
+
+        try {
+            registerUser(temporalUserName, temporalEmail, temporalPassword)
+                .then(() => navigate("/login"))
+                .catch(error => alert(error.message))
+        } catch (error) {
+            alert(error.message)
+        }
+
+    }
 
 
     return <>
@@ -20,41 +42,41 @@ export default function Register() {
                 <RegisterExperience />
             </Canvas>
         </div>
-        
+
         <div className="w-screen h-screen mt-32" >
-            <section className="text-white flex flex-row flex-wrap justify-center">
-                <Form>
-                    <div className="box-input sm:basis-96">
-                        <label className="basis-full p-1">Username:</label>
+            <section className="text-white flex flex-row flex-wrap justify-center h-full">
+                <Form onSubmit={handleRegister}>
+                    <div className="box-input">
+                        <label className="p-1">Username:</label>
                         <input
                             type="text"
-                            className="basis-full rounded-lg p-2 pl-3 text-black bg-purple-200"
+                            className="rounded-lg p-2 pl-3 text-black bg-purple-200"
                             name="name"
                             placeholder="Enter an username"
                         />
                     </div>
-                    <div className="box-input sm:basis-96">
-                        <label className="basis-full p-1">Email:</label>
+                    <div className="box-input">
+                        <label className="p-1">Email:</label>
                         <input
                             type="email"
-                            className="basis-full rounded-lg p-2 pl-3 text-black bg-purple-200"
+                            className="rounded-lg p-2 pl-3 text-black bg-purple-200"
                             name="email"
                             placeholder="Enter an email"
                             autoComplete="current-password"
                         />
                     </div>
-                    <div className="box-input sm:basis-96">
-                        <label className="basis-full p-1">Password:</label>
+                    <div className="box-input">
+                        <label className="p-1">Password:</label>
                         <input
                             type="password"
-                            className="basis-full rounded-lg p-2 pl-3 text-black bg-purple-200"
+                            className="rounded-lg p-2 pl-3 text-black bg-purple-200"
                             name="password"
                             placeholder="Enter your password"
                             autoComplete="current-password"
                         />
                     </div>
                     <button type="submit" className="form-button">Register</button>
-                    <p className="basis-full text-center pt-2">Sign in</p>
+                    <p className="text-center pt-2"><Link to="/login">Sign in</Link></p>
                 </Form>
             </section>
         </div>

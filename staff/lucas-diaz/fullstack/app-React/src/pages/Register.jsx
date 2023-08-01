@@ -5,6 +5,8 @@ import Plane3dFigure from "../components/library/Plane3dFigure.jsx";
 import { Link } from "react-router-dom"
 import { useAppContext } from "../hooks"
 
+
+
 export default function Register() {
     const [errorMessage, setErrorMessage] = useState("");
     const { navigate } = useAppContext()

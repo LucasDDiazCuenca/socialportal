@@ -26,11 +26,11 @@ module.exports = function registerUser(name, email, password) {
     validateEmail(email)
     validatePassword(password)
 
-    let avatar = "https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png"
+    let avatar = []
 
     return (async () => {
         try {
-            await User.create({ name, email, password, avatar, savedPosts: [] })
+            await User.create({ name, email, password })
             
         } catch (error) {
             if (error.message.includes('E11000'))

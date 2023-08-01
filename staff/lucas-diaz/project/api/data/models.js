@@ -20,8 +20,13 @@ const user = new Schema({
         minLength: 8
     },
     avatar: {
-        type: [],
+        type: Array ,
         default: []
+    }, 
+    connected:{
+        type: Boolean,
+        required: true,
+        default: false
     }
 })
 

@@ -9,10 +9,8 @@ export default plugin(({ addBase, addComponents, addUtilities, theme }) => {
 
     addComponents({
         ".box-input": {
-            flexBasis: "80%",
-            height: "20%",
             display: "flex",
-            flexFlow: "row wrap",
+            flexDirection: "column",
             justifyContent: "center"
         },
         ".form-button": {
