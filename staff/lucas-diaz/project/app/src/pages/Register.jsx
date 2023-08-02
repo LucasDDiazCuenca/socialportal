@@ -6,7 +6,6 @@ import { Link } from "react-router-dom"
 import { useAppContext } from "../hooks"
 
 
-
 export default function Register() {
     const { navigate } = useAppContext()
 
@@ -26,7 +25,6 @@ export default function Register() {
         }
 
     }
-
 
     return <>
         <div className="fixed w-full h-full z-0">

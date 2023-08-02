@@ -54,11 +54,9 @@ export default plugin(({ addBase, addComponents, addUtilities, theme }) => {
             left: "0",
             height: "8%",
             width: "100%",
-            backgroundColor: "#1e3a3a",
             display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "1rem",
+            justifyContent: "space-around",
+            borderTop: "1px solid rgb(228 228 231)"
         }
     })
 
@@ -73,10 +71,6 @@ export default plugin(({ addBase, addComponents, addUtilities, theme }) => {
             textAlign: "center",
             marginBottom: "1rem;"
         },
-        '.helloworld--fluo': {
-            backgroundColor: 'yellowgreen',
-            color: 'greenyellow'
-        },
         '.red': {
             color: "tomato"
         },
@@ -90,25 +84,6 @@ export default plugin(({ addBase, addComponents, addUtilities, theme }) => {
         },
         ".pb-3-4": {
             paddingBottom: "75%"
-        },
-        ".material-symbols-rounded": {
-            'font-variation-settings': "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48",
-            color: "rgb(223, 223, 223)",
-            transition: "all 200ms",
-            cursor: "pointer",
-            alignSelf: "center",
-            paddingLeft: ".5rem",
-            paddingRight: ".5rem",
-        },
-        ".material-symbols-rounded-liked": {
-            'font-variation-settings': "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48",
-            color: "red",
-            transition: "all 200ms",
-        },
-        ".filled": {
-            'font-variation-settings': "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48",
-            transition: "all 200ms",
-        },
-        
+        }
     })
 })

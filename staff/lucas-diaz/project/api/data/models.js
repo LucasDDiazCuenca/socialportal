@@ -23,13 +23,17 @@ const user = new Schema({
         type: Array ,
         default: []
     }, 
+    friends:{
+        type: [ObjectId],
+        reqired: true,
+        default: []
+    },
     connected:{
         type: Boolean,
         required: true,
         default: false
     }
 })
-
 
 const User = model("User", user)
 

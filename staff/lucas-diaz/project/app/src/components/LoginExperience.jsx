@@ -48,7 +48,7 @@ export default function LoginExperience(){
         <Sparkles
             size={7}
             position={[0,1,1]}
-            scale={[2.8, 4, 3]}
+            scale={[8, 4, 5]}
             count={100}
             speed={0.4}
             opacity={0.3}

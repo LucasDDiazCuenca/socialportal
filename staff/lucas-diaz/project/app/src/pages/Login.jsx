@@ -3,22 +3,23 @@ import { Canvas } from '@react-three/fiber'
 import LoginExperience from "../components/LoginExperience"
 import { Link } from "react-router-dom"
 import loginUser from "../logic/loginUser"
+import { useAppContext } from "../hooks"
 
 
 export default function Login() {
-    
+    const { navigate } = useAppContext()
     const handleLogin = event => {
         event.preventDefault()
 
         const email = event.target.email.value
         const password = event.target.password.value
 
-        try{
-            loginUser(email,password)
-                .then(() => console.log("yes"))
+        try {
+            loginUser(email, password)
+                .then(() => navigate("/"))
                 .catch(error => alert(error.message, "error"))
 
-        }catch(error){
+        } catch (error) {
             alert(error.message)
         }
 
