@@ -21,7 +21,7 @@ module.exports = function retrieveUser(userId) {
     validateId(userId)
 
     return (async () => {
-        const user = await User.findById(userId, "name avatar").lean()
+        const user = await User.findById(userId, "name avatar connected").lean()
 
         if (!user) throw new ExistenceError("user not found")
 

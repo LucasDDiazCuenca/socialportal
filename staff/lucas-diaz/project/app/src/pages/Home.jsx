@@ -1,29 +1,36 @@
+import AppHeader from "../components/library/AppHeader"
+import AppH1Card from "../components/library/AppH1Card"
+import Footer from "../components/Footer"
+import retrieveUser from "../logic/retrieveUser.js"
+import { useEffect, useState } from "react"
+
 
 export default function () {
+    const [user, setUser] = useState(null)
+
+    useEffect(() => {
+        try {
+
+            (async () => {
+                const user = await retrieveUser()
+
+                setUser(user)
+            })()
+        } catch (error) {
+            alert(error.message)
+        }
+    }, [])
+
 
     const handleNavigateCreateAvatar = () => {
         console.log("Pending implement <Link> <Navigate> to create avatar")
     }
 
-    const handleTemporalNavigate = () => {
-        console.log("Pending implement <Link> <Navigate>")
-    }
 
     return <div className=" w-screen h-full bg-white">
-        <header className="flex justify-center border-b-2 border-zinc-100">
-            <div className="logo w-16 h-16">
-                <img src="./image/IsoLink-logo.png" />
-            </div>
-        </header>
+        <AppHeader />
         <main className="w-full flex flex-col items-center">
-            <article className="header-card text-left max-w-md w-10/12 bg-[#f5c3ef] p-3 rounded-xl m-4">
-                <p className="text-sm">
-                    hi lucas,
-                </p>
-                <h1 className="font-bold text-xl">
-                    Welcome for the first time 🎉
-                </h1>
-            </article>
+            <AppH1Card user={user} type={"home"}/>
 
             <article className="avatar-info w-full flex flex-col items-center">
                 <div className="avatar-card flex justify-between text-white bg-[#452b8e] rounded-xl p-3 w-9/12 max-w-sm h-48 m-2">
@@ -40,26 +47,10 @@ export default function () {
                     <p><b>Age:</b> 30 years</p>
                 </div>
             </article>
+
+            {user?.avatar.length > 0 &&  <button className="bg-[#452b8e] text-white p-3 w-4/6 sm:w-80 rounded-2xl mt-32">Go to room</button> }
         </main>
 
-        <footer>
-            <nav className="footer-menu w-full footerArea">
-                <button className="cursor-pointer" onClick={handleTemporalNavigate}>
-                    <img src="./icons/home.png" alt="Add Avatar" />
-                </button>
-                <button className="cursor-pointer" onClick={handleTemporalNavigate}>
-                    <img src="./icons/friends.png" alt="Add Avatar" />
-                </button>
-                {/* <button className="cursor-pointer" onClick={handleTemporalNavigate}>
-                    <img src="./icons/world.png" alt="Add Avatar" />
-                </button> */}
-                <button className="cursor-pointer" onClick={handleTemporalNavigate}>
-                    <img src="./icons/profile.png" alt="Add Avatar" />
-                </button>
-                <button className="cursor-pointer" onClick={handleTemporalNavigate}>
-                    <img src="./icons/settings.png" alt="Add Avatar" />
-                </button>
-            </nav>
-        </footer>
+        <Footer user={user}/>
     </div>
 }

@@ -84,6 +84,9 @@ export default plugin(({ addBase, addComponents, addUtilities, theme }) => {
         },
         ".pb-3-4": {
             paddingBottom: "75%"
+        },
+        ".border-example": {
+            border: "1px solid red"
         }
     })
 })
