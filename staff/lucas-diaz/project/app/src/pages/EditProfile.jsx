@@ -32,7 +32,7 @@ export default function EditProfile() {
         navigate("/login")
     }
 
-    return <div className=" w-screen h-full bg-white">
+    return <div className=" w-screen h-screen bg-white ">
         <AppHeader />
         <main className="w-full flex flex-col items-center">
             <AppH1Card user={user} type={"profile"} />

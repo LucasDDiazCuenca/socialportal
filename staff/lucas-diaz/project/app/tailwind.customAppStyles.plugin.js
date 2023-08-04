@@ -56,7 +56,9 @@ export default plugin(({ addBase, addComponents, addUtilities, theme }) => {
             width: "100%",
             display: "flex",
             justifyContent: "space-around",
-            borderTop: "1px solid rgb(228 228 231)"
+            borderTop: "1px solid rgb(228 228 231)",
+            zIndex: "20",
+            backgroundColor: "white"
         }
     })
 

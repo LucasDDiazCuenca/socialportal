@@ -3,6 +3,7 @@ import Register from "./pages/Register"
 import Home from "./pages/Home"
 import EditProfile from "./pages/EditProfile"
 import Friends from "./pages/Friends"
+import Avatar from "./pages/Avatar"
 import AppContext from "./AppContext"
 import { Route, Routes, Navigate, useNavigate } from "react-router-dom"
 import isUserLoggedIn from "./logic/isUserLoggedIn"
@@ -24,6 +25,8 @@ function App() {
       <Route path="/profile" element={isUserLoggedIn() ? <EditProfile /> : <Navigate to="/login" />} />
 
       <Route path="/friends" element={isUserLoggedIn() ? <Friends/> : <Navigate to="/login"/>} />
+
+      <Route path="/avatar" element={isUserLoggedIn() ? <Avatar/> : <Navigate to="/login" />}  />
     </Routes>
   </Provider>
 }

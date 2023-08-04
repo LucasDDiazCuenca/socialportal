@@ -41,7 +41,7 @@ export default function Register() {
             </Canvas>
         </div>
 
-        <div className="w-screen h-screen mt-32" >
+        <div className="w-screen h-screen pt-32" >
             <section className="text-white flex flex-row flex-wrap justify-center h-full">
                 <Form onSubmit={handleRegister}>
                     <div className="box-input">

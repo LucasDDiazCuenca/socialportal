@@ -22,7 +22,7 @@ export default function Friends() {
         }
     }, [])
 
-    return <div className=" w-screen h-full bg-white">
+    return <div className=" w-screen h-full bg-white pb-28">
         <AppHeader />
         <main className="w-full flex flex-col items-center">
             <AppH1Card user={user} type={"friends"} />
@@ -82,6 +82,51 @@ export default function Friends() {
 
                 <article className="w-full">
                     <h3 className="font-bold">Friend requests</h3>
+
+                    <div>
+                        <div className="flex justify-between items-center my-3">
+                            <p>ValentinRatKid</p>
+                            <div className="flex items-center justify-between w-3/12">
+                                <button className="inline-block w-8 h-8">
+                                    <img src="./icons/addFriend.png" alt="Agregar amigo" />
+                                </button>
+                                <button className="inline-block w-8 h-8">
+                                    <img src="./icons/deleteFriend.png" alt="Agregar amigo" />
+                                </button>
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+
+                    <div>
+                        <div className="flex justify-between items-center my-3">
+                            <p>ValentinRatKid</p>
+                            <div className="flex items-center justify-between w-3/12">
+                                <button className="inline-block w-8 h-8">
+                                    <img src="./icons/addFriend.png" alt="Agregar amigo" />
+                                </button>
+                                <button className="inline-block w-8 h-8">
+                                    <img src="./icons/deleteFriend.png" alt="Agregar amigo" />
+                                </button>
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+
+                    <div>
+                        <div className="flex justify-between items-center my-3">
+                            <p>ValentinRatKid</p>
+                            <div className="flex items-center justify-between w-3/12">
+                                <button className="inline-block w-8 h-8">
+                                    <img src="./icons/addFriend.png" alt="Agregar amigo" />
+                                </button>
+                                <button className="inline-block w-8 h-8">
+                                    <img src="./icons/deleteFriend.png" alt="Agregar amigo" />
+                                </button>
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
 
                     <div>
                         <div className="flex justify-between items-center my-3">

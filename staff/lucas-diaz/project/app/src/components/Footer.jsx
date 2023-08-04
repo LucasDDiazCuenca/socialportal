@@ -3,15 +3,15 @@ import {useAppContext} from "../hooks"
 export default function Footer({user}) {
     const { navigate } = useAppContext()
 
-    const handleNavigateButton = () => {
-        console.log("hola")
+    const handleNavigateToAvatar = () => {
+        navigate("/avatar")
     }
 
-    const handleNavigatetoHome = () => {
+    const handleNavigateToHome = () => {
         navigate("/login")
     }
 
-    const handleNavigatetoEditProfile = () => {
+    const handleNavigateToEditProfile = () => {
         navigate("/profile")
     }
 
@@ -19,10 +19,14 @@ export default function Footer({user}) {
         navigate("/friends")
     }
 
+    const handleNavigateButton = () => {
+        console.log("pending...")
+    }
+
     return <footer >
         <nav className="footer-menu w-full footerArea">
             
-            <button className="cursor-pointer" onClick={handleNavigatetoHome}>
+            <button className="cursor-pointer" onClick={handleNavigateToHome}>
                 <img src="./icons/home.png" alt="Add Avatar" />
             </button>
 
@@ -34,11 +38,11 @@ export default function Footer({user}) {
                 <img src="./icons/world.png" alt="Add Avatar" />
             </button> }
 
-            <button className="cursor-pointer" onClick={handleNavigateButton}>
+            <button className="cursor-pointer" onClick={handleNavigateToAvatar}>
                 <img src="./icons/profile.png" alt="Add Avatar" />
             </button>
 
-            <button className="cursor-pointer" onClick={handleNavigatetoEditProfile}>
+            <button className="cursor-pointer" onClick={handleNavigateToEditProfile}>
                 <img src="./icons/settings.png" alt="Add Avatar" />
             </button>
         </nav>
