@@ -28,6 +28,11 @@ const user = new Schema({
         reqired: true,
         default: []
     },
+    friendRequests: {
+        type: Array,
+        required: true, 
+        default: []
+    },
     connected:{
         type: Boolean,
         required: true,

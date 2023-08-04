@@ -52,8 +52,8 @@ User
 - email (string)
 - password (string)
 - friends( [ObjectId] )
+- friendRequests (Array)
 - status (string) --> "online"/"offline"
-
 
 Avatar 
 - id (ObjectId)
@@ -65,6 +65,9 @@ Avatar
 - actions (??)
 
 
+## LINK TO WORKFLOW PROCESS
+
+![](https://www.notion.so/lucasdiazcuenca/Project-Finale-4a4c88d6f47a4a7bae6213bbac849d38?pvs=4)
 
 
 

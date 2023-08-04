@@ -15,6 +15,10 @@ export default function Footer({user}) {
         navigate("/profile")
     }
 
+    const handleNavigateToFriends = () => {
+        navigate("/friends")
+    }
+
     return <footer >
         <nav className="footer-menu w-full footerArea">
             
@@ -22,7 +26,7 @@ export default function Footer({user}) {
                 <img src="./icons/home.png" alt="Add Avatar" />
             </button>
 
-            <button className="cursor-pointer" onClick={handleNavigateButton}>
+            <button className="cursor-pointer" onClick={handleNavigateToFriends}>
                 <img src="./icons/friends.png" alt="Add Avatar" />
             </button>
 
