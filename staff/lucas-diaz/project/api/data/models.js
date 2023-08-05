@@ -26,11 +26,13 @@ const user = new Schema({
     friends:{
         type: [ObjectId],
         reqired: true,
-        default: []
+        default: [],
+        ref: "user"
     },
     friendRequests: {
-        type: Array,
+        type: [ObjectId],
         required: true, 
+        ref: "User",
         default: []
     },
     connected:{
@@ -42,7 +44,58 @@ const user = new Schema({
 
 const User = model("User", user)
 
+const avatar = new Schema({
+    author: {
+        type: ObjectId,
+        required: true,
+        ref: "User"
+    }, 
+    name: {
+        type: String,
+        required: true,  
+    },
+    personality: {
+        type: String,
+        required: true,  
+    },
+    age: {
+        type: String,
+        required: true,  
+    }, 
+    state:{
+        type: String,
+        required: true,  
+    },
+    hair:{
+        type: String,
+        required: true,
+    },
+    skin:{
+        type: String,
+        required: true,
+    },
+    shirt:{
+        type: String,
+        required: true,
+    },
+    trousers:{
+        type: String,
+        required: true,
+    },
+    shoes:{
+        type: String,
+        required: true,
+    },
+    emotions:{
+        type: Array,
+        required: true, 
+        default: []
+    }
+})
+
+const Avatar = model("Avatar", avatar)
 
 module.exports = {
-    User
+    User,
+    Avatar
 }

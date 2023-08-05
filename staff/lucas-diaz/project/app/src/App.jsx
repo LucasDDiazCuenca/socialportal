@@ -29,6 +29,8 @@ function App() {
       <Route path="/avatar" element={isUserLoggedIn() ? <Avatar/> : <Navigate to="/login" />}  />
     </Routes>
   </Provider>
+
+
 }
 
 export default App
