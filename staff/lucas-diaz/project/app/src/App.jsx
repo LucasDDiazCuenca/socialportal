@@ -24,13 +24,11 @@ function App() {
 
       <Route path="/profile" element={isUserLoggedIn() ? <EditProfile /> : <Navigate to="/login" />} />
 
-      <Route path="/friends" element={isUserLoggedIn() ? <Friends/> : <Navigate to="/login"/>} />
+      <Route path="/friends" element={isUserLoggedIn() ? <Friends /> : <Navigate to="/login" />} />
 
-      <Route path="/avatar" element={isUserLoggedIn() ? <Avatar/> : <Navigate to="/login" />}  />
+      <Route path="/avatar" element={isUserLoggedIn() ? <Avatar /> : <Navigate to="/login" />} />
     </Routes>
   </Provider>
-
-
 }
 
 export default App

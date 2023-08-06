@@ -25,7 +25,7 @@ export default function BoyExperience(props) {
             shirt: "#f86627",
             trousers: "#a0a0a0",
             shoes: "#f86627", 
-            "save changes": button(() => console.log("changes saved correctly"))
+            "save colors": button(() => console.log("changes saved correctly"))
         })
 
         materials["Hair 2"].color = new THREE.Color(hair)
@@ -35,7 +35,7 @@ export default function BoyExperience(props) {
         materials.Pants.color = new THREE.Color(trousers)
         materials["Shores.002"].color = new THREE.Color(shoes)
 
-        console.log(materials["Shores.002"].color)
+        // console.log(materials["Shores.002"].color)
 
     }
 
