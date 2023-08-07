@@ -7,5 +7,8 @@ module.exports = {
     sendFriendRequest: require("./users/sendFriendRequest"), 
     deleteFriendRequest: require("./users/deleteFriendRequest"),
     addFriend: require("./users/addFriend"),
-    deleteFriend: require("./users/deleteFriend")
+    deleteFriend: require("./users/deleteFriend"),
+    retrieveUserFriendsRequests: require("./users/retrieveUserFriendsRequests"),
+    retrieveUserFriends: require("./users/retrieveUserFriends"),
+    createAvatar: require("./avatars/createAvatar")
 }

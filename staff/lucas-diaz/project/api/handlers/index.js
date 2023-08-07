@@ -8,5 +8,8 @@ module.exports = {
     sendFriendRequestHandler: require("./sendFriendRequestHandler"), 
     deleteFriendRequestHandler: require("./deleteFriendRequestHandler"),
     addFriendHandler: require("./addFriendHandler"),
-    deleteFriendHandler: require("./deleteFriendHandler")
+    deleteFriendHandler: require("./deleteFriendHandler"),
+    retrieveUserFriendsHandler: require("./retrieveUserFriendsHandler"),
+    retrieveUserFriendsRequestsHandler: require("./retrieveUserFriendsRequestsHandler"),
+    createAvatarHandler: require("./createAvatarHandler")
 }
