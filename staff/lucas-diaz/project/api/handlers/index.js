@@ -6,5 +6,7 @@ module.exports = {
     updateUserPasswordHandler: require("./updateUserPasswordHandler"),
     updateUserUsernameHandler: require("./updateUserUsernameHandler"),
     sendFriendRequestHandler: require("./sendFriendRequestHandler"), 
-    deleteFriendRequestHandler: require("./deleteFriendRequestHandler")
+    deleteFriendRequestHandler: require("./deleteFriendRequestHandler"),
+    addFriendHandler: require("./addFriendHandler"),
+    deleteFriendHandler: require("./deleteFriendHandler")
 }

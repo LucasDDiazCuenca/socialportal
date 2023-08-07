@@ -16,8 +16,8 @@ module.exports = function deleteFriendRequest(userId, requestedUsername) {
         const requestedUser = await User.findOne({ name: requestedUsername })
         if (!requestedUser) throw new ExistenceError("requested Friend not found")
 
-        if (user.friendRequests.includes(requestedUser.id)) {
-            await user.updateOne({ $pull: { friendRequests: requestedUser.id } });
-        } else throw new ExistenceError("Request not founded")
+        if (!user.friendRequests.includes(requestedUser.id)) throw new ExistenceError("Request not founded")
+
+        await user.updateOne({ $pull: { friendRequests: requestedUser.id } });
     })()
 }

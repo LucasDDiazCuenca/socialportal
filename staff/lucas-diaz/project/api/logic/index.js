@@ -5,5 +5,7 @@ module.exports = {
     updateUserPassword: require("./users/updateUserPassword"),
     updateUserUsername: require("./users/updateUserUsername"), 
     sendFriendRequest: require("./users/sendFriendRequest"), 
-    deleteFriendRequest: require("./users/deleteFriendRequest")
+    deleteFriendRequest: require("./users/deleteFriendRequest"),
+    addFriend: require("./users/addFriend"),
+    deleteFriend: require("./users/deleteFriend")
 }

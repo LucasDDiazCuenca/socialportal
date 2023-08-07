@@ -6,7 +6,7 @@ const {
 } = require("com")
 const { User } = require("../../data/models")
 
-module.exports = function sendFriendRequest(userId, requestedUsername) {
+module.exports = function deleteFriend(userId, requestedUsername) {
     validateId(userId)
     validateText(requestedUsername)
 
@@ -15,12 +15,11 @@ module.exports = function sendFriendRequest(userId, requestedUsername) {
         if (!user) throw new ExistenceError("user not found")
 
         const requestedUser = await User.findOne({ name: requestedUsername })
-        if (!requestedUser) throw new ExistenceError("requestedFriend not found")
+        if (!requestedUser) throw new ExistenceError("requestedFriend wasnt found")
 
 
-        if (requestedUser.friendRequests.includes(userId)) throw new DuplicityError("This request alredy exist") 
+        if (!user.friends.includes(requestedUser.id)) throw new ExistenceError("requestedUser not found in user friends array")
 
-
-        await requestedUser.updateOne({ $push: { friendRequests: userId } })
+        await user.updateOne({ $pull: { friends: requestedUser.id } });
     })()
 }
