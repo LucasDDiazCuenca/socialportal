@@ -6,7 +6,7 @@ const express = require("express")
 const  cors  = require("cors")
 const bodyParser = require("body-parser")
 
-const { helloApiHandler, registerUserHandler, authenticateUserHandler, retrieveUserHandler } = require("./handlers")
+const { helloApiHandler, registerUserHandler, authenticateUserHandler, retrieveUserHandler, updateUserPasswordHandler, updateUserUsernameHandler } = require("./handlers")
 
 mongoose.connect(process.env.MONGODB_URL)
     .then(() => {
@@ -21,6 +21,8 @@ mongoose.connect(process.env.MONGODB_URL)
         api.post("/users", jsonBodyParser, registerUserHandler)
         api.post("/users/auth", jsonBodyParser, authenticateUserHandler)
         api.get("/users", retrieveUserHandler)
+        api.patch("/users/password", jsonBodyParser, updateUserPasswordHandler)
+        api.patch("/users/username", jsonBodyParser, updateUserUsernameHandler)
 
         
         api.listen(process.env.PORT, () => console.log(`Process running in port ${process.env.PORT}`))
