@@ -1,6 +1,6 @@
-import {useAppContext} from "../hooks"
+import { useAppContext } from "../hooks"
 
-export default function Footer({user}) {
+export default function Footer({ user }) {
     const { navigate } = useAppContext()
 
     const handleNavigateToAvatar = () => {
@@ -25,7 +25,7 @@ export default function Footer({user}) {
 
     return <footer >
         <nav className="footer-menu w-full footerArea">
-            
+
             <button className="cursor-pointer" onClick={handleNavigateToHome}>
                 <img src="./icons/home.png" alt="Add Avatar" />
             </button>
@@ -34,9 +34,9 @@ export default function Footer({user}) {
                 <img src="./icons/friends.png" alt="Add Avatar" />
             </button>
 
-            {user?.avatar.length > 0 && <button className="cursor-pointer" onClick={handleNavigateButton}>
+            {user?.avatar && <button className="cursor-pointer" onClick={handleNavigateButton}>
                 <img src="./icons/world.png" alt="Add Avatar" />
-            </button> }
+            </button>}
 
             <button className="cursor-pointer" onClick={handleNavigateToAvatar}>
                 <img src="./icons/profile.png" alt="Add Avatar" />

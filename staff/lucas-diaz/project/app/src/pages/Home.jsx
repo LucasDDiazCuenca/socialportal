@@ -50,7 +50,7 @@ export default function () {
                 </div>
             </article>
 
-            {user?.avatar.length > 0 && <button className="bg-[#452b8e] text-white p-3 w-4/6 sm:w-80 rounded-2xl mt-32">Go to room</button>}
+            {user?.avatar && <button className="bg-[#452b8e] text-white p-3 w-4/6 sm:w-80 rounded-2xl mt-32">Go to room</button>}
         </main>
 
         <Footer user={user} />
