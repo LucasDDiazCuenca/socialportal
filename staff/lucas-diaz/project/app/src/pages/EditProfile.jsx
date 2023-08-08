@@ -4,17 +4,19 @@ import AppH1Card from "../components/library/AppH1Card"
 import Footer from "../components/Footer"
 import { useAppContext } from "../hooks"
 import logOutUser from "../logic/logOutUser.js"
-
 import { useEffect, useState } from "react"
+import updateUserUsername from "../logic/updateUserUsername"
+import updateUserPassword from "../logic/updateUserPassword"
 
 
 export default function EditProfile() {
     const [user, setUser] = useState(null)
     const { navigate } = useAppContext()
+    const [userNameUpdated, setUserNameUpdated] = useState(false)
+    const [passwordUpdated, setPasswordUpdated] = useState(false)
 
     useEffect(() => {
         try {
-
             (async () => {
                 const user = await retrieveUser()
 
@@ -23,13 +25,43 @@ export default function EditProfile() {
         } catch (error) {
             alert(error.message)
         }
-    }, [])
-
-
+    }, [userNameUpdated])
 
     const handleLogOutClick = () => {
         logOutUser()
         navigate("/login")
+    }
+
+    const handleUpdateUserUsername = event => {
+        event.preventDefault()
+        const newUserName = event.target.userName.value
+        try {
+            (async () => {
+                await updateUserUsername(newUserName)
+                setUserNameUpdated(!userNameUpdated)
+                event.target.reset()
+            })()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleUpdatePassword = event => {
+        event.preventDefault()
+        const password = event.target.password.value
+        const newPassword = event.target.newPassword.value
+        const newPasswordConfirmation = event.target.newPasswordConfirmation.value
+
+        try{
+            (async() => {
+                await updateUserPassword(password, newPassword, newPasswordConfirmation)
+                setPasswordUpdated(!passwordUpdated)
+                event.target.reset()
+            })()
+        }catch(error){
+            console.log(error)
+        }
+
     }
 
     return <div className=" w-screen h-screen bg-white ">
@@ -39,7 +71,7 @@ export default function EditProfile() {
 
             <section className="flex flex-col flex-wrap w-full">
 
-                <form className="w-full flex flex-col items-center mt-4">
+                <form className="w-full flex flex-col items-center mt-4" onSubmit={handleUpdateUserUsername}>
                     <div className="w-11/12 flex flex-col items-center">
                         <div className="flex flex-col w-full sm:w-80">
                             <label className="mb-2" >Username:</label>
@@ -50,7 +82,7 @@ export default function EditProfile() {
                     </div>
                 </form>
 
-                <form className="w-full flex flex-col items-center mt-8">
+                <form className="w-full flex flex-col items-center mt-8" onSubmit={handleUpdatePassword}>
                     <div className="w-11/12 flex flex-col items-center">
                         <div className="flex flex-col w-full sm:w-80">
                             <label className="p-2">Current password:</label>
@@ -64,7 +96,7 @@ export default function EditProfile() {
 
                         <div className=" flex flex-col w-full sm:w-80">
                             <label className="p-2">New password repetition:</label>
-                            <input className="border-2 border-solid border-[#A4A4A4] sm:w-80 p-2 rounded-xl" type="password" name="newPasswordRepetition" placeholder="New password repetition" />
+                            <input className="border-2 border-solid border-[#A4A4A4] sm:w-80 p-2 rounded-xl" type="password" name="newPasswordConfirmation" placeholder="New password repetition" />
                         </div>
 
                         <button className="bg-[#452b8e] text-white p-2 mt-3 w-10/12 sm:w-80 rounded-xl" type="submit">Save</button>

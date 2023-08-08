@@ -6,16 +6,20 @@ export default function registerUser(name, email, password) {
     validateEmail(email)
     validatePassword(password)
 
-    return fetch(`${import.meta.env.VITE_API_URL}/users`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ name, email, password })
-    })
-        .then(res => {
-            if (res.status !== 204) {
-                return res.json().then(({ error: message }) => { throw new Error(message) })
-            }
+    return (async () => {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/users`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ name, email, password })
         })
+
+        if(res.status !== 204){
+            const { message } = await res.json()
+            throw new Error(message)
+        }
+
+        return
+    })()
 }

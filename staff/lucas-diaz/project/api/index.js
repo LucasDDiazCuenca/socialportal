@@ -41,6 +41,5 @@ mongoose.connect(process.env.MONGODB_URL)
 
 
         api.listen(process.env.PORT, () => console.log(`Process running in port ${process.env.PORT}`))
-
     })
     .catch(console.error)

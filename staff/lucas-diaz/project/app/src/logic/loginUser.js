@@ -1,5 +1,5 @@
 import { validators } from 'com'
-import  context  from "./context"
+import context from "./context"
 
 
 
@@ -9,21 +9,27 @@ export default function loginUser(email, password) {
     validateEmail(email);
     validatePassword(password);
 
-    return fetch(`${import.meta.env.VITE_API_URL}/users/auth`, {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-    })
-        .then(res => {
-            if (res.status !== 202) {
-                return res.json().then(({ error: message }) => { throw new Error(message) })
-            }
-            return res.json()
+
+    return (async () => {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/users/auth`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
         })
-        .then(({ token }) => token)
-        .then(token => {
-            context.token = token
-        })
+
+        if (res.status !== 202) {
+            const { message } = await res.json()
+
+            throw new Error(message)
+        }
+
+        const { token } = await res.json() //esto es porque lo tenemos en un objeto, si no, no deberia de ir desrtucturado
+
+        context.token = token
+
+        return
+
+    })()
 }

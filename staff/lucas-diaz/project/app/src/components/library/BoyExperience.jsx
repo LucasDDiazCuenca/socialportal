@@ -12,10 +12,6 @@ export default function BoyExperience(props) {
 
     //useEffect para sacar los colores por default 
 
-
-
-
-
     // let hair, skin, shirt, trousers, shoes
 
     if (active) {

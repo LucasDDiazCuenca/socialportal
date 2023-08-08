@@ -20,8 +20,8 @@ const user = new Schema({
         minLength: 8
     },
     avatar: {
-        type: Array ,
-        default: []
+        type: Boolean ,
+        default: false
     }, 
     friends:{
         type: [ObjectId],
