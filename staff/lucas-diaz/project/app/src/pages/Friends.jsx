@@ -1,7 +1,6 @@
 import AppHeader from "../components/library/AppHeader"
 import AppH1Card from "../components/library/AppH1Card"
 import Footer from "../components/Footer"
-
 import retrieveUser from "../logic/retrieveUser"
 import { useEffect, useState } from "react"
 

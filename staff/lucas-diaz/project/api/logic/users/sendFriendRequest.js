@@ -21,10 +21,10 @@ module.exports = function sendFriendRequest(userId, requestedUsername) {
 
         if (requestedUser.friendRequests.includes(userId)) throw new DuplicityError("This request alredy exist")
 
+        if (requestedUser.friends.includes(userId)) throw new DuplicityError("Requested user has already this userId in friend list")
+
 
         await requestedUser.updateOne({ $push: { friendRequests: new ObjectId(userId) } })
     })()
 }
 
-
-//TODO improve code when we dont have duplicity in friends requests BUT we already are friends. 

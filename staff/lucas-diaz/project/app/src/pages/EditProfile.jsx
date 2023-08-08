@@ -52,13 +52,13 @@ export default function EditProfile() {
         const newPassword = event.target.newPassword.value
         const newPasswordConfirmation = event.target.newPasswordConfirmation.value
 
-        try{
-            (async() => {
+        try {
+            (async () => {
                 await updateUserPassword(password, newPassword, newPasswordConfirmation)
                 setPasswordUpdated(!passwordUpdated)
                 event.target.reset()
             })()
-        }catch(error){
+        } catch (error) {
             console.log(error)
         }
 
@@ -75,7 +75,7 @@ export default function EditProfile() {
                     <div className="w-11/12 flex flex-col items-center">
                         <div className="flex flex-col w-full sm:w-80">
                             <label className="mb-2" >Username:</label>
-                            <input className="border-2 border-solid border-[#A4A4A4] sm:w-80 p-2 rounded-xl" type="text" name="userName" placeholder="Username" />
+                            <input className="border-2 border-solid border-[#A4A4A4] sm:w-80 p-2 rounded-xl" type="text" name="userName" />
                         </div>
 
                         <button className="bg-[#452b8e] text-white p-2 mt-3 w-10/12 sm:w-80 rounded-xl" type="submit" >Save</button>
@@ -86,17 +86,17 @@ export default function EditProfile() {
                     <div className="w-11/12 flex flex-col items-center">
                         <div className="flex flex-col w-full sm:w-80">
                             <label className="p-2">Current password:</label>
-                            <input className="border-2 border-solid border-[#A4A4A4] sm:w-80 p-2 rounded-xl" type="password" name="password" placeholder="User password" />
+                            <input className="border-2 border-solid border-[#A4A4A4] sm:w-80 p-2 rounded-xl" type="password" name="password" />
                         </div>
 
                         <div className=" flex flex-col w-full sm:w-80">
                             <label className="p-2">New password:</label>
-                            <input className="border-2 border-solid border-[#A4A4A4] sm:w-80 p-2 rounded-xl" type="password" name="newPassword" placeholder="New password" />
+                            <input className="border-2 border-solid border-[#A4A4A4] sm:w-80 p-2 rounded-xl" type="password" name="newPassword" />
                         </div>
 
                         <div className=" flex flex-col w-full sm:w-80">
                             <label className="p-2">New password repetition:</label>
-                            <input className="border-2 border-solid border-[#A4A4A4] sm:w-80 p-2 rounded-xl" type="password" name="newPasswordConfirmation" placeholder="New password repetition" />
+                            <input className="border-2 border-solid border-[#A4A4A4] sm:w-80 p-2 rounded-xl" type="password" name="newPasswordConfirmation" />
                         </div>
 
                         <button className="bg-[#452b8e] text-white p-2 mt-3 w-10/12 sm:w-80 rounded-xl" type="submit">Save</button>

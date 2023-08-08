@@ -20,7 +20,7 @@ export default function Login() {
                 .catch(error => alert(error.message, "error"))
 
         } catch (error) {
-            alert(error.message)
+            alert(error)
         }
 
     }
