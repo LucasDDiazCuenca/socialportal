@@ -1,13 +1,10 @@
 
 export default function AppH1Card({ user, type = "home" }) {
-    console.log(user)
-
-
 
     const choosePhrase = () => {
         switch (type) {
             case "home":
-                return user?.avatar  ? "Welcome back 👋🏻" : "Welcome for the first time 🎉"
+                return user?.avatar ? "Welcome back 👋🏻" : "Welcome for the first time 🎉"
             case "profile":
                 return "Here you can edit your profile"
             case "friends":
