@@ -21,6 +21,8 @@ module.exports = function addFriend(userId, requestedUsername) {
         if (!user.friendRequests.includes(requestedUser.id)) throw new ExistenceError("This request doesnt exist")
 
         await user.updateOne({ $push: { friends: requestedUser.id } });
+        await requestedUser.updateOne({ $push: { friends: user.id } });
+
         await user.updateOne({ $pull: { friendRequests: requestedUser.id } })
     })()
 }

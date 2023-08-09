@@ -21,10 +21,9 @@ module.exports = function retrieveUserFriendsRequests(userId){
                 const _friend = await User.findById(friend)
                 
                 friendsRequestsNames.push(_friend.name)
-
-                return friendsRequestsNames
             }
-
+            
+            return friendsRequestsNames
         } 
         return []
     })()

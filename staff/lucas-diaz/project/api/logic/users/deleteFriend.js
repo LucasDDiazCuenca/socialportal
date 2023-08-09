@@ -21,5 +21,6 @@ module.exports = function deleteFriend(userId, requestedUsername) {
         if (!user.friends.includes(requestedUser.id)) throw new ExistenceError("requestedUser not found in user friends array")
 
         await user.updateOne({ $pull: { friends: requestedUser.id } });
+        await requestedUser.updateOne({ $pull: { friends: user.id } });
     })()
 }
