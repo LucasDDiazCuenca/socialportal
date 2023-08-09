@@ -26,8 +26,6 @@ module.exports = function registerUser(name, email, password) {
     validateEmail(email)
     validatePassword(password)
 
-    let avatar = []
-
     return (async () => {
         try {
             await User.create({ name, email, password })
