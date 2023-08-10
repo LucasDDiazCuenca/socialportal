@@ -13,16 +13,62 @@ export default function Avatar() {
     const [user, setUser] = useState(null)
     const [boyClicked, setboyClicked] = useState(null)
     const [girlClicked, setGirlClicked] = useState(null)
+    const [selectedEmotions, setSelectedEmotions] = useState({
+        clap: false,
+        dance: false,
+        dead: false,
+        laugh: false,
+        victory: false,
+        wave: false
+    });
+
+    let model = ""
+    let colors
+
+    console.log(selectedEmotions)
 
     const toggleBoyAvatarImg = () => {
         setboyClicked(true)
         setGirlClicked(false)
+        model = "./models/boy.glb"
+        console.log(model)
     }
 
     const toggleGirlAvatarImg = () => {
         setGirlClicked(true)
         setboyClicked(false)
+        model = "./models/girl.glb"
+        console.log(model)
     }
+
+    const handleCreateAvatar = () => {
+        try {
+            (async() => {
+                
+            })()
+        } catch (error) {
+            console.log(error)
+        }
+
+        //llevarle a la pagina principal
+    }
+
+    const handleRetrieveModelInformation = (info) => {
+        colors = info
+        console.log(colors)
+    }
+
+    const toggleEmotion = (emotion) => {
+        const selectedCount = Object.values(selectedEmotions).filter(value => value).length
+        if (!selectedEmotions[emotion] && selectedCount >= 3) {
+            return
+        }
+        setSelectedEmotions(prevState => ({
+            ...prevState,
+            [emotion]: !prevState[emotion]
+        }));
+    };
+    
 
     useEffect(() => {
         try {
@@ -90,7 +136,7 @@ export default function Avatar() {
                         }}
                     >
                         {girlClicked && <GirlBackgroundExperience active={girlClicked} />}
-                        {boyClicked && <BoyBackgroundExperience active={boyClicked} />}
+                        {boyClicked && <BoyBackgroundExperience active={boyClicked} info={handleRetrieveModelInformation}/>}
                     </Canvas> : <img src="./image/avatarPlaceHolder.png" />}
                 </div >
 
@@ -100,28 +146,19 @@ export default function Avatar() {
                 <h2 className="text-lg font-bold my-3">Select emotions:</h2>
                 <p className="pb-3">Select 3 from this 6 emotions</p>
                 <div className="flex flex-wrap justify-around gap-2">
-                    <button className=" w-28">
-                        <img src="./icons/emotions/clap.png" alt="clap icon" />
+                {Object.keys(selectedEmotions).map(emotion => (
+                    <button
+                        key={emotion}
+                        className={`w-28 ${selectedEmotions[emotion] ? "border-2 border-solid border-[#5EEFB2] rounded-2xl" : ""}`}
+                        onClick={() => toggleEmotion(emotion)}
+                    >
+                        <img src={`./icons/emotions/${emotion}.png`} alt={`${emotion} icon`} />
                     </button>
-                    <button className="w-28">
-                        <img src="./icons/emotions/dance.png" alt="clap icon" />
-                    </button>
-                    <button className="w-28">
-                        <img src="./icons/emotions/dead.png" alt="clap icon" />
-                    </button>
-                    <button className="w-28">
-                        <img src="./icons/emotions/laugh.png" alt="clap icon" />
-                    </button>
-                    <button className="w-28">
-                        <img src="./icons/emotions/victory.png" alt="clap icon" />
-                    </button>
-                    <button className="w-28">
-                        <img src="./icons/emotions/wave.png" alt="clap icon" />
-                    </button>
+                ))}
                 </div>
             </section>
 
-            <button className="bg-[#452b8e] text-white p-2 mt-10 w-10/12 sm:w-80 rounded-xl" type="submit" >{user?.avatar.length > 0 ? "Modify avatar" : "Create avatar"}</button>
+            <button className="bg-[#452b8e] text-white p-2 mt-10 w-10/12 sm:w-80 rounded-xl" type="submit" onClick={handleCreateAvatar} >{user?.avatar.length > 0 ? "Modify avatar" : "Create avatar"}</button>
         </main>
         <Footer />
     </div>

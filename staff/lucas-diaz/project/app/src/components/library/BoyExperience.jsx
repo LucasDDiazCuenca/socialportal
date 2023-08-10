@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
 import * as THREE from "three"
 import { button, useControls } from "leva"
@@ -6,23 +6,29 @@ import { button, useControls } from "leva"
 export default function BoyExperience(props) {
     const group = useRef();
     const { nodes, materials, animations } = useGLTF("./models/boy.glb");
-
     const { actions } = useAnimations(animations, group)
     const active = props.active
 
-    //useEffect para sacar los colores por default 
-
-    // let hair, skin, shirt, trousers, shoes
-
     if (active) {
+
         const { hair, skin, shirt, trousers, shoes } = useControls("Edit Avatar:", {
             hair: "#484848",
             skin: "#f6d3c2",
             shirt: "#f86627",
             trousers: "#a0a0a0",
-            shoes: "#f86627", 
-            "save colors": button(() => console.log("changes saved correctly"))
+            shoes: "#f86627",
+            "save colors": button(() => console.log("colors saved"))
         })
+
+        const colorInfo = {
+            hair,
+            skin,
+            shirt,
+            trousers,
+            shoes
+        }
+
+        props.info(colorInfo)
 
         materials["Hair 2"].color = new THREE.Color(hair)
         materials["Hair 1"].color = new THREE.Color(hair)
@@ -30,9 +36,6 @@ export default function BoyExperience(props) {
         materials["Shirt 2"].color = new THREE.Color(shirt)
         materials.Pants.color = new THREE.Color(trousers)
         materials["Shores.002"].color = new THREE.Color(shoes)
-
-        // console.log(materials["Shores.002"].color)
-
     }
 
     useEffect(() => {

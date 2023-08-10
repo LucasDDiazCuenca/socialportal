@@ -7,9 +7,10 @@ const {
 const { User, Avatar } = require("../../data/models")
 
 
-module.exports = function createAvatar(userId, name, personality, age, state, hair, skin, shirt, trousers, shoes, emotions = []) {
+module.exports = function createAvatar(userId, model, name, personality, age, state, hair, skin, shirt, trousers, shoes, emotions = []) {
     validateId(userId)
     validateText(name)
+    validateText(model)
     validateText(personality)
     validateText(age)
     validateText(state)
@@ -23,10 +24,11 @@ module.exports = function createAvatar(userId, name, personality, age, state, ha
         const user = await User.findById(userId)
         if (!user) throw new ExistenceError("user not found")
 
-
+        await user.updateOne({avatar: true})
 
         await Avatar.create({
             author: userId,
+            model,
             name,
             personality,
             age,

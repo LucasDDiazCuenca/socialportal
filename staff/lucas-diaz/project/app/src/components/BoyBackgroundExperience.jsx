@@ -1,8 +1,10 @@
 import { OrbitControls, Sky } from '@react-three/drei'
 import BoyExperience from "./library/BoyExperience"
+import { useState } from 'react'
 
+export default function BoyBackgroundExperience({active, info}) {
+    const [update, setUpdate] = useState(false)
 
-export default function BoyBackgroundExperience({active}) {
 
     return <>
         {active && <OrbitControls makeDefault />}
@@ -21,7 +23,7 @@ export default function BoyBackgroundExperience({active}) {
             shadow-camera-far={10}
         />
         <ambientLight intensity={0.5} />
-        <BoyExperience position={[0.3, -2, -1]} active={active}/>
+        <BoyExperience position={[0.3, -2, -1]} active={active} info={info}/>
 
         <mesh receiveShadow position-y={-2} rotation-x={- Math.PI * 0.5} scale={active ? 12 : 6}>
             <planeGeometry />

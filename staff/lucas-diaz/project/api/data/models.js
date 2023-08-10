@@ -50,6 +50,10 @@ const avatar = new Schema({
         required: true,
         ref: "User"
     }, 
+    model:{
+        type: String,
+        required: true,
+    },
     name: {
         type: String,
         required: true,  
