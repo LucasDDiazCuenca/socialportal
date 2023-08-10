@@ -4,70 +4,65 @@ import Footer from "../components/Footer"
 import { Canvas } from '@react-three/fiber'
 import BoyBackgroundExperience from "../components/BoyBackgroundExperience"
 import GirlBackgroundExperience from "../components/GirlBackgroundExperience"
-
+import createAvatar from "../logic/createAvatar"
 import retrieveUser from "../logic/retrieveUser"
 import { useEffect, useState } from "react"
-
 
 export default function Avatar() {
     const [user, setUser] = useState(null)
     const [boyClicked, setboyClicked] = useState(null)
     const [girlClicked, setGirlClicked] = useState(null)
-    const [selectedEmotions, setSelectedEmotions] = useState({
-        clap: false,
-        dance: false,
-        dead: false,
-        laugh: false,
-        victory: false,
-        wave: false
-    });
-
-    let model = ""
+    const [selectedEmotions, setSelectedEmotions] = useState([]);
+    const [model, setModel] = useState("")
+    const [name, setName] = useState(null)
+    const [personality, setPersonality] = useState(null)
+    const [age, setAge] = useState(null)
+    const emotions = ["clap", "dance", "dead", "laugh", "victory", "wave"]
     let colors
-
-    console.log(selectedEmotions)
 
     const toggleBoyAvatarImg = () => {
         setboyClicked(true)
         setGirlClicked(false)
-        model = "./models/boy.glb"
+        setModel("./models/boy.glb")
         console.log(model)
     }
-
     const toggleGirlAvatarImg = () => {
         setGirlClicked(true)
         setboyClicked(false)
-        model = "./models/girl.glb"
+        setModel("./models/girl.glb")
         console.log(model)
     }
-
-    const handleCreateAvatar = () => {
-        try {
-            (async() => {
-                
-            })()
-        } catch (error) {
-            console.log(error)
+    const toggleEmotion = (emotion) => {
+        if (selectedEmotions.includes(emotion)) {
+            setSelectedEmotions(prevState => prevState.filter(e => e !== emotion));
+        } else if (selectedEmotions.length < 3) {
+            setSelectedEmotions(prevState => [...prevState, emotion]);
         }
-
-        //llevarle a la pagina principal
+    }
+    const setNameInformation = event => {
+        setName(event.target.value)
+    }
+    const setPersonalityInformation = event => {
+        setPersonality(event.target.value)
+    }
+    const setAgeInformation = event => {
+        setAge(event.target.value)
     }
 
     const handleRetrieveModelInformation = (info) => {
         colors = info
-        console.log(colors)
     }
 
-    const toggleEmotion = (emotion) => {
-        const selectedCount = Object.values(selectedEmotions).filter(value => value).length
-        if (!selectedEmotions[emotion] && selectedCount >= 3) {
-            return
-        }
-        setSelectedEmotions(prevState => ({
-            ...prevState,
-            [emotion]: !prevState[emotion]
-        }));
-    };
+    const handleCreateAvatar = () => {
+        (async () => {
+            try {
+                console.log(model, name, personality, age, colors.hair, colors.skin, colors.shirt, colors.trousers, colors.shoes, selectedEmotions);
+                await createAvatar(model, name, personality, age, colors.hair, colors.skin, colors.shirt, colors.trousers, colors.shoes, emotions);
+            } catch (error) {
+                alert(error.message);
+            }
+        })();
+    }
     
 
     useEffect(() => {
@@ -136,25 +131,34 @@ export default function Avatar() {
                         }}
                     >
                         {girlClicked && <GirlBackgroundExperience active={girlClicked} />}
-                        {boyClicked && <BoyBackgroundExperience active={boyClicked} info={handleRetrieveModelInformation}/>}
+                        {boyClicked && <BoyBackgroundExperience active={boyClicked} info={handleRetrieveModelInformation} />}
                     </Canvas> : <img src="./image/avatarPlaceHolder.png" />}
                 </div >
 
             </section>
-            {/* <section className="w-11/12 sm:w-96"></section> */}
+
+            <section className="w-11/12 sm:w-96">
+                <h2 className="text-lg font-bold my-3 mt-10">Type Avatar information:</h2>
+                <form className="w-full">
+                    <input className="w-full border border-1 rounded-xl p-2 my-2" type="text" placeholder="Avatar name" name="avatarname" onChange={setNameInformation} />
+                    <input className="w-full border border-1 rounded-xl p-2 my-2" type="text" placeholder="Avatar personality" name="personality" onChange={setPersonalityInformation} />
+                    <input className="w-full border border-1 rounded-xl p-2 my-2" type="text" placeholder="Avatar age" name="age" onChange={setAgeInformation} />
+                </form>
+            </section>
+
             <section className="w-11/12 sm:w-96">
                 <h2 className="text-lg font-bold my-3">Select emotions:</h2>
                 <p className="pb-3">Select 3 from this 6 emotions</p>
                 <div className="flex flex-wrap justify-around gap-2">
-                {Object.keys(selectedEmotions).map(emotion => (
-                    <button
-                        key={emotion}
-                        className={`w-28 ${selectedEmotions[emotion] ? "border-2 border-solid border-[#5EEFB2] rounded-2xl" : ""}`}
-                        onClick={() => toggleEmotion(emotion)}
-                    >
-                        <img src={`./icons/emotions/${emotion}.png`} alt={`${emotion} icon`} />
-                    </button>
-                ))}
+                    {emotions.map(emotion => (
+                        <button
+                            key={emotion}
+                            className={`w-28 ${selectedEmotions.includes(emotion) ? "border-2 border-solid border-[#5EEFB2] rounded-2xl" : ""}`}
+                            onClick={() => toggleEmotion(emotion)}
+                        >
+                            <img src={`./icons/emotions/${emotion}.png`} alt={`${emotion} icon`} />
+                        </button>
+                    ))}
                 </div>
             </section>
 

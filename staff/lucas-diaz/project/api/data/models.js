@@ -66,10 +66,6 @@ const avatar = new Schema({
         type: String,
         required: true,  
     }, 
-    state:{
-        type: String,
-        required: true,  
-    },
     hair:{
         type: String,
         required: true,

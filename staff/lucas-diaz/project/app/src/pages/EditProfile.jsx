@@ -19,7 +19,6 @@ export default function EditProfile() {
         try {
             (async () => {
                 const user = await retrieveUser()
-
                 setUser(user)
             })()
         } catch (error) {

@@ -1,24 +1,23 @@
 require("dotenv").config()
 const {
     validators: { validateText, validateId },
-    errors: { DuplicityError, UnknownError }
+    errors: { ExistenceError }
 } = require("com")
 
 const { User, Avatar } = require("../../data/models")
 
 
-module.exports = function createAvatar(userId, model, name, personality, age, state, hair, skin, shirt, trousers, shoes, emotions = []) {
+module.exports = function createAvatar(userId, model, name, personality, age, hair, skin, shirt, trousers, shoes, emotions) {
     validateId(userId)
     validateText(name)
     validateText(model)
     validateText(personality)
     validateText(age)
-    validateText(state)
+    validateText(hair)
     validateText(skin)
     validateText(shirt)
     validateText(trousers)
     validateText(shoes)
-    //Pending validation of [emotions]
 
     return(async() => {
         const user = await User.findById(userId)
@@ -32,7 +31,6 @@ module.exports = function createAvatar(userId, model, name, personality, age, st
             name,
             personality,
             age,
-            state,
             hair,
             skin,
             shirt,
