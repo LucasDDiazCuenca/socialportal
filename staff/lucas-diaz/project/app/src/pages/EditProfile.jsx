@@ -107,6 +107,6 @@ export default function EditProfile() {
                 </div>
             </section>
         </main>
-        <Footer />
+        <Footer user={user} />
     </div>
 }

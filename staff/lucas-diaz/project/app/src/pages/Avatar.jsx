@@ -21,7 +21,6 @@ export default function Avatar() {
     const [age, setAge] = useState(null)
     const emotions = ["clap", "dance", "dead", "laugh", "victory", "wave"]
     let colors
-    
 
     const toggleBoyAvatarImg = () => {
         setboyClicked(true)
@@ -58,20 +57,24 @@ export default function Avatar() {
 
     const handleRetrieveGirlModelInformation = (info) => {
         colors = info
-        console.log(colors)
     }
 
     const handleCreateAvatar = () => {
         (async () => {
             try {
-                await createAvatar(model, name, personality, age, colors.hair, colors.skin, colors.shirt, colors.trousers, colors.shoes, emotions);
-                navigate("/")
+                if(model === "./models/boy.glb"){
+                    await createAvatar(model, name, personality, age, colors.hair, colors.skin, colors.shirt, colors.trousers, colors.shoes, selectedEmotions);
+                    navigate("/")
+                } 
+                if(model === "./models/girl.glb"){
+                    await createAvatar(model, name, personality, age, colors.hair2, colors.skin2, colors.shirt2, colors.trousers2, colors.shoes2, selectedEmotions);
+                    navigate("/")
+                }
             } catch (error) {
                 alert(error.message);
             }
         })();
     }
-
 
     useEffect(() => {
         try {
@@ -172,6 +175,6 @@ export default function Avatar() {
 
             <button className="bg-[#452b8e] text-white p-2 mt-10 w-10/12 sm:w-80 rounded-xl" type="submit" onClick={handleCreateAvatar} >{user?.avatar.length > 0 ? "Modify avatar" : "Create avatar"}</button>
         </main>
-        <Footer />
+        <Footer user={user} />
     </div>
 }

@@ -127,6 +127,6 @@ export default function Friends() {
                 </article>
             </section>
         </main>
-        <Footer />
+        <Footer user={user} />
     </div>
 }
