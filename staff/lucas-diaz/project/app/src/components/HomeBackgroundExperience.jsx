@@ -2,11 +2,8 @@ import CustomBoyExperience from "../components/library/CustomBoyExperience"
 import CustomGirlExperience from "../components/library/CustomGirlExperience"
 
 export default function HomeBackgroundExperience({ avatar }) {
-    console.log(avatar)
-
     const boy = "./models/boy.glb"
     const girl = "./models/girl.glb"
-
 
     return <>
         <directionalLight

@@ -34,6 +34,11 @@ export default function () {
         navigate("/avatar")
     }
 
+    const handleNavigateWorld = event => {
+        event.preventDefault()
+        console.log("pending...")
+    }
+
     return <div className=" w-screen h-screen bg-white">
         <AppHeader />
         <main className="w-full flex flex-col items-center">
@@ -70,7 +75,7 @@ export default function () {
                 </div>
             </article>
 
-            {user?.avatar && <button className="bg-[#452b8e] text-white p-3 w-4/6 sm:w-80 rounded-2xl mt-32">Go to room</button>}
+            {user?.avatar && <button className="bg-[#452b8e] text-white p-3 w-4/6 sm:w-80 rounded-2xl mt-32" onClick={handleNavigateWorld}>Go to room</button>}
         </main>
 
         <Footer user={user} />
