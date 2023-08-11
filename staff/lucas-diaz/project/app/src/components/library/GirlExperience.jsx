@@ -1,10 +1,41 @@
 import React, { useEffect, useRef } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
+import { button, useControls } from "leva"
+import * as THREE from "three"
 
 export default function GirlExperience(props) {
     const group = useRef();
     const { nodes, materials, animations } = useGLTF("./models/girl.glb");
     const { actions } = useAnimations(animations, group);
+    
+    const active = props.active
+
+    if (active){
+        const { hair2, skin2, shirt2, trousers2, shoes2 } = useControls("Edit Avatar:", {
+            hair2: "#eb4c4c",
+            skin2: "#e5df8e",
+            shirt2: "#64ba9e",
+            trousers2: "#efe4e4",
+            shoes2: "#141212",
+
+        })
+
+        const colorInfo2 = {
+            hair2,
+            skin2,
+            shirt2,
+            trousers2,
+            shoes2
+        }
+
+        props.info(colorInfo2)
+
+        materials.pelo.color = new THREE.Color(hair2)
+        materials.camisa.color = new THREE.Color(shirt2)
+        materials.глаза.color = new THREE.Color(shoes2)
+        materials.тело.color = new THREE.Color(skin2)
+        materials.pantalones.color = new THREE.Color(trousers2)
+    }
 
     useEffect(() => {
         const idle = actions["idle"]

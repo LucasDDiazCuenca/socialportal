@@ -49,8 +49,13 @@ export default function Avatar() {
         setAge(event.target.value)
     }
 
-    const handleRetrieveModelInformation = (info) => {
+    const handleRetrieveBoyModelInformation = (info) => {
         colors = info
+    }
+
+    const handleRetrieveGirlModelInformation = (info) => {
+        colors = info
+        console.log(colors)
     }
 
     const handleCreateAvatar = () => {
@@ -130,8 +135,8 @@ export default function Avatar() {
                             position: [0, 0.2, 1.8]
                         }}
                     >
-                        {girlClicked && <GirlBackgroundExperience active={girlClicked} />}
-                        {boyClicked && <BoyBackgroundExperience active={boyClicked} info={handleRetrieveModelInformation} />}
+                        {girlClicked && <GirlBackgroundExperience active={girlClicked} info={handleRetrieveGirlModelInformation}/>}
+                        {boyClicked && <BoyBackgroundExperience active={boyClicked} info={handleRetrieveBoyModelInformation} />}
                     </Canvas> : <img src="./image/avatarPlaceHolder.png" />}
                 </div >
 
@@ -153,7 +158,7 @@ export default function Avatar() {
                     {emotions.map(emotion => (
                         <button
                             key={emotion}
-                            className={`w-28 ${selectedEmotions.includes(emotion) ? "border-2 border-solid border-[#5EEFB2] rounded-2xl" : ""}`}
+                            className={`w-28 ${selectedEmotions.includes(emotion) ? "border-2 border-solid border-[#5EEFB2] rounded-3xl" : ""}`}
                             onClick={() => toggleEmotion(emotion)}
                         >
                             <img src={`./icons/emotions/${emotion}.png`} alt={`${emotion} icon`} />

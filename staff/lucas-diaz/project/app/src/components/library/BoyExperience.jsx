@@ -16,8 +16,7 @@ export default function BoyExperience(props) {
             skin: "#f6d3c2",
             shirt: "#f86627",
             trousers: "#a0a0a0",
-            shoes: "#f86627",
-            "save colors": button(() => console.log("colors saved"))
+            shoes: "#f86627"
         })
 
         const colorInfo = {

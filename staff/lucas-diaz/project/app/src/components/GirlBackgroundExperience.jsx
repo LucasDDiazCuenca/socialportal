@@ -2,7 +2,7 @@ import { OrbitControls, Sky } from '@react-three/drei'
 import GirlExperience from "./library/GirlExperience"
 
 
-export default function GirlBackgroundExperience({active}) {
+export default function GirlBackgroundExperience({active, info}) {
     
     return <>
         {active && <OrbitControls makeDefault />}
@@ -21,7 +21,7 @@ export default function GirlBackgroundExperience({active}) {
             shadow-camera-far={10}
         />
         <ambientLight intensity={0.5} />
-        <GirlExperience position={[0, -2, -1]} scale={0.85} /> 
+        <GirlExperience position={[0, -2, -1]} scale={0.85} active={active} info={info}/> 
 
         <mesh receiveShadow position-y={-2} rotation-x={- Math.PI * 0.5} scale={active ? 12 : 6}>
             <planeGeometry />
