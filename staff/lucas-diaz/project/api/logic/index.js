@@ -10,5 +10,6 @@ module.exports = {
     deleteFriend: require("./users/deleteFriend"),
     retrieveUserFriendsRequests: require("./users/retrieveUserFriendsRequests"),
     retrieveUserFriends: require("./users/retrieveUserFriends"),
-    createAvatar: require("./avatars/createAvatar")
+    createAvatar: require("./avatars/createAvatar"),
+    retrieveAvatar: require("./avatars/retrieveAvatar")
 }

@@ -7,8 +7,10 @@ import GirlBackgroundExperience from "../components/GirlBackgroundExperience"
 import createAvatar from "../logic/createAvatar"
 import retrieveUser from "../logic/retrieveUser"
 import { useEffect, useState } from "react"
+import { useAppContext } from "../hooks"
 
 export default function Avatar() {
+    const { navigate } = useAppContext()
     const [user, setUser] = useState(null)
     const [boyClicked, setboyClicked] = useState(null)
     const [girlClicked, setGirlClicked] = useState(null)
@@ -19,6 +21,7 @@ export default function Avatar() {
     const [age, setAge] = useState(null)
     const emotions = ["clap", "dance", "dead", "laugh", "victory", "wave"]
     let colors
+    
 
     const toggleBoyAvatarImg = () => {
         setboyClicked(true)
@@ -61,14 +64,14 @@ export default function Avatar() {
     const handleCreateAvatar = () => {
         (async () => {
             try {
-                console.log(model, name, personality, age, colors.hair, colors.skin, colors.shirt, colors.trousers, colors.shoes, selectedEmotions);
                 await createAvatar(model, name, personality, age, colors.hair, colors.skin, colors.shirt, colors.trousers, colors.shoes, emotions);
+                navigate("/")
             } catch (error) {
                 alert(error.message);
             }
         })();
     }
-    
+
 
     useEffect(() => {
         try {
@@ -135,7 +138,7 @@ export default function Avatar() {
                             position: [0, 0.2, 1.8]
                         }}
                     >
-                        {girlClicked && <GirlBackgroundExperience active={girlClicked} info={handleRetrieveGirlModelInformation}/>}
+                        {girlClicked && <GirlBackgroundExperience active={girlClicked} info={handleRetrieveGirlModelInformation} />}
                         {boyClicked && <BoyBackgroundExperience active={boyClicked} info={handleRetrieveBoyModelInformation} />}
                     </Canvas> : <img src="./image/avatarPlaceHolder.png" />}
                 </div >
