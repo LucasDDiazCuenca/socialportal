@@ -1,12 +1,21 @@
 import { Canvas } from '@react-three/fiber'
 import VioletRoomExperience from '../components/VioletRoomExperience'
-import { useControls } from 'leva'
+import { useEffect, useState } from 'react'
+import retrieveAvatar from "../logic/retrieveAvatar"
 
 export default function World() {
+    const [avatar, setAvatar] = useState()
 
-    // const {color } = useControls({
-    //     color: "#fabada"
-    // })
+    useEffect(() => {
+        try {
+            (async() =>{
+                const _avatar = await retrieveAvatar()
+                setAvatar(_avatar)
+            } )()
+        } catch (error) {
+            alert(error)
+        }
+    }, [])
 
     return <div className=" w-screen h-screen bg-white">
         <Canvas
@@ -21,7 +30,7 @@ export default function World() {
             }}
         >
             <color args={["#322734"]} attach={"background"}/>
-            <VioletRoomExperience />
+            <VioletRoomExperience avatar={avatar}/>
         </Canvas>
     </div>
 }

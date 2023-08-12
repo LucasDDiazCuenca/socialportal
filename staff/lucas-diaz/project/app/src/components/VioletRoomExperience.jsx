@@ -1,18 +1,21 @@
 import * as THREE from "three"
-import React, { useRef } from "react";
-import { OrbitControls, Sky, useGLTF } from "@react-three/drei";
-import ArcadeExperience from "./library/ArcadeExperience";
+import React, { useRef } from "react"
+import { OrbitControls, Sky, useGLTF } from "@react-three/drei"
+import ArcadeExperience from "./library/ArcadeExperience"
+import CustomBoyExperience from "./library/CustomBoyExperience"
+import CustomGirlExperience from "./library/CustomGirlExperience"
 import { Physics, RigidBody, CuboidCollider } from "@react-three/rapier"
 import { Perf } from "r3f-perf"
 
-export default function VioletRoomExperience(props) {
-    const { nodes, materials } = useGLTF("./models/violetRoom.glb");
+export default function VioletRoomExperience({ avatar }) {
+    const { nodes, materials } = useGLTF("./models/violetRoom.glb")
     materials["Material.014"].color = new THREE.Color("#83deb5")
+    const boy = "./models/boy.glb"
+    const girl = "./models/girl.glb"
 
-
-    return <Physics >
-        <group {...props} dispose={null}>
-            <Perf position="top-left" />
+    return <Physics debug>
+        <group dispose={null}>
+            {/* <Perf position="top-left" /> */}
             <OrbitControls />
 
             <pointLight color="#d2cbdb" intensity={0.42} position={[-0.42, 0.8, -1.2]} />
@@ -31,9 +34,15 @@ export default function VioletRoomExperience(props) {
                 shadow-camera-far={10}
             />
             <ambientLight intensity={0.22} />
+
+            <RigidBody type="cuboid">
+                {avatar?.model === boy && <CustomBoyExperience avatar={avatar} scale={0.5} position={[1,1,3]}/>}
+            </RigidBody>
+
+
+
             <RigidBody type="fixed" colliders="trimesh">
                 <ArcadeExperience scale={0.01} position={[-1.3, -1.35, 4.0]} rotation-y={Math.PI * 0.5} />
-
             </RigidBody>
 
             <RigidBody type="fixed" colliders="trimesh">
@@ -54,7 +63,7 @@ export default function VioletRoomExperience(props) {
 
             <RigidBody type="fixed" colliders="trimesh" position={[4.70, 0, 1.4]} >
 
-                <CuboidCollider args={[0.15, 1.5, 3.3]}  />
+                <CuboidCollider args={[0.15, 1.5, 3.3]} />
             </RigidBody>
 
             <RigidBody type="fixed" colliders="trimesh">
@@ -761,6 +770,8 @@ export default function VioletRoomExperience(props) {
                 />
             </mesh>
         </group>
+
+
     </Physics>
 }
 
