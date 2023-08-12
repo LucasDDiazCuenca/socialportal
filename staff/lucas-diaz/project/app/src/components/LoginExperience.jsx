@@ -3,16 +3,16 @@ import { useFrame } from "@react-three/fiber"
 import { useEffect } from "react"
 
 export default function LoginExperience(){
-    const male2 = useGLTF("./models/person1/boy1.glb")
+    const boy = useGLTF("./models/boy.glb")
 
-    male2.scene.children[0].children[0].children.forEach(mesh => {
+    boy.scene.children[0].children[0].children.forEach(mesh => {
         mesh.castShadow = true
     })
 
-    const animations = useAnimations(male2.animations, male2.scene)
+    const animations = useAnimations(boy.animations, boy.scene)
 
     useEffect(() => {
-        const action = animations.actions["waving"]
+        const action = animations.actions["wave"]
         action.reset().fadeIn(0.5).play()
 
         return () => {
@@ -22,17 +22,17 @@ export default function LoginExperience(){
 
     useFrame((state, delta) => {
         setTimeout(() => {
-            if (male2.scene.position.z <= 2) {
-                male2.scene.position.z += delta * 2
+            if (boy.scene.position.z <= 2) {
+                boy.scene.position.z += delta * 2
 
-                const waving = animations.actions["waving"]
+                const waving = animations.actions["wave"]
                 waving.stop()
 
                 const walk = animations.actions["walk"]
                 walk.play()
 
-                if (male2.scene.position.z >= 2) {
-                    const waving = animations.actions["waving"]
+                if (boy.scene.position.z >= 2) {
+                    const waving = animations.actions["wave"]
                     walk.fadeOut(0.1)
                     waving.reset().fadeIn(0.1).play()
                 }
@@ -59,8 +59,8 @@ export default function LoginExperience(){
             <meshStandardMaterial args={[{ color: "#452b8e" }]} />
         </mesh>
 
-        <primitive object={male2.scene} scale={1} position={[0.2, -1, -8]} />
+        <primitive object={boy.scene} scale={1} position={[0.2, -1, -8]} />
     </>
 }
 
-useGLTF.preload("./models/person1/boy1.glb")
+useGLTF.preload("./models/boy.glb")

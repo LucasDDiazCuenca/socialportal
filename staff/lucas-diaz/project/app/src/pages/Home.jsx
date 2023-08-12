@@ -36,7 +36,7 @@ export default function () {
 
     const handleNavigateWorld = event => {
         event.preventDefault()
-        console.log("pending...")
+        navigate("/world")
     }
 
     return <div className=" w-screen h-screen bg-white">

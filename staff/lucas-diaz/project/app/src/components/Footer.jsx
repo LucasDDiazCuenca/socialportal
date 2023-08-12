@@ -19,8 +19,8 @@ export default function Footer({ user }) {
         navigate("/friends")
     }
 
-    const handleNavigateButton = () => {
-        console.log("pending...")
+    const handleNavigateWorld = () => {
+        navigate("/world")
     }
 
     return <footer >
@@ -34,7 +34,7 @@ export default function Footer({ user }) {
                 <img src="./icons/friends.png" alt="Add Avatar" />
             </button>
 
-            {user?.avatar && <button className="cursor-pointer" onClick={handleNavigateButton}>
+            {user?.avatar && <button className="cursor-pointer" onClick={handleNavigateWorld}>
                 <img src="./icons/world.png" alt="Add Avatar" />
             </button>}
 
