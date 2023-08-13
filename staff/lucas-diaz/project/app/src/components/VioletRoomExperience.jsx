@@ -12,11 +12,18 @@ export default function VioletRoomExperience({ avatar }) {
     materials["Material.014"].color = new THREE.Color("#83deb5")
     const boy = "./models/boy.glb"
     const girl = "./models/girl.glb"
+    const modelRigidBody = useRef()
+
 
     return <Physics debug>
         <group dispose={null}>
             {/* <Perf position="top-left" /> */}
-            <OrbitControls />
+            <OrbitControls
+                maxAzimuthAngle={Math.PI / 4}
+                minPolarAngle={0}
+                maxPolarAngle={Math.PI / 2}
+                minDistance={2}
+            />
 
             <pointLight color="#d2cbdb" intensity={0.42} position={[-0.42, 0.8, -1.2]} />
             <pointLight color="#9b7ac1" intensity={0.5} position={[2.95, 0.8, -1.2]} />
@@ -35,17 +42,15 @@ export default function VioletRoomExperience({ avatar }) {
             />
             <ambientLight intensity={0.22} />
 
-            <RigidBody type="cuboid">
-                {avatar?.model === boy && <CustomBoyExperience avatar={avatar} scale={0.5} position={[1,1,3]}/>}
+            <RigidBody ref={modelRigidBody} canSleep={false} colliders="cuboid" friction={1}>
+                {avatar?.model === boy && <CustomBoyExperience avatar={avatar} scale={0.6} position={[2, -1.30, 2]} rigidBody={modelRigidBody} />}
             </RigidBody>
-
-
 
             <RigidBody type="fixed" colliders="trimesh">
                 <ArcadeExperience scale={0.01} position={[-1.3, -1.35, 4.0]} rotation-y={Math.PI * 0.5} />
             </RigidBody>
 
-            <RigidBody type="fixed" colliders="trimesh">
+            <RigidBody type="fixed" colliders="cuboid" friction={1}>
                 <mesh
                     name="floor"
                     castShadow
@@ -58,7 +63,7 @@ export default function VioletRoomExperience({ avatar }) {
             </RigidBody>
 
             <RigidBody type="fixed" colliders="trimesh" position={[1.25, 0, 4.72]}>
-                <CuboidCollider args={[3.3, 1.5, 0.15]} />
+                <CuboidCollider args={[3.3, 1.5, 0.18]} />
             </RigidBody>
 
             <RigidBody type="fixed" colliders="trimesh" position={[4.70, 0, 1.4]} >
@@ -78,7 +83,7 @@ export default function VioletRoomExperience({ avatar }) {
                 />
             </RigidBody>
 
-            <RigidBody type="fixed" colliders="trimesh">
+            {/* <RigidBody type="fixed" colliders="trimesh">
                 <mesh
                     name="rug"
                     castShadow
@@ -88,7 +93,7 @@ export default function VioletRoomExperience({ avatar }) {
                     position={[1.173, -1.342, 0.948]}
                     scale={[2.293, 0.712, 1.989]}
                 />
-            </RigidBody>
+            </RigidBody> */}
 
             <RigidBody type="fixed" colliders="trimesh">
                 <mesh
