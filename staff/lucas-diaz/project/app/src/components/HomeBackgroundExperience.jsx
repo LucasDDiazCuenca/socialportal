@@ -1,5 +1,6 @@
-import CustomBoyExperience from "../components/library/CustomBoyExperience"
-import CustomGirlExperience from "../components/library/CustomGirlExperience"
+import CustomGirlExperience from "../components/library/girl/CustomGirlExperience"
+import HomePreviewBoyExperience from "./library/boy/HomePreviewBoyExperience"
+import HomePreviewGirlExperience from "./library/girl/HomePreviewGirlExperience"
 
 export default function HomeBackgroundExperience({ avatar }) {
     const boy = "./models/boy.glb"
@@ -19,7 +20,7 @@ export default function HomeBackgroundExperience({ avatar }) {
             shadow-camera-far={10}
         />
         <ambientLight intensity={0.5} />
-        {avatar.model === boy && <CustomBoyExperience avatar={avatar} position={[0.2, -3, -0.65]}/>}
-        {avatar.model === girl && <CustomGirlExperience avatar={avatar} position={[0., -2.5, -1]} scale={0.85}/>}
+        {avatar.model === boy && <HomePreviewBoyExperience avatar={avatar} position={[0.2, -3, -0.65]}/>}
+        {avatar.model === girl && <HomePreviewGirlExperience avatar={avatar} position={[0., -2.5, -1]} scale={0.85}/>}
     </>
 }

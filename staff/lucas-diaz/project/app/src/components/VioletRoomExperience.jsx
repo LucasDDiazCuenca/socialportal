@@ -1,23 +1,21 @@
 import * as THREE from "three"
 import React, { useRef } from "react"
-import { OrbitControls, Sky, useGLTF } from "@react-three/drei"
+import { OrbitControls, useGLTF } from "@react-three/drei"
 import ArcadeExperience from "./library/ArcadeExperience"
-import CustomBoyExperience from "./library/CustomBoyExperience"
-import CustomGirlExperience from "./library/CustomGirlExperience"
+import CustomBoyExperience from "./library/boy/CustomBoyExperience"
+import CustomGirlExperience from "./library/girl/CustomGirlExperience"
 import { Physics, RigidBody, CuboidCollider } from "@react-three/rapier"
-import { Perf } from "r3f-perf"
+import { useControls } from "leva"
 
 export default function VioletRoomExperience({ avatar }) {
     const { nodes, materials } = useGLTF("./models/violetRoom.glb")
     materials["Material.014"].color = new THREE.Color("#83deb5")
     const boy = "./models/boy.glb"
     const girl = "./models/girl.glb"
-    const modelRigidBody = useRef()
+    const boyModelRigidBody = useRef()
 
-
-    return <Physics debug>
+    return <Physics>
         <group dispose={null}>
-            {/* <Perf position="top-left" /> */}
             <OrbitControls
                 maxAzimuthAngle={Math.PI / 4}
                 minPolarAngle={0}
@@ -42,12 +40,14 @@ export default function VioletRoomExperience({ avatar }) {
             />
             <ambientLight intensity={0.22} />
 
-            <RigidBody ref={modelRigidBody} canSleep={false} colliders="cuboid" friction={1}>
-                {avatar?.model === boy && <CustomBoyExperience avatar={avatar} scale={0.6} position={[2, -1.30, 2]} rigidBody={modelRigidBody} />}
+            <RigidBody ref={boyModelRigidBody} type="dinamic" canSleep={false} colliders="cuboid" friction={1} linearDamping={1}>
+                {avatar?.model === boy && <CustomBoyExperience avatar={avatar} scale={0.6} position={[2, -1.30, 2]} rigidBody={boyModelRigidBody}/>}
+                {avatar?.model === girl && <CustomGirlExperience avatar={avatar} scale={0.515} />}
             </RigidBody>
 
-            <RigidBody type="fixed" colliders="trimesh">
-                <ArcadeExperience scale={0.01} position={[-1.3, -1.35, 4.0]} rotation-y={Math.PI * 0.5} />
+            <RigidBody type="dinamic" colliders={false} position={[-1.3, -1.35, 4.0]} rotation-y={Math.PI * 0.5}>
+                <CuboidCollider args={[0.5, 1, 0.5]} position={[0.4, 1, 0.45]} />
+                <ArcadeExperience scale={0.01} />
             </RigidBody>
 
             <RigidBody type="fixed" colliders="cuboid" friction={1}>
@@ -71,7 +71,7 @@ export default function VioletRoomExperience({ avatar }) {
                 <CuboidCollider args={[0.15, 1.5, 3.3]} />
             </RigidBody>
 
-            <RigidBody type="fixed" colliders="trimesh">
+            <RigidBody type="fixed" colliders={false}>
                 <mesh
                     name="walls"
                     castShadow
@@ -81,21 +81,23 @@ export default function VioletRoomExperience({ avatar }) {
                     position={[1.582, 0, 1.523]}
                     scale={[1.999, 1, 2.02]}
                 />
+                <CuboidCollider args={[3.3, 1.5, 0.18]} position={[1.5, 0, -1.5]} />
+                <CuboidCollider args={[0.18, 1.5, 3.3]} position={[-1.5, 0, 1.5]} />
             </RigidBody>
 
-            {/* <RigidBody type="fixed" colliders="trimesh">
+            {/* <RigidBody type="fixed" colliders="cuboid">
                 <mesh
                     name="rug"
                     castShadow
                     receiveShadow
                     geometry={nodes.rug.geometry}
                     material={materials["Material.012"]}
-                    position={[1.173, -1.342, 0.948]}
+                    position={[1.173, -1.385, 0.948]}
                     scale={[2.293, 0.712, 1.989]}
                 />
             </RigidBody> */}
 
-            <RigidBody type="fixed" colliders="trimesh">
+            <RigidBody type="dinamic" colliders={false} position={[0.5, 0.2, 0.2]}>
                 <mesh
                     name="COUCH"
                     castShadow
@@ -162,9 +164,10 @@ export default function VioletRoomExperience({ avatar }) {
                         scale={[0.15, 0.063, 0.195]}
                     />
                 </mesh>
+                <CuboidCollider args={[1, 0.4, 0.5]} position={[1.5, -1, -0.9]} />
             </RigidBody>
 
-            <RigidBody type="fixed" colliders="trimesh">
+            <RigidBody type="dinamic" colliders={false}>
                 <mesh
                     name="couch_2"
                     castShadow
@@ -212,6 +215,7 @@ export default function VioletRoomExperience({ avatar }) {
                         scale={[0.147, 0.064, 0.197]}
                     />
                 </mesh>
+                <CuboidCollider args={[0.6,0.6,0.6]} position={[-1,-0.8,0.8]}/>
             </RigidBody>
 
             <mesh
@@ -335,7 +339,7 @@ export default function VioletRoomExperience({ avatar }) {
                 />
             </mesh>
 
-            <RigidBody type="fixed" colliders="trimesh">
+            <RigidBody type="dinamic" colliders={false} position-y={0.1}>
                 <mesh
                     name="coffe_table"
                     // castShadow
@@ -401,9 +405,6 @@ export default function VioletRoomExperience({ avatar }) {
                         position={[-0.005, 0.43, -0.587]}
                     />
                 </mesh>
-            </RigidBody>
-
-            <RigidBody>
                 <group
                     name="Circle"
                     position={[1.282, -0.978, 0.413]}
@@ -425,6 +426,11 @@ export default function VioletRoomExperience({ avatar }) {
                         material={materials["Material.032"]}
                     />
                 </group>
+                <CuboidCollider args={[0.6,0.3,0.3]} position={[1.5,-1,0.4]}/>
+            </RigidBody>
+
+            <RigidBody type="fixed" colliders="cuboid">
+                
             </RigidBody>
 
             <mesh
@@ -775,8 +781,6 @@ export default function VioletRoomExperience({ avatar }) {
                 />
             </mesh>
         </group>
-
-
     </Physics>
 }
 

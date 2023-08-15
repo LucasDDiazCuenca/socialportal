@@ -1,5 +1,5 @@
 import { OrbitControls, Sky } from '@react-three/drei'
-import GirlExperience from "./library/GirlExperience"
+import GirlExperience from "./library/girl/GirlExperience"
 
 
 export default function GirlBackgroundExperience({active, info}) {
