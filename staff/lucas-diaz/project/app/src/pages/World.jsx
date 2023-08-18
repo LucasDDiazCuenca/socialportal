@@ -42,7 +42,7 @@ export default function World() {
                     shadows
                     orthographic
                     camera={{
-                        //fov: 80,   //aleja un poco la camara, 80 es por defect, no funciona en ortho
+                        //fov: 80, 
                         zoom: 110,
                         near: 0.1,
                         far: 200,
