@@ -12,7 +12,7 @@ export default function VioletRoomExperience({ avatar }) {
     materials["Material.014"].color = new THREE.Color("#83deb5")
     const boy = "./models/boy.glb"
     const girl = "./models/girl.glb"
-    const boyModelRigidBody = useRef()
+    const modelRigidBody = useRef()
 
     return <Physics>
         <group dispose={null}>
@@ -40,9 +40,9 @@ export default function VioletRoomExperience({ avatar }) {
             />
             <ambientLight intensity={0.22} />
 
-            <RigidBody ref={boyModelRigidBody} type="dinamic" canSleep={false} colliders="cuboid" friction={1} linearDamping={1}>
-                {avatar?.model === boy && <CustomBoyExperience avatar={avatar} scale={0.6} position={[2, -1.30, 2]} rigidBody={boyModelRigidBody}/>}
-                {avatar?.model === girl && <CustomGirlExperience avatar={avatar} scale={0.515} />}
+            <RigidBody ref={modelRigidBody} type="dinamic" canSleep={false} colliders="cuboid" friction={1} linearDamping={1}>
+                {avatar?.model === boy && <CustomBoyExperience avatar={avatar} scale={0.6} position={[2, -1.30, 2]} rigidBody={modelRigidBody}/>}
+                {avatar?.model === girl && <CustomGirlExperience avatar={avatar} scale={0.515} rigidBody={modelRigidBody}/>}
             </RigidBody>
 
             <RigidBody type="dinamic" colliders={false} position={[-1.3, -1.35, 4.0]} rotation-y={Math.PI * 0.5}>

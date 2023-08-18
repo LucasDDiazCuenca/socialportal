@@ -76,7 +76,6 @@ export default function CustomBoyExperience(props) {
         })
     }
 
-
     useEffect(() => {
         const idleAction = actions["idle"];
         const walkAction = actions["walk"];
