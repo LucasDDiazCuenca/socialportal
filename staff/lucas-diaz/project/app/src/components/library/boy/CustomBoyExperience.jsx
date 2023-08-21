@@ -1,32 +1,36 @@
-import React, { useRef, useEffect } from "react";
-import { useGLTF, useAnimations, Text, Html } from "@react-three/drei";
+import React, { useRef, useEffect } from "react"
+import { useGLTF, useAnimations, useKeyboardControls, Text, Html } from "@react-three/drei"
 import * as THREE from "three"
 import { useFrame } from "@react-three/fiber"
-import animateCharacter from "../../../logic/character/animateCharacter.js"
-import moveCharacter from "../../../logic/character/moveCharacter.js"
-import customizeBoy from "../../../logic/character/customizeBoy.js";
+import animateCharacter from "../../../logic/character/animateCharacter"
+import moveCharacter from "../../../logic/character/moveCharacter"
+import customizeCharacter from "../../../logic/character/customizeCharacter"
 
 export default function CustomBoyExperience(props) {
     const group = useRef()
     const { nodes, materials, animations } = useGLTF("models/boy.glb")
+    const [subscribeKeys, getKeys] = useKeyboardControls()
     const { actions, mixer } = useAnimations(animations, group)
     const avatar = props.avatar
     const rigidBody = props.rigidBody
     const animationStates = {
         idle: true,
         walk: false,
-        talk: false,
+        talk: false, 
     };
     const text = props.messageToSend
 
-    customizeBoy(materials, avatar)
+    customizeCharacter(materials, avatar)
 
     if (rigidBody) {
         useFrame((state, delta) => {
+            const { forward, backward, leftward, rightward } = getKeys()
+            const walk = actions["walk"]
+            const idle = actions["idle"]
+            const talk = actions["talk"]
 
-            animateCharacter(animationStates, forward, backward, leftward, rightward, actions, text)
-
-            moveCharacter(forward, backward, leftward, rightward, impulse, impulseStrength, group, rigidBody, delta)
+            animateCharacter( forward, backward, leftward, rightward , animationStates, walk, idle, talk, text)
+            moveCharacter(forward, backward, leftward, rightward, group, rigidBody, delta, avatar)
 
             //CAMARA --> posicion del rigidBody 
             const bodyPosition = rigidBody.current.translation()
@@ -50,7 +54,7 @@ export default function CustomBoyExperience(props) {
 
     return <>
         <group ref={group} {...props} dispose={null}>
-            {text && <Html
+            { text && <Html 
                 as="div"
                 center
                 position-y={4.3}
@@ -58,7 +62,7 @@ export default function CustomBoyExperience(props) {
                 occlude
                 className="text-white bg-cyan-900 p-2 px-5 rounded-3xl w-36 text-center"
             >{text}</Html>}
-            <Text position-y={3.6} position-x={-0.2} fontSize={0.2} rotation-y={Math.PI * 0.15}>{avatar.author.name}</Text>
+            <Text position-y={3.6} position-x={-0.2} fontSize={0.2} rotation-y={Math.PI * 0.15}>{avatar.name}</Text>
             <group name="Scene">
                 <group
                     name="Armature"

@@ -1,9 +1,20 @@
 import * as THREE from "three"
 
-export default function moveCharacter(forward, backward, leftward, rightward, group, rigidBody, delta) {
+export default function moveCharacter(forward, backward, leftward, rightward, group, rigidBody, delta, avatar) {
     const impulse = { x: 0, y: 0, z: 0 }
-    const impulseStrength = 0.00000115 * delta * 10
-    
+    const boy = "./models/boy.glb"
+    const girl = "./models/girl.glb"
+    let impulseStrength
+
+    if(boy === avatar.model){
+        impulseStrength = 0.00000115 * delta * 10
+    }
+
+    if (girl === avatar.model){
+        impulseStrength = 0.00000078 * delta * 10
+    }
+
+
     if (forward) {
         impulse.z -= impulseStrength
     }

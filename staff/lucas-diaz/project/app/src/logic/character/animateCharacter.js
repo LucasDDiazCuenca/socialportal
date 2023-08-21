@@ -1,12 +1,7 @@
-import { useKeyboardControls } from "@react-three/drei"
 
 
-export default function animateCharacter(animationStates, forward, backward, leftward, rightward, actions, text) {
-    const [subscribeKeys, getKeys] = useKeyboardControls()
-    const { forward, backward, leftward, rightward } = getKeys()
-    const walk = actions["walk"]
-    const idle = actions["idle"]
-    const talk = actions["talk"]
+export default function animateCharacter( forward, backward, leftward, rightward , animationStates, walk, idle, talk, text) {
+
 
     if (forward || backward || leftward || rightward) {
         if (animationStates.idle) {
@@ -39,5 +34,5 @@ export default function animateCharacter(animationStates, forward, backward, lef
         }
     }
 
-    //meter las custom emotions here 
+    //meter las custom emotions here
 }

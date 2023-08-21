@@ -1,74 +1,39 @@
 import React, { useRef, useEffect } from "react";
-import { useGLTF, useAnimations, useKeyboardControls, Text } from "@react-three/drei";
+import { useGLTF, useAnimations, useKeyboardControls, Text, Html } from "@react-three/drei";
 import * as THREE from "three"
-import { useFrame } from "@react-three/fiber"
+import { act, useFrame } from "@react-three/fiber"
+import animateCharacter from "../../../logic/character/animateCharacter"
+import moveCharacter from "../../../logic/character/moveCharacter"
+import customizeCharacter from "../../../logic/character/customizeCharacter"
 
 export default function CustomGirlExperience(props) {
     const group = useRef();
     const { nodes, materials, animations } = useGLTF("./models/girl.glb");
-    const { actions, mixer } = useAnimations(animations, group);
     const [subscribeKeys, getKeys] = useKeyboardControls()
+    const { actions, mixer } = useAnimations(animations, group);
     const avatar = props.avatar
     const rigidBody = props.rigidBody
     const animationStates = {
         idle: true,
         walk: false,
+        talk: false,
     }
+    const text = props.messageToSend
 
-    materials.pelo.color = new THREE.Color(avatar.hair)
-    materials.тело.color = new THREE.Color(avatar.skin)
-    materials.camisa.color = new THREE.Color(avatar.shirt)
-    materials.pantalones.color = new THREE.Color(avatar.trousers)
-    materials.глаза.color = new THREE.Color(avatar.shoes)
+    console.log(avatar)
+
+    customizeCharacter(materials, avatar)
 
     if (rigidBody) {
         useFrame((state, delta) => {
             const { forward, backward, leftward, rightward } = getKeys()
-            const impulse = { x: 0, y: 0, z: 0 }
-            const impulseStrength = 0.0000008 * delta * 10
+
             const walk = actions["walk"]
             const idle = actions["idle"]
+            const talk = actions["talk"]
 
-            if (forward || backward || leftward || rightward) {
-                if (animationStates.idle) {
-                    idle.fadeOut(0.5) // Detiene la animación "idle"
-                    walk.reset().fadeIn(0.3).play(); // Inicia la animación "walk"
-                    animationStates.idle = false;
-                    animationStates.walk = true;
-                }
-            } else {
-                if (animationStates.walk) {
-                    walk.fadeOut(0.8); // Detiene la animación "walk"
-                    idle.reset().fadeIn(0.5).play(); // Vuelve a la animación "idle"
-                    animationStates.idle = true;
-                    animationStates.walk = false;
-                }
-            }
-
-            if (forward) {
-                impulse.z -= impulseStrength
-            }
-            if (backward) {
-                impulse.z += impulseStrength
-            }
-            if (leftward) {
-                impulse.x -= impulseStrength
-            }
-            if (rightward) {
-                impulse.x += impulseStrength
-            }
-
-            // Calcula el vector de movimiento basado en el impulso
-            const movementDirection = new THREE.Vector3(impulse.x, 0, impulse.z).normalize();
-
-            // Calcula la rotación necesaria para mirar en la dirección de movimiento
-            const targetQuaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, Math.atan2(movementDirection.x, movementDirection.z), 0));
-
-            // Interpola suavemente hacia la nueva rotación
-            const lerpFactor = 0.12; // Puedes ajustar este valor para controlar la suavidad
-            group.current.quaternion.slerp(targetQuaternion, lerpFactor);
-
-            rigidBody.current.applyImpulse(impulse)
+            animateCharacter(forward, backward, leftward, rightward, animationStates, walk, idle, talk, text)
+            moveCharacter(forward, backward, leftward, rightward, group, rigidBody, delta, avatar)
 
             //CAMARA --> posicion del rigidBody 
             const bodyPosition = rigidBody.current.translation()
@@ -92,8 +57,17 @@ export default function CustomGirlExperience(props) {
 
     return <>
         <group ref={group} {...props} dispose={null}>
+            {text && <Html
+                as="div"
+                center
+                position-y={4.3}
+                sprite
+                occlude
+                className="text-white bg-violet-800 p-2 px-5 rounded-3xl w-36 text-center"
+            >{text}</Html>}
+
             <group background={new THREE.Color("#000000")}>
-                <Text position-y={4} fontSize={0.2}>{avatar.author.name}</Text>
+                <Text position-y={4} fontSize={0.2}>{avatar.name}</Text>
             </group>
             <group name="Scene">
                 <group

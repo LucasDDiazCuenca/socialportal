@@ -45,7 +45,7 @@ export default function VioletRoomExperience({ avatar, messageToSend }) {
             <RigidBody ref={modelRigidBody} type="dinamic" canSleep={false} colliders="cuboid" friction={1} linearDamping={1}>
                 {avatar?.model === boy && <CustomBoyExperience avatar={avatar} scale={0.6} position={[2, -1.30, 2]} rigidBody={modelRigidBody} messageToSend={messageToSend}/>}
 
-                {avatar?.model === girl && <CustomGirlExperience avatar={avatar} scale={0.515} rigidBody={modelRigidBody} />}
+                {avatar?.model === girl && <CustomGirlExperience avatar={avatar} scale={0.515} rigidBody={modelRigidBody} messageToSend={messageToSend} />}
             </RigidBody>
 
             <RigidBody type="dinamic" colliders={false} position={[-1.3, -1.35, 4.0]} rotation-y={Math.PI * 0.5}>
