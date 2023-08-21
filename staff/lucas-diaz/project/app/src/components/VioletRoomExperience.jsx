@@ -7,12 +7,14 @@ import CustomGirlExperience from "./library/girl/CustomGirlExperience"
 import { Physics, RigidBody, CuboidCollider } from "@react-three/rapier"
 import { useControls } from "leva"
 
-export default function VioletRoomExperience({ avatar }) {
+export default function VioletRoomExperience({ avatar, messageToSend }) {
     const { nodes, materials } = useGLTF("./models/violetRoom.glb")
     materials["Material.014"].color = new THREE.Color("#83deb5")
     const boy = "./models/boy.glb"
     const girl = "./models/girl.glb"
     const modelRigidBody = useRef()
+
+
 
     return <Physics>
         <group dispose={null}>
@@ -41,8 +43,9 @@ export default function VioletRoomExperience({ avatar }) {
             <ambientLight intensity={0.22} />
 
             <RigidBody ref={modelRigidBody} type="dinamic" canSleep={false} colliders="cuboid" friction={1} linearDamping={1}>
-                {avatar?.model === boy && <CustomBoyExperience avatar={avatar} scale={0.6} position={[2, -1.30, 2]} rigidBody={modelRigidBody}/>}
-                {avatar?.model === girl && <CustomGirlExperience avatar={avatar} scale={0.515} rigidBody={modelRigidBody}/>}
+                {avatar?.model === boy && <CustomBoyExperience avatar={avatar} scale={0.6} position={[2, -1.30, 2]} rigidBody={modelRigidBody} messageToSend={messageToSend}/>}
+
+                {avatar?.model === girl && <CustomGirlExperience avatar={avatar} scale={0.515} rigidBody={modelRigidBody} />}
             </RigidBody>
 
             <RigidBody type="dinamic" colliders={false} position={[-1.3, -1.35, 4.0]} rotation-y={Math.PI * 0.5}>
@@ -85,7 +88,7 @@ export default function VioletRoomExperience({ avatar }) {
                 <CuboidCollider args={[0.18, 1.5, 3.3]} position={[-1.5, 0, 1.5]} />
             </RigidBody>
 
-            {/* <RigidBody type="fixed" colliders="cuboid">
+            <RigidBody type="fixed" colliders={false}>
                 <mesh
                     name="rug"
                     castShadow
@@ -95,7 +98,7 @@ export default function VioletRoomExperience({ avatar }) {
                     position={[1.173, -1.385, 0.948]}
                     scale={[2.293, 0.712, 1.989]}
                 />
-            </RigidBody> */}
+            </RigidBody>
 
             <RigidBody type="dinamic" colliders={false} position={[0.5, 0.2, 0.2]}>
                 <mesh
@@ -215,7 +218,7 @@ export default function VioletRoomExperience({ avatar }) {
                         scale={[0.147, 0.064, 0.197]}
                     />
                 </mesh>
-                <CuboidCollider args={[0.6,0.6,0.6]} position={[-1,-0.8,0.8]}/>
+                <CuboidCollider args={[0.6, 0.6, 0.6]} position={[-1, -0.8, 0.8]} />
             </RigidBody>
 
             <mesh
@@ -426,11 +429,11 @@ export default function VioletRoomExperience({ avatar }) {
                         material={materials["Material.032"]}
                     />
                 </group>
-                <CuboidCollider args={[0.6,0.3,0.3]} position={[1.5,-1,0.4]}/>
+                <CuboidCollider args={[0.6, 0.3, 0.3]} position={[1.5, -1, 0.4]} />
             </RigidBody>
 
             <RigidBody type="fixed" colliders="cuboid">
-                
+
             </RigidBody>
 
             <mesh

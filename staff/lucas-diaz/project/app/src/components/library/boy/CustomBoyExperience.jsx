@@ -1,75 +1,32 @@
 import React, { useRef, useEffect } from "react";
-import { useGLTF, useAnimations, useKeyboardControls } from "@react-three/drei";
+import { useGLTF, useAnimations, Text, Html } from "@react-three/drei";
 import * as THREE from "three"
-import { useFrame } from "@react-three/fiber";
+import { useFrame } from "@react-three/fiber"
+import animateCharacter from "../../../logic/character/animateCharacter.js"
+import moveCharacter from "../../../logic/character/moveCharacter.js"
+import customizeBoy from "../../../logic/character/customizeBoy.js";
 
 export default function CustomBoyExperience(props) {
     const group = useRef()
     const { nodes, materials, animations } = useGLTF("models/boy.glb")
-    const [subscribeKeys, getKeys] = useKeyboardControls()
     const { actions, mixer } = useAnimations(animations, group)
     const avatar = props.avatar
     const rigidBody = props.rigidBody
     const animationStates = {
         idle: true,
         walk: false,
+        talk: false,
     };
+    const text = props.messageToSend
 
-    materials["Hair 2"].color = new THREE.Color(avatar.hair)
-    materials["Hair 1"].color = new THREE.Color(avatar.hair)
-    materials["Body Skin"].color = new THREE.Color(avatar.skin)
-    materials["Shirt 2"].color = new THREE.Color(avatar.shirt)
-    materials.Pants.color = new THREE.Color(avatar.trousers)
-    materials["Shores.002"].color = new THREE.Color(avatar.shoes)
+    customizeBoy(materials, avatar)
 
     if (rigidBody) {
         useFrame((state, delta) => {
-            const { forward, backward, leftward, rightward } = getKeys()
-            const impulse = { x: 0, y: 0, z: 0 }
-            const impulseStrength = 0.00000115 * delta * 10
-            const walk = actions["walk"];
-            const idle = actions["idle"];
 
-            if (forward || backward || leftward || rightward) {
-                if (animationStates.idle) {
-                    idle.fadeOut(0.5) // Detiene la animación "idle"
-                    walk.reset().fadeIn(0.3).play(); // Inicia la animación "walk"
-                    animationStates.idle = false;
-                    animationStates.walk = true;
-                }
-            } else {
-                if (animationStates.walk) {
-                    walk.fadeOut(0.8); // Detiene la animación "walk"
-                    idle.reset().fadeIn(0.5).play(); // Vuelve a la animación "idle"
-                    animationStates.idle = true;
-                    animationStates.walk = false;
-                }
-            }
+            animateCharacter(animationStates, forward, backward, leftward, rightward, actions, text)
 
-            if (forward) {
-                impulse.z -= impulseStrength
-            }
-            if (backward) {
-                impulse.z += impulseStrength
-            }
-            if (leftward) {
-                impulse.x -= impulseStrength
-            }
-            if (rightward) {
-                impulse.x += impulseStrength
-            }
-
-            // Calcula el vector de movimiento basado en el impulso
-            const movementDirection = new THREE.Vector3(impulse.x, 0, impulse.z).normalize();
-
-            // Calcula la rotación necesaria para mirar en la dirección de movimiento
-            const targetQuaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, Math.atan2(movementDirection.x, movementDirection.z), 0));
-
-            // Interpola suavemente hacia la nueva rotación
-            const lerpFactor = 0.12; // Puedes ajustar este valor para controlar la suavidad
-            group.current.quaternion.slerp(targetQuaternion, lerpFactor);
-
-            rigidBody.current.applyImpulse(impulse)
+            moveCharacter(forward, backward, leftward, rightward, impulse, impulseStrength, group, rigidBody, delta)
 
             //CAMARA --> posicion del rigidBody 
             const bodyPosition = rigidBody.current.translation()
@@ -91,8 +48,17 @@ export default function CustomBoyExperience(props) {
         }
     }, [mixer]);
 
-    return (
+    return <>
         <group ref={group} {...props} dispose={null}>
+            {text && <Html
+                as="div"
+                center
+                position-y={4.3}
+                sprite
+                occlude
+                className="text-white bg-cyan-900 p-2 px-5 rounded-3xl w-36 text-center"
+            >{text}</Html>}
+            <Text position-y={3.6} position-x={-0.2} fontSize={0.2} rotation-y={Math.PI * 0.15}>{avatar.author.name}</Text>
             <group name="Scene">
                 <group
                     name="Armature"
@@ -162,7 +128,8 @@ export default function CustomBoyExperience(props) {
                 </group>
             </group>
         </group>
-    );
+    </>
+
 }
 
 useGLTF.preload("models/boy.glb");

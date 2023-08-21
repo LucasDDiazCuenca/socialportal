@@ -90,7 +90,7 @@ export default function CustomGirlExperience(props) {
         }
     }, [mixer]);
 
-    return (
+    return <>
         <group ref={group} {...props} dispose={null}>
             <group background={new THREE.Color("#000000")}>
                 <Text position-y={4} fontSize={0.2}>{avatar.author.name}</Text>
@@ -158,7 +158,7 @@ export default function CustomGirlExperience(props) {
                 </group>
             </group>
         </group>
-    );
+    </>
 }
 
 useGLTF.preload("./models/girl.glb");
