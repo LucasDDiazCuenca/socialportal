@@ -7,14 +7,12 @@ import CustomGirlExperience from "./library/girl/CustomGirlExperience"
 import { Physics, RigidBody, CuboidCollider } from "@react-three/rapier"
 import { useControls } from "leva"
 
-export default function VioletRoomExperience({ avatar, messageToSend }) {
+export default function VioletRoomExperience({ avatar, messageToSend, emotionToSend }) {
     const { nodes, materials } = useGLTF("./models/violetRoom.glb")
     materials["Material.014"].color = new THREE.Color("#83deb5")
     const boy = "./models/boy.glb"
     const girl = "./models/girl.glb"
     const modelRigidBody = useRef()
-
-
 
     return <Physics>
         <group dispose={null}>
@@ -43,9 +41,9 @@ export default function VioletRoomExperience({ avatar, messageToSend }) {
             <ambientLight intensity={0.22} />
 
             <RigidBody ref={modelRigidBody} type="dinamic" canSleep={false} colliders="cuboid" friction={1} linearDamping={1}>
-                {avatar?.model === boy && <CustomBoyExperience avatar={avatar} scale={0.6} position={[2, -1.30, 2]} rigidBody={modelRigidBody} messageToSend={messageToSend}/>}
+                {avatar?.model === boy && <CustomBoyExperience avatar={avatar} scale={0.6} position={[2, -1.30, 2]} rigidBody={modelRigidBody} messageToSend={messageToSend} emotionToSend={emotionToSend}/>}
 
-                {avatar?.model === girl && <CustomGirlExperience avatar={avatar} scale={0.515} rigidBody={modelRigidBody} messageToSend={messageToSend} />}
+                {avatar?.model === girl && <CustomGirlExperience avatar={avatar} scale={0.515} rigidBody={modelRigidBody} messageToSend={messageToSend} emotionToSend={emotionToSend}/>}
             </RigidBody>
 
             <RigidBody type="dinamic" colliders={false} position={[-1.3, -1.35, 4.0]} rotation-y={Math.PI * 0.5}>

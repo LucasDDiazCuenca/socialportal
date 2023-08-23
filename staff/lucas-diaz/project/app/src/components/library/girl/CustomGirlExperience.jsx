@@ -1,10 +1,11 @@
 import React, { useRef, useEffect } from "react";
 import { useGLTF, useAnimations, useKeyboardControls, Text, Html } from "@react-three/drei";
 import * as THREE from "three"
-import { act, useFrame } from "@react-three/fiber"
+import { useFrame, useThree } from "@react-three/fiber"
 import animateCharacter from "../../../logic/character/animateCharacter"
 import moveCharacter from "../../../logic/character/moveCharacter"
 import customizeCharacter from "../../../logic/character/customizeCharacter"
+import followCharacter from "../../../logic/character/followCharacter"
 
 export default function CustomGirlExperience(props) {
     const group = useRef();
@@ -17,26 +18,31 @@ export default function CustomGirlExperience(props) {
         idle: true,
         walk: false,
         talk: false,
+        tempEmote: false,
     }
     const text = props.messageToSend
-
-    console.log(avatar)
+    const emotion = props.emotionToSend
+    const { camera, viewport } = useThree()
 
     customizeCharacter(materials, avatar)
 
     if (rigidBody) {
         useFrame((state, delta) => {
             const { forward, backward, leftward, rightward } = getKeys()
-
             const walk = actions["walk"]
             const idle = actions["idle"]
             const talk = actions["talk"]
 
-            animateCharacter(forward, backward, leftward, rightward, animationStates, walk, idle, talk, text)
+            const tempEmote = actions[emotion]
+
+
+            animateCharacter(forward, backward, leftward, rightward, animationStates, walk, idle, talk, text, tempEmote)
             moveCharacter(forward, backward, leftward, rightward, group, rigidBody, delta, avatar)
 
             //CAMARA --> posicion del rigidBody 
             const bodyPosition = rigidBody.current.translation()
+
+            followCharacter(bodyPosition, camera, viewport, avatar)
         })
     }
 
@@ -67,7 +73,7 @@ export default function CustomGirlExperience(props) {
             >{text}</Html>}
 
             <group background={new THREE.Color("#000000")}>
-                <Text position-y={4} fontSize={0.2}>{avatar.name}</Text>
+                <Text position-y={4} fontSize={0.2} rotation-y={Math.PI * 0.15}>{avatar.name}</Text>
             </group>
             <group name="Scene">
                 <group

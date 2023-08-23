@@ -1,6 +1,8 @@
 import { useAnimations, useGLTF, Sparkles } from "@react-three/drei"
+import * as THREE from "three"
 import { useFrame } from "@react-three/fiber"
 import { useEffect } from "react"
+import {useControls} from "leva"
 
 export default function LoginExperience(){
     const boy = useGLTF("./models/boy.glb")
@@ -8,6 +10,11 @@ export default function LoginExperience(){
     boy.scene.children[0].children[0].children.forEach(mesh => {
         mesh.castShadow = true
     })
+
+    boy.materials["Shirt 2"].color = new THREE.Color("#ffffff")
+    boy.materials["Pants"].color = new THREE.Color("#595656")
+    boy.materials["Body Skin"].color = new THREE.Color("#cba9a9")
+    boy.materials["Shores.002"].color = new THREE.Color("#0b0808")
 
     const animations = useAnimations(boy.animations, boy.scene)
 

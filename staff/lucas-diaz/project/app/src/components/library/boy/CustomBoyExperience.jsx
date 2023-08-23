@@ -1,10 +1,11 @@
 import React, { useRef, useEffect } from "react"
 import { useGLTF, useAnimations, useKeyboardControls, Text, Html } from "@react-three/drei"
 import * as THREE from "three"
-import { useFrame } from "@react-three/fiber"
+import { useFrame, useThree } from "@react-three/fiber"
 import animateCharacter from "../../../logic/character/animateCharacter"
 import moveCharacter from "../../../logic/character/moveCharacter"
 import customizeCharacter from "../../../logic/character/customizeCharacter"
+import followCharacter from "../../../logic/character/followCharacter"
 
 export default function CustomBoyExperience(props) {
     const group = useRef()
@@ -17,8 +18,11 @@ export default function CustomBoyExperience(props) {
         idle: true,
         walk: false,
         talk: false, 
+        tempEmote: false,
     };
     const text = props.messageToSend
+    const emotion = props.emotionToSend
+    const { camera, viewport } = useThree()
 
     customizeCharacter(materials, avatar)
 
@@ -28,12 +32,15 @@ export default function CustomBoyExperience(props) {
             const walk = actions["walk"]
             const idle = actions["idle"]
             const talk = actions["talk"]
+            const tempEmote = actions[emotion]
 
-            animateCharacter( forward, backward, leftward, rightward , animationStates, walk, idle, talk, text)
+            animateCharacter( forward, backward, leftward, rightward , animationStates, walk, idle, talk, text, tempEmote)
             moveCharacter(forward, backward, leftward, rightward, group, rigidBody, delta, avatar)
 
             //CAMARA --> posicion del rigidBody 
             const bodyPosition = rigidBody.current.translation()
+
+            followCharacter(bodyPosition, camera, viewport, avatar)
         })
     }
 

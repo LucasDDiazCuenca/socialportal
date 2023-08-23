@@ -19,7 +19,7 @@ export default function Avatar() {
     const [name, setName] = useState(null)
     const [personality, setPersonality] = useState(null)
     const [age, setAge] = useState(null)
-    const emotions = ["clap", "dance", "dead", "laugh", "victory", "wave"]
+    const emotions = ["clap", "dance", "die", "laugh", "victory", "wave"]
     let colors
 
     const toggleBoyAvatarImg = () => {
