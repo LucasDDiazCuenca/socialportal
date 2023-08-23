@@ -1,5 +1,4 @@
 
-
 export default function followCharacter (bodyPosition, camera,viewport, avatar){
     const boy = "./models/boy.glb"
     const girl = "./models/girl.glb"
@@ -9,8 +8,6 @@ export default function followCharacter (bodyPosition, camera,viewport, avatar){
     
         camera.lookAt(bodyPosition.x, bodyPosition.y - 1, bodyPosition.z )
     }
-
-
 
     if(girl === avatar.model){
         console.log("hola")
