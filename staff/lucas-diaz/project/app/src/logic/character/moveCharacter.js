@@ -53,5 +53,5 @@ export default function moveCharacter(forward, backward, leftward, rightward, gr
     impulse.x = movementDirection.x * impulseStrength;
     impulse.z = movementDirection.z * impulseStrength;
 
-    rigidBody.current.applyImpulse(impulse);
+    rigidBody?.current.applyImpulse(impulse);
 }

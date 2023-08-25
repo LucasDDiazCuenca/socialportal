@@ -12,27 +12,34 @@ io.listen(process.env.PORT)
 
 const characters = []
 
-
 io.on("connection", (socket) => {
-//emitir conexion hacia front 
+    //!emitir conexion hacia front 
     console.log("User connected")
 
-    
-    characters.push({
-        id: socket.id,
-        position: [2, -1.30, 2]
+    socket.on("newAvatar", (newAvatarData) => {
+        // Envía los datos del nuevo avatar al cliente
+        socket.emit.emit("addAvatar", newAvatarData);
     })
 
-    socket.emit("hello")
+    //!recibe avatar desde front y lo pushea, si existe no lo pushea
+    socket.on("add_avatar", data => {
 
-    io.emit("characters", characters)
+        const isAvatarRepeated = characters.some(avatar => avatar._id === data._id)
+
+        if (!isAvatarRepeated) {
+            characters.push(data)
+        }
+
+        console.log(characters.length)
+
+        //! funcion enviar  --> una funcion que envie a front el array de characters 
+        io.emit("send_characters", characters)
+    })
+
 
     socket.on("disconnect", () => {
         console.log("User disconnected")
-        characters.splice(
-            characters.findIndex(character => character.id === socket.id),1
-        );
-        io.emit("characters", characters)
+
     })
 })
 

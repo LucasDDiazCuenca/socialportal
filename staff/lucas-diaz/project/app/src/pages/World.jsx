@@ -75,7 +75,6 @@ export default function World() {
                 { name: "leftward", keys: ["ArrowLeft"] },
                 { name: "rightward", keys: ["ArrowRight"] },
                 { name: "jump", keys: ["Space"] },
-
             ]}>
                 <Loader
                     initialState={(active) => active} // Initial black out state

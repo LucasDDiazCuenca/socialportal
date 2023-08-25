@@ -7,11 +7,15 @@ import retrieveUser from "../logic/retrieveUser"
 import retrieveAvatar from "../logic/retrieveAvatar"
 import { useEffect, useState } from "react"
 import { useAppContext } from "../hooks"
+import { io } from "socket.io-client"
+
+
+const socket = io(`${import.meta.env.VITE_API2_URL}`)
 
 export default function () {
     const [user, setUser] = useState(null)
     const [avatar, setAvatar] = useState(null)
-    const { navigate } = useAppContext()
+    let { navigate, avatars, setAvatars } = useAppContext()
 
     useEffect(() => {
         try {
@@ -28,7 +32,6 @@ export default function () {
         }
     }, [])
 
-
     const handleNavigateCreateAvatar = event => {
         event.preventDefault()
         navigate("/avatar")
@@ -36,6 +39,13 @@ export default function () {
 
     const handleNavigateWorld = event => {
         event.preventDefault()
+        socket.on("connect", console.log("user in room"))
+        socket.emit("add_avatar", avatar)
+
+        socket.on("send_characters", data => {
+            setAvatars(data)
+        })
+
         navigate("/world")
     }
 
@@ -57,7 +67,7 @@ export default function () {
                                 position: [0, 0, 0]
                             }}
                         >
-                            <HomeBackgroundExperience avatar={avatar}/>
+                            <HomeBackgroundExperience avatar={avatar} />
                         </Canvas>
                     </div>
                     :

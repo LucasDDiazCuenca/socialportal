@@ -24,19 +24,11 @@ export const SocketManager = () => {
             console.log(value)
         }
 
-
         socket.on("connect", onConnect) //subscribirse a event connection de back
         socket.on("hello", onHello)  //subscribirse a event hello de back
         socket.on("characters", onCharacters) //subscribirse a event characters de back
-
         socket.on("disconnect", onDisconnect) //subscribirse a event disconnect de back
 
-
-        return () => {
-            socket.off("connect", onConnect)
-            socket.off("disconnect", onDisconnect)
-            socket.off("hello", onHello)
-        }
     }, [])
 
 }
