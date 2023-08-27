@@ -18,8 +18,8 @@ const { User } = require("../../data/models")
  * @throws {RangeError} On password shorten than 4 char (sync)
  * 
  * @throws {ContentError} On password, new password and new password confirmation credentials (async)
+ * @throws {ExistenceError} On non existing user with this userId
  */
-
 
 module.exports = function updateUserPassword(userId, password, newPassword, newPasswordConfirmation) {
     validateId(userId)

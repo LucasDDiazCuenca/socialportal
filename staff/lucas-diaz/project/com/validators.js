@@ -20,8 +20,8 @@ function validateEmail(email) {
  */
 
 function validateId(id) {
+    if (!id) throw new ContentError("id is empty");
     if (typeof id !== "string") throw new TypeError("id is not a string");
-    if (!id.trim()) throw new ContentError("id is empty");
 }
 
 /**

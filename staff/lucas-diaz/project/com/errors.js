@@ -1,54 +1,54 @@
-class DuplicityError extends Error{
-    constructor(message){
+class DuplicityError extends Error {
+    constructor(message) {
         super(message)
 
     }
-    get name() {return DuplicityError.name}
+    get name() { return DuplicityError.name }
 }
 
-class ContentError extends Error{
-    constructor(message){
+class ContentError extends Error {
+    constructor(message) {
         super(message)
 
     }
-    get name() {return ContentError.name}
+    get name() { return ContentError.name }
 }
 
-class ExistenceError extends Error{
-    constructor(message){
+class ExistenceError extends Error {
+    constructor(message) {
         super(message)
 
     }
-    get name() {return ExistenceError.name}
+    get name() { return ExistenceError.name }
 }
 
-class AuthError extends Error{
-    constructor(message){
+class AuthError extends Error {
+    constructor(message) {
         super(message)
 
     }
-    get name() {return AuthError.name}
+    get name() { return AuthError.name }
 }
 
-class FormatError extends Error{
-    constructor(message){
+class FormatError extends Error {
+    constructor(message) {
         super(message)
 
     }
-    get name() {return FormatError.name}
+    get name() { return FormatError.name }
 }
 
-class UnknownError extends Error{
-    constructor(message){
+class UnknownError extends Error {
+    constructor(message) {
         super(message)
 
     }
-    get name() {return UnknownError.name}
+    get name() { return UnknownError.name }
 }
 
 
 module.exports = {
-    DuplicityError, 
+    DuplicityError,
     ContentError,
     ExistenceError,
     AuthError,
