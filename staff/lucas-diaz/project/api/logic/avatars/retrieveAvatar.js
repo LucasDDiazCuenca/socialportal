@@ -15,9 +15,11 @@ module.exports = function retrieveAvatar(userId) {
 
         const avatar = await Avatar.findOne({ author: userId }).populate("author", "-email -password -friends -friendRequests").lean()
         
-        delete avatar.author._id
-        delete avatar.author.__v
-        delete avatar.__v
+        if(avatar){
+            delete avatar.author._id
+            delete avatar.author.__v
+            delete avatar.__v
+        }
 
         if(!avatar) throw new ExistenceError("Avatar not founded")
 

@@ -87,12 +87,12 @@ function validateToken(token) {
 
 
 module.exports = {
-    validateEmail, 
-    validateId, 
-    validateUsername, 
-    validatePassword, 
-    validateUrl, 
-    validateText, 
-    validateToken 
+    validateEmail,
+    validateId,
+    validateUsername,
+    validatePassword,
+    validateUrl,
+    validateText,
+    validateToken
 }
 

@@ -79,7 +79,7 @@ describe("addFriend", () => {
         }
     })
 
-    it("should fail on friend request not found", async() => {
+    it("should fail on friend request not found", async () => {
         await User.create({ name: user.name, email: user.email, password: user.password })
 
         await User.create({ name: secondUser.name, email: secondUser.email, password: secondUser.password })

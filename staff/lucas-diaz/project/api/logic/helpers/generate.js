@@ -36,7 +36,12 @@ function generatePassword() {
     return password;
 }
 
+function generateAvatarModel() {
+    return Math.random() < 0.5 ? "./models/boy.glb" : "./models/girl.glb"
+}
+
 module.exports = {
+    generateRandomHexColor,
     user: () => ({
         _id: `post-${Math.random()}`,
         name: `name-${Math.random()}`,
@@ -48,9 +53,9 @@ module.exports = {
         connected: false,
     }),
 
-    post: (userId) => ({
+    avatar: () => ({
         _id: `post-${Math.random()}`,
-        author: userId,
+        model: generateAvatarModel(),
         name: `name-${Math.random()}`,
         personality: `personality-${Math.random()}`,
         age: `age-${Math.random()}`,
@@ -60,5 +65,5 @@ module.exports = {
         trousers: generateRandomHexColor(),
         shoes: generateRandomHexColor(),
         emotions: []
-    }),
+    })
 }

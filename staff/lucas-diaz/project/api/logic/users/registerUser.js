@@ -12,7 +12,7 @@ const { User } = require("../../data/models")
  * @param {string} password The user's password
  * @returns {void} Doesn't return anything
  * 
- * @throws {ContentError } On empty name, email or password (sync)
+ * @throws {ContentError } On empty name, emadil or password (sync)
  * @throws {TypeError} On non-string name, email or password (sync)
  * @throws {FormatError} On wrong format in email or password (sync)
  * @throws {RangeError} On password shorten than 4 char (sync)

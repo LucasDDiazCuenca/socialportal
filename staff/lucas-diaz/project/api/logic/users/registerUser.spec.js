@@ -51,6 +51,19 @@ describe("registerUser", () => {
         }
     })
 
+    it("should fail on unknown error", async () => {
+        const errorMessage = "This is an unknown error message";
+        
+        // Simula un error desconocido arrojando una excepción con un mensaje específico.
+        try {
+            await registerUser(user.name, user.email, user.password);
+            throw new Error(errorMessage); // Simula un error desconocido
+        } catch (error) {
+            expect(error).to.be.instanceOf(Error);
+            expect(error.message).to.equal(errorMessage);
+        }
+    });
+
     //!Sync errors
     it('should fail on empty name', () =>
         expect(() =>
