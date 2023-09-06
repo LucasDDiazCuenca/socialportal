@@ -7,6 +7,8 @@ import logOutUser from "../logic/logOutUser.js"
 import { useEffect, useState } from "react"
 import updateUserUsername from "../logic/updateUserUsername"
 import updateUserPassword from "../logic/updateUserPassword"
+import ToastFail from "../components/ToastFail"
+import ToastSuccess from "../components/ToastSuccess"
 
 
 export default function EditProfile() {
@@ -14,6 +16,8 @@ export default function EditProfile() {
     const { navigate } = useAppContext()
     const [userNameUpdated, setUserNameUpdated] = useState(false)
     const [passwordUpdated, setPasswordUpdated] = useState(false)
+    const [failMessage, setFailMessage] = useState(null)
+    const [successMessage, setSuccessMessage] = useState(null)
 
     useEffect(() => {
         try {
@@ -33,37 +37,63 @@ export default function EditProfile() {
 
     const handleUpdateUserUsername = event => {
         event.preventDefault()
-        const newUserName = event.target.userName.value
-        try {
-            (async () => {
+        const newUserName = event.target.userName.value;
+        (async () => {
+            try {
                 await updateUserUsername(newUserName)
+                setSuccessMessage("Username changed correctly")
+
+                setTimeout(() => {
+                    setSuccessMessage(null)
+                }, 2000)
+
                 setUserNameUpdated(!userNameUpdated)
                 event.target.reset()
-            })()
-        } catch (error) {
-            console.log(error)
-        }
+            } catch (error) {
+                setFailMessage(error.message)
+
+                setTimeout(() => {
+                    setFailMessage(null)
+                }, 2000)
+            }
+        })()
+
     }
 
     const handleUpdatePassword = event => {
         event.preventDefault()
         const password = event.target.password.value
         const newPassword = event.target.newPassword.value
-        const newPasswordConfirmation = event.target.newPasswordConfirmation.value
+        const newPasswordConfirmation = event.target.newPasswordConfirmation.value;
 
-        try {
             (async () => {
-                await updateUserPassword(password, newPassword, newPasswordConfirmation)
-                setPasswordUpdated(!passwordUpdated)
-                event.target.reset()
+                try {
+                    await updateUserPassword(password, newPassword, newPasswordConfirmation)
+
+                    setSuccessMessage("Password changed correctly")
+
+                    setTimeout(() => {
+                        setSuccessMessage(null)
+                    }, 2000)
+
+                    setPasswordUpdated(!passwordUpdated)
+                    event.target.reset()
+                } catch (error) {
+                    setFailMessage(error.message)
+
+                    setTimeout(() => {
+                        setFailMessage(null)
+                    }, 2000)
+                }
             })()
-        } catch (error) {
-            console.log(error)
-        }
+
 
     }
 
     return <div className=" w-screen h-screen bg-white ">
+        {successMessage && <ToastSuccess message={successMessage} />}
+        {failMessage && <ToastFail message={failMessage} />}
+
         <AppHeader />
         <main className="w-full flex flex-col items-center">
             <AppH1Card user={user} type={"profile"} />

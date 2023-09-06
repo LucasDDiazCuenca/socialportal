@@ -4,10 +4,15 @@ import Form from "../components/library/Form"
 import registerUser from "../logic/registerUser"
 import { Link } from "react-router-dom"
 import { useAppContext } from "../hooks"
+import ToastFail from "../components/ToastFail"
+import ToastSuccess from "../components/ToastSuccess"
+import { useState } from "react"
 
 
 export default function Register() {
     const { navigate } = useAppContext()
+    const [failMessage, setFailMessage] = useState(null)
+    const [successMessage, setSuccessMessage] = useState(null)
 
     const handleRegister = event => {
         event.preventDefault()
@@ -18,15 +23,37 @@ export default function Register() {
 
         try {
             registerUser(temporalUserName, temporalEmail, temporalPassword)
-                .then(() => navigate("/login"))
-                .catch(error => alert(error.message))
+                .then(() => {
+                    setSuccessMessage("User Created Correctly")
+
+                    setTimeout(() => {
+                        setSuccessMessage(null)
+                    },2000)
+                    
+                    setTimeout(() => {
+                        navigate("/login")
+                    },3000)
+                })
+                .catch(error => {
+                    setFailMessage(error.message)
+
+                    setTimeout(() => {
+                        setFailMessage(null)
+                    }, 3000)
+                })
         } catch (error) {
-            alert(error.message)
+            setFailMessage(error.message)
+
+            setTimeout(() => {
+                setFailMessage(null)
+            }, 3000)
         }
 
     }
 
     return <>
+        {successMessage && <ToastSuccess message ={successMessage}/>}
+        {failMessage && <ToastFail message={failMessage} />}
         <div className="fixed w-full h-full z-0">
             <Canvas
                 shadows

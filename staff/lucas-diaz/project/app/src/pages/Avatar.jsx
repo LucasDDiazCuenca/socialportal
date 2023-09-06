@@ -8,6 +8,8 @@ import createAvatar from "../logic/createAvatar"
 import retrieveUser from "../logic/retrieveUser"
 import { useEffect, useState } from "react"
 import { useAppContext } from "../hooks"
+import ToastFail from "../components/ToastFail"
+import ToastSuccess from "../components/ToastSuccess"
 
 export default function Avatar() {
     const { navigate } = useAppContext()
@@ -21,6 +23,8 @@ export default function Avatar() {
     const [age, setAge] = useState(null)
     const emotions = ["clap", "dance", "die", "laugh", "victory", "wave"]
     let colors
+    const [failMessage, setFailMessage] = useState(null)
+    const [successMessage, setSuccessMessage] = useState(null)
 
     const toggleBoyAvatarImg = () => {
         setboyClicked(true)
@@ -64,14 +68,34 @@ export default function Avatar() {
             try {
                 if(model === "./models/boy.glb"){
                     await createAvatar(model, name, personality, age, colors.hair, colors.skin, colors.shirt, colors.trousers, colors.shoes, selectedEmotions);
-                    navigate("/")
+                    
+                    setSuccessMessage("Avatar created correctly")
+                    setTimeout(() => {
+                        setSuccessMessage(null)
+                    }, 2000)
+                    
+                    setTimeout(() => {
+                        navigate("/")
+                    }, 2500)
                 } 
                 if(model === "./models/girl.glb"){
                     await createAvatar(model, name, personality, age, colors.hair2, colors.skin2, colors.shirt2, colors.trousers2, colors.shoes2, selectedEmotions);
-                    navigate("/")
+                    
+                    setSuccessMessage("Avatar created correctly")
+                    setTimeout(() => {
+                        setSuccessMessage(null)
+                    }, 2000)
+                    
+                    setTimeout(() => {
+                        navigate("/")
+                    }, 2500)
                 }
             } catch (error) {
-                alert(error.message);
+                setFailMessage(error.message)
+
+                    setTimeout(() => {
+                        setFailMessage(null)
+                    }, 2000)
             }
         })();
     }
@@ -89,6 +113,8 @@ export default function Avatar() {
     }, [])
 
     return <div className=" w-screen h-screen bg-white">
+        {successMessage && <ToastSuccess message={successMessage} />}
+        {failMessage && <ToastFail message={failMessage} />}
         <AppHeader />
         <main className="w-full flex flex-col items-center pb-32 bg-white">
             <AppH1Card user={user} type={"avatar"} />

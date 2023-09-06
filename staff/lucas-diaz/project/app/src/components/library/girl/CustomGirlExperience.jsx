@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useGLTF, useAnimations, useKeyboardControls, Text, Html } from "@react-three/drei";
 import * as THREE from "three"
 import { useFrame, useThree } from "@react-three/fiber"
@@ -8,30 +8,34 @@ import customizeCharacter from "../../../logic/character/customizeCharacter"
 import followCharacter from "../../../logic/character/followCharacter"
 import getUserId from "../../../logic/getUserId";
 
+import { io } from "socket.io-client"
+export const socket = io(`${import.meta.env.VITE_API2_URL}`)
+
 export default function CustomGirlExperience(props) {
     const group = useRef();
     const { nodes, materials, animations } = useGLTF("./models/girl.glb");
     const [subscribeKeys, getKeys] = useKeyboardControls()
-    const { actions, mixer } = useAnimations(animations, group);
+    const { actions, mixer } = useAnimations(animations, group)
+    const [socketText, setSocketText] = useState(null)
     const avatar = props.avatar
     const girlRigidBody = props.girlRigidBody
-    const animationStates = { idle: true, walk: false, talk: false, tempEmote: false }
     const text = props.messageToSend
     const emotion = props.emotionToSend
+    const animationStates = { idle: true, walk: false, talk: false, tempEmote: false }
     const { camera, viewport } = useThree()
+    let isMoving = false
+
+    const walk = actions["walk"]
+    const idle = actions["idle"]
+    const talk = actions["talk"]
+    const tempEmote = actions[emotion]
 
     customizeCharacter(materials, avatar)
-    let isMoving = false
 
     if (girlRigidBody) {
         useFrame((state, delta) => {
-            const { forward, backward, leftward, rightward } = getKeys()
-            const walk = actions["walk"]
-            const idle = actions["idle"]
-            const talk = actions["talk"]
-
             const girlBodyPosition = girlRigidBody?.current?.translation()
-            const tempEmote = actions[emotion]
+            const { forward, backward, leftward, rightward } = getKeys()
 
             if (avatar?.author._id === getUserId()) {
                 const movementDirection = new THREE.Vector3();
@@ -54,9 +58,45 @@ export default function CustomGirlExperience(props) {
                 moveCharacter(movementDirection, group, girlRigidBody, delta, avatar);
                 animateCharacter(isMoving, animationStates, walk, idle, talk, text, tempEmote)
                 followCharacter(girlBodyPosition, camera, viewport, avatar)
+
+                if (isMoving) {
+                    socket.emit("move_character2_secondary", {
+                        x: girlBodyPosition.x,
+                        y: girlBodyPosition.y,
+                        z: girlBodyPosition.z,
+                        delta,
+                        isMoving,
+                        animationStates,
+                        emotion
+                    })
+                }
             }
         })
     }
+
+    if (avatar?.author._id !== getUserId()) {
+        socket.on("send_girl_message_to_front", data => {
+            setSocketText(data.message)
+
+            setTimeout(() => {
+                setSocketText(null)
+            }, 3000)
+        })
+    }
+
+
+    socket.on("move_character2_secondary_front", data => {
+        const { x, y, z, delta, isMoving, animationStates, emotion } = data
+
+        const currentPosition = girlRigidBody?.current?.translation()
+        const newPosition = new THREE.Vector3(x, y, z)
+        const movementDirection = newPosition?.clone().sub(currentPosition).normalize()
+
+        moveCharacter(movementDirection, group, girlRigidBody, delta, avatar)
+        animateCharacter(isMoving, animationStates, walk, idle, talk, text, emotion)
+    })
+
+
 
     useEffect(() => {
         const idleAction = actions["idle"];
@@ -83,6 +123,15 @@ export default function CustomGirlExperience(props) {
                 occlude
                 className="text-white bg-violet-800 p-2 px-5 rounded-3xl w-36 text-center"
             >{text}</Html>}
+
+            {socketText && <Html
+                as="div"
+                center
+                position-y={4.3}
+                sprite
+                occlude
+                className="text-white bg-violet-800 p-2 px-5 rounded-3xl w-36 text-center"
+            >{socketText}</Html>}
 
             <group background={new THREE.Color("#000000")}>
                 <Text position-y={4} fontSize={0.2} rotation-y={Math.PI * 0.15}>{avatar.name}</Text>

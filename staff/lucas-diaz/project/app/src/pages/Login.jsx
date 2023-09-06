@@ -4,10 +4,15 @@ import LoginExperience from "../components/LoginExperience"
 import { Link } from "react-router-dom"
 import loginUser from "../logic/loginUser"
 import { useAppContext } from "../hooks"
+import ToastFail from "../components/ToastFail"
+import { useState } from "react"
 
 
 export default function Login() {
     const { navigate } = useAppContext()
+    const [failMessage, setFailMessage] = useState(null)
+
+
     const handleLogin = event => {
         event.preventDefault()
 
@@ -17,15 +22,20 @@ export default function Login() {
         try {
             loginUser(email, password)
                 .then(() => navigate("/"))
-                .catch(error => alert(error.message, "error"))
+                .catch(error => {console.log(error.message, "error")})
 
         } catch (error) {
-            alert(error)
+            setFailMessage(error.message)
+
+            setTimeout(() => {
+                setFailMessage(null)
+            }, 3000)
         }
 
     }
 
     return <>
+        {failMessage && <ToastFail message={failMessage}/>}
         <div className="fixed w-screen h-5/6 top-52 z-0">
             <Canvas
                 className="z-0 fixed w-full h-80"

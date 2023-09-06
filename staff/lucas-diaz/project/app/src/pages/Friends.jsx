@@ -9,12 +9,16 @@ import FriendRequestCard from "../components/library/FriendRequestCard"
 import { useEffect, useState } from "react"
 import sendFriendRequest from "../logic/sendFriendRequest.js"
 import deleteFriend from "../logic/deleteFriend.js"
+import ToastFail from "../components/ToastFail"
+import ToastSuccess from "../components/ToastSuccess"
 
 export default function Friends() {
     const [user, setUser] = useState(null)
     const [userFriends, setUserFriends] = useState([])
     const [userFriendsRequests, setUserFriendsRequests] = useState([])
-    const [forceUpdate, setForceUpdate] = useState(false);
+    const [forceUpdate, setForceUpdate] = useState(false)
+    const [failMessage, setFailMessage] = useState(null)
+    const [successMessage, setSuccessMessage] = useState(null)
 
     useEffect(() => {
         try {
@@ -35,38 +39,57 @@ export default function Friends() {
 
     const handleSendFriendRequest = event => {
         event.preventDefault();
-        const requestedUsername = event.target.addFriend.value
-
-        try {
-            (async () => {
+        const requestedUsername = event.target.addFriend.value;
+        (async () => {
+            try {
                 await sendFriendRequest(requestedUsername)
-                console.log("friend request sended")
+
+                setSuccessMessage("friend request sended correctly")
+                setTimeout(() => {
+                    setSuccessMessage(null)
+                }, 2000)
                 event.target.reset()
-            })()
-        } catch (error) {
-            alert(error.message)
-        }
+
+            } catch (error) {
+                setFailMessage(error.message)
+
+                setTimeout(() => {
+                    setFailMessage(null)
+                }, 2000)
+            }
+        })()
+
+
     }
 
     const handleDeleteFriend = event => {
         event.preventDefault()
-        const requestedUsername = event.target.deleteFriend.value
-
-        try {
-            (async () => {
+        const requestedUsername = event.target.deleteFriend.value;
+        (async () => {
+            try {
                 await deleteFriend(requestedUsername)
-                console.log("friend deleted")
+                setSuccessMessage("friend deleted correctly")
+                setTimeout(() => {
+                    setSuccessMessage(null)
+                }, 2000)
+                event.target.reset()
                 const updatedFriends = userFriends.filter(friend => friend !== requestedUsername);
                 setUserFriends(updatedFriends);
                 event.target.reset()
-            })()
-        } catch (error) {
-            alert(error.message)
-        }
+                
+            } catch (error) {
+                setFailMessage(error.message)
 
+                setTimeout(() => {
+                    setFailMessage(null)
+                }, 2000)
+            }
+        })()
     }
 
     return <div className=" w-screen h-screen bg-white pb-28">
+        {successMessage && <ToastSuccess message={successMessage} />}
+        {failMessage && <ToastFail message={failMessage} />}
         <AppHeader />
         <main className="w-full flex flex-col items-center">
             <AppH1Card user={user} type={"friends"} />

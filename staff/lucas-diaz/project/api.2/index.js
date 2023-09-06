@@ -44,14 +44,24 @@ io.on("connection", (socket) => {
         io.emit("send_characters", characters)
     })
 
-    //!recibe y envia la posicion del avatar 
+    //!recibe y envia la posicion del avatar boy
     socket.on('move_character_secondary', data => {
         socket.broadcast.emit("move_character_secondary_front", data)
     })
 
-    //!recibe y envia mensajes
-    socket.on("send_message_to_back", data => {
-        socket.broadcast.emit("send_message_to_front", data)
+    //!recibe y envia la posicion del avatar girl
+    socket.on('move_character2_secondary', data => {
+        socket.broadcast.emit("move_character2_secondary_front", data)
+    })
+
+    //!recibe y envia mensajes boy
+    socket.on("send_boy_message_to_back", data => {
+        socket.broadcast.emit("send_boy_message_to_front", data)
+    })
+
+    //!recibe y envia mensajes girl
+    socket.on("send_girl_message_to_back", data => {
+        socket.broadcast.emit("send_girl_message_to_front", data)
     })
 
 

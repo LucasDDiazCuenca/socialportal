@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react"
+import React, { useRef, useEffect, useState } from "react"
 import { useGLTF, useAnimations, useKeyboardControls, Text, Html } from "@react-three/drei"
 import * as THREE from "three"
 import { useFrame, useThree } from "@react-three/fiber"
@@ -7,8 +7,8 @@ import moveCharacter from "../../../logic/character/moveCharacter"
 import customizeCharacter from "../../../logic/character/customizeCharacter"
 import followCharacter from "../../../logic/character/followCharacter"
 import getUserId from "../../../logic/getUserId"
+
 import { io } from "socket.io-client"
-import { useState } from "react"
 export const socket = io(`${import.meta.env.VITE_API2_URL}`)
 
 
@@ -20,14 +20,11 @@ export default function CustomBoyExperience(props) {
     const avatar = props.avatar
     const boyRigidBody = props.boyRigidBody
     let text = props.messageToSend
-    let text2 = ""
-    const [text3 , setText3] = useState(null)
     const emotion = props.emotionToSend
+    const [socketText, setSocketText] = useState(null)
     const animationStates = { idle: true, walk: false, talk: false, tempEmote: false }
     const { camera, viewport } = useThree()
     let isMoving = false
-
-
 
     const walk = actions["walk"]
     const idle = actions["idle"]
@@ -38,9 +35,7 @@ export default function CustomBoyExperience(props) {
 
     if (boyRigidBody) {
         useFrame((state, delta) => {
-
             let boyBodyPosition = boyRigidBody?.current?.translation()
-
             const { forward, backward, leftward, rightward } = getKeys()
 
             if (avatar?.author._id === getUserId()) {
@@ -81,21 +76,18 @@ export default function CustomBoyExperience(props) {
         })
     }
 
-    if(avatar?.author._id !== getUserId()){
-        socket.on("send_message_to_front", data => {
-            setText3(data.message) 
+    if (avatar?.author._id !== getUserId()) {
+        socket.on("send_boy_message_to_front", data => {
+            setSocketText(data.message)
 
             setTimeout(() => {
-                setText3(null) 
+                setSocketText(null)
             }, 3000)
         })
-        
     }
 
     socket.on("move_character_secondary_front", (data) => {
         const { x, y, z, delta, isMoving, animationStates, emotion } = data
-
-        console.log(isMoving)
 
         const currentPosition = boyRigidBody?.current?.translation()
         const newPosition = new THREE.Vector3(x, y, z)
@@ -130,14 +122,14 @@ export default function CustomBoyExperience(props) {
                 className="text-white bg-cyan-900 p-2 px-5 rounded-3xl w-36 text-center"
             >{text}</Html>}
 
-            {text3 && <Html
+            {socketText && <Html
                 as="div"
                 center
                 position-y={4.3}
                 sprite
                 occlude
                 className="text-white bg-cyan-900 p-2 px-5 rounded-3xl w-36 text-center"
-            >{text3}</Html>}
+            >{socketText}</Html>}
 
             <Text position-y={3.6} position-x={-0.2} fontSize={0.2} rotation-y={Math.PI * 0.15}>{avatar.name}</Text>
             <group name="Scene">

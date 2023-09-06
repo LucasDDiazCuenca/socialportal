@@ -64,20 +64,19 @@ export default function World() {
     const handleSendText = (event) => {
 
         if (event.key === "Enter") {
-
-            if(avatar.model === boy ){
+            if(avatar.model === boy && avatar.author._id === getUserId()){
                 setBoyMessageToSend(message)
 
-                socket.emit("send_message_to_back", {
+                socket.emit("send_boy_message_to_back", {
                     message: message, 
                     model: boy
                 })
             }
             
-            if(avatar.model === girl){
+            if(avatar.model === girl && avatar.author._id === getUserId()){
                 setGirlMessageToSend(message)
 
-                socket.emit("send_message_to_back", {
+                socket.emit("send_girl_message_to_back", {
                     message: message, 
                     model: girl
                 })
