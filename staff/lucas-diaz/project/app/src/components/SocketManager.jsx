@@ -5,9 +5,10 @@ export const socket = io(`${import.meta.env.VITE_API2_URL}`)
 
 export const SocketManager = () => {
     const [isConnected, setIsConnected] = useState(false)
+    const [isOnRoom, setIsOnRoom] = useState(false)
 
     useEffect(() => {
-        console.log(isConnected)
+        console.log("user connected")
 
         function onConnect() {
             console.log("connected")
@@ -15,14 +16,9 @@ export const SocketManager = () => {
             console.log(isConnected)
         }
         function onDisconnect() {
-            console.log("disconnect")
+            console.log("user disconnected")
         }
-        function onHello() {
-            console.log("hello")
-        }
-        function onCharacters(value){
-            console.log(value)
-        }
+        
 
         socket.on("connect", onConnect) //subscribirse a event connection de back
         socket.on("hello", onHello)  //subscribirse a event hello de back

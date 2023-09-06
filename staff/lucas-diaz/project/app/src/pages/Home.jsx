@@ -8,14 +8,12 @@ import retrieveAvatar from "../logic/retrieveAvatar"
 import { useEffect, useState } from "react"
 import { useAppContext } from "../hooks"
 import { io } from "socket.io-client"
-
-
 const socket = io(`${import.meta.env.VITE_API2_URL}`)
 
 export default function () {
     const [user, setUser] = useState(null)
     const [avatar, setAvatar] = useState(null)
-    let { navigate, avatars, setAvatars } = useAppContext()
+    let { navigate, setAvatars } = useAppContext()
 
     useEffect(() => {
         try {

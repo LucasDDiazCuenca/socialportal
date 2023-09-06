@@ -1,21 +1,22 @@
 # APP ISOLINK
 
-![](https://www.mushmagic.com/img/cms/Blogimages/hx_856A-1.gif)
+![](./image/gif1.gif)
 
 ## INTRO 
-This is an app that allows you to register, login, and once inside, create an avatar (_naming proposal "__Link__"_).
+This is an app that allows you to register, login, and once inside, create an avatar.
 
 Once the **_Avatar_** is created & custimized, we'll have the option of entering into a isometric 3D room.
 
-In this room we will be able to interact with other person's avatar via chat (__atm__), explore the room and interact with some objects. 
+In this room we will be able to interact with other person's avatar via chat (__atm__), explore the room, send emotions and interact with some objects. 
 
 We can also admin friends area, adding and deleting friends, see who's online and where. 
 
-We can use this app just for fun, interact with others with an immersive 3D experience or we can use it as a communication Tools in workspaces
+We can use this app just for fun, interact with others with an immersive 3D experience or we can use it as a communication Tools in workspaces.
 
 ---
 ---
 
+![](./image/img2.png)
 
 ## FUNCTIONAL DESCRIPTION
 
@@ -25,9 +26,9 @@ We can use this app just for fun, interact with others with an immersive 3D expe
 - Upload user information
 - Create an avatar  
 - Edit avatar 
-- Select a room
+- Select a room (comming next)
 - enter in a room 
-- Add friend
+- Add friend 
 - Delete friend
 - Acept friend request 
 - Decline friend request
@@ -36,7 +37,7 @@ We can use this app just for fun, interact with others with an immersive 3D expe
 
 - Move the avatar
 - Send texts in a chat space 
-- interact with "x" object
+- interact with "x" object (comming next)
 - do certain movements linked to emotion states
 - add a friend
 
@@ -51,25 +52,29 @@ User
 - name (string)
 - email (string)
 - password (string)
+- avatar (boolean)
 - friends( [ObjectId] )
-- friendRequests (Array)
-- status (string) --> "online"/"offline"
+- friendRequests ( [ObjectId] )
+- connected (boolean) 
 
 Avatar 
 - id (ObjectId)
-- owner (ObjectId)
+- model (string)
 - name (string)
-- model (??)
-- clothing (??)
-- commplement (??)
-- actions (??)
+- personality(string)
+- age (string)
+- hair (string)
+- skin (string)
+- shirt (string)
+- trousers (string)
+- shoes(string)
+- emotions (Array)
 
 
 ## LINK TO WORKFLOW PROCESS
 
-
 https://www.notion.so/lucasdiazcuenca/Project-Finale-4a4c88d6f47a4a7bae6213bbac849d38?pvs=4
 
 
-
+![](./image/img1.png)
 

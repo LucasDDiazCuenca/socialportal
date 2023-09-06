@@ -6,6 +6,11 @@ import animateCharacter from "../../../logic/character/animateCharacter"
 import moveCharacter from "../../../logic/character/moveCharacter"
 import customizeCharacter from "../../../logic/character/customizeCharacter"
 import followCharacter from "../../../logic/character/followCharacter"
+import getUserId from "../../../logic/getUserId"
+import { io } from "socket.io-client"
+import { useState } from "react"
+export const socket = io(`${import.meta.env.VITE_API2_URL}`)
+
 
 export default function CustomBoyExperience(props) {
     const group = useRef()
@@ -13,55 +18,110 @@ export default function CustomBoyExperience(props) {
     const [subscribeKeys, getKeys] = useKeyboardControls()
     const { actions, mixer } = useAnimations(animations, group)
     const avatar = props.avatar
-    const rigidBody = props.rigidBody
-    const animationStates = {
-        idle: true,
-        walk: false,
-        talk: false, 
-        tempEmote: false,
-    };
-    const text = props.messageToSend
+    const boyRigidBody = props.boyRigidBody
+    let text = props.messageToSend
+    let text2 = ""
+    const [text3 , setText3] = useState(null)
     const emotion = props.emotionToSend
+    const animationStates = { idle: true, walk: false, talk: false, tempEmote: false }
     const { camera, viewport } = useThree()
+    let isMoving = false
+
+
+
+    const walk = actions["walk"]
+    const idle = actions["idle"]
+    const talk = actions["talk"]
+    const tempEmote = actions[emotion]
 
     customizeCharacter(materials, avatar)
 
-    if (rigidBody) {
+    if (boyRigidBody) {
         useFrame((state, delta) => {
+
+            let boyBodyPosition = boyRigidBody?.current?.translation()
+
             const { forward, backward, leftward, rightward } = getKeys()
-            const walk = actions["walk"]
-            const idle = actions["idle"]
-            const talk = actions["talk"]
-            const tempEmote = actions[emotion]
 
-            animateCharacter( forward, backward, leftward, rightward , animationStates, walk, idle, talk, text, tempEmote)
-            moveCharacter(forward, backward, leftward, rightward, group, rigidBody, delta, avatar)
+            if (avatar?.author._id === getUserId()) {
+                const movementDirection = new THREE.Vector3();
 
-            //CAMARA --> posicion del rigidBody 
-            const bodyPosition = rigidBody.current.translation()
+                if (forward) {
+                    movementDirection.z = -1
+                }
+                if (backward) {
+                    movementDirection.z = 1
+                }
+                if (leftward) {
+                    movementDirection.x = -1
+                }
+                if (rightward) {
+                    movementDirection.x = 1
+                }
 
-            followCharacter(bodyPosition, camera, viewport, avatar)
+                isMoving = forward || backward || leftward || rightward
+
+                moveCharacter(movementDirection, group, boyRigidBody, delta, avatar)
+                animateCharacter(isMoving, animationStates, walk, idle, talk, text, tempEmote)
+                followCharacter(boyBodyPosition, camera, viewport, avatar)
+
+                if (isMoving) {
+                    // Emitir solo si el personaje está en movimiento
+                    socket.emit('move_character_secondary', {
+                        x: boyBodyPosition.x,
+                        y: boyBodyPosition.y,
+                        z: boyBodyPosition.z,
+                        delta,
+                        isMoving,
+                        animationStates,
+                        emotion
+                    })
+                }
+            }
         })
     }
 
+    if(avatar?.author._id !== getUserId()){
+        socket.on("send_message_to_front", data => {
+            setText3(data.message) 
+
+            setTimeout(() => {
+                setText3(null) 
+            }, 3000)
+        })
+        
+    }
+
+    socket.on("move_character_secondary_front", (data) => {
+        const { x, y, z, delta, isMoving, animationStates, emotion } = data
+
+        console.log(isMoving)
+
+        const currentPosition = boyRigidBody?.current?.translation()
+        const newPosition = new THREE.Vector3(x, y, z)
+        const movementDirection = newPosition?.clone().sub(currentPosition).normalize()
+
+        moveCharacter(movementDirection, group, boyRigidBody, delta, avatar)
+        animateCharacter(isMoving, animationStates, walk, idle, talk, text, emotion)
+    });
+
+
+
     useEffect(() => {
         const idleAction = actions["idle"];
-        const walkAction = actions["walk"];
-
         idleAction.reset().fadeIn(0.5).play();
-
         animationStates.idle = true;
         animationStates.walk = false;
 
         return () => {
             idleAction.fadeOut(0.5)
-            walkAction.fadeOut(0.5)
+            socket.off("move_character_secondary_front")
         }
-    }, [mixer]);
+    }, []);
 
     return <>
         <group ref={group} {...props} dispose={null}>
-            { text && <Html 
+            {text && <Html
                 as="div"
                 center
                 position-y={4.3}
@@ -69,6 +129,16 @@ export default function CustomBoyExperience(props) {
                 occlude
                 className="text-white bg-cyan-900 p-2 px-5 rounded-3xl w-36 text-center"
             >{text}</Html>}
+
+            {text3 && <Html
+                as="div"
+                center
+                position-y={4.3}
+                sprite
+                occlude
+                className="text-white bg-cyan-900 p-2 px-5 rounded-3xl w-36 text-center"
+            >{text3}</Html>}
+
             <Text position-y={3.6} position-x={-0.2} fontSize={0.2} rotation-y={Math.PI * 0.15}>{avatar.name}</Text>
             <group name="Scene">
                 <group
@@ -140,7 +210,6 @@ export default function CustomBoyExperience(props) {
             </group>
         </group>
     </>
-
 }
 
 useGLTF.preload("models/boy.glb");

@@ -1,5 +1,5 @@
 import * as THREE from "three"
-import React, { useRef, useState } from "react"
+import React, { Suspense, useRef, useState } from "react"
 import { OrbitControls, useGLTF } from "@react-three/drei"
 import { Physics, RigidBody, CuboidCollider } from "@react-three/rapier"
 import ArcadeExperience from "./library/ArcadeExperience"
@@ -7,17 +7,17 @@ import CustomBoyExperience from "./library/boy/CustomBoyExperience"
 import CustomGirlExperience from "./library/girl/CustomGirlExperience"
 import VioletRoomFurniture from "./VioletRoomFurniture"
 import { useAppContext } from "../hooks"
+import getUserId from "../logic/getUserId"
 
 
-export default function VioletRoomExperience({ avatar, messageToSend, emotionToSend }) {
+export default function VioletRoomExperience({ avatar, boyMessageToSend, girlMessageToSend, emotionToSend }) {
     const { nodes, materials } = useGLTF("./models/violetRoom.glb")
     materials["Material.014"].color = new THREE.Color("#83deb5")
     const boy = "./models/boy.glb"
     const girl = "./models/girl.glb"
-    const modelRigidBody = useRef()
+    const boyRigidBody = useRef()
+    const girlRigidBody = useRef()
     let { avatars } = useAppContext()
-
-    console.log(avatars)
 
     return <Physics>
         <group dispose={null}>
@@ -45,37 +45,51 @@ export default function VioletRoomExperience({ avatar, messageToSend, emotionToS
             />
             <ambientLight intensity={0.22} />
 
-            {avatars.map((avatar) => (
-                <RigidBody
-                    key={avatar._id}
-                    ref={modelRigidBody}
-                    type="dinamic"
-                    canSleep={false}
-                    colliders="cuboid"
-                    friction={1}
-                    linearDamping={1}
-                >
-                    {avatar?.model === "./models/boy.glb" && (
-                        <CustomBoyExperience
-                            avatar={avatar}
-                            scale={0.6}
-                            position={[2, -1.30, 2]}
-                            rigidBody={modelRigidBody}
-                            messageToSend={messageToSend}
-                            emotionToSend={emotionToSend}
-                        />
+            {avatars?.map((avatar, index) => (
+                <React.Fragment key={avatar.model + index}>
+                    {avatar?.model === boy && (
+                        <Suspense fallback={null}>
+                            <RigidBody
+                                ref={boyRigidBody}
+                                type="dinamic"
+                                canSleep={false}
+                                colliders="cuboid"
+                                friction={1}
+                                linearDamping={1}
+                            >
+                                <CustomBoyExperience
+                                    avatar={avatar}
+                                    scale={0.6}
+                                    position={[2, -1.30, 2]}
+                                    boyRigidBody={boyRigidBody}
+                                    messageToSend={avatar?.author._id === getUserId() ? boyMessageToSend : null}
+                                    emotionToSend={avatar?.author._id === getUserId() ? emotionToSend : null}
+                                />
+                            </RigidBody>
+                        </Suspense>
                     )}
 
-                    {avatar?.model === "./models/girl.glb" && (
-                        <CustomGirlExperience
-                            avatar={avatar}
-                            scale={0.515}
-                            rigidBody={modelRigidBody}
-                            messageToSend={messageToSend}
-                            emotionToSend={emotionToSend}
-                        />
+                    {avatar?.model === girl && (
+                        <Suspense fallback={null}>
+                            <RigidBody
+                                ref={girlRigidBody}
+                                type="dinamic"
+                                canSleep={false}
+                                colliders="cuboid"
+                                friction={1}
+                                linearDamping={1}
+                            >
+                                <CustomGirlExperience
+                                    avatar={avatar}
+                                    scale={0.515}
+                                    girlRigidBody={girlRigidBody}
+                                    messageToSend={avatar?.author._id === getUserId() ? girlMessageToSend : null}
+                                    emotionToSend={avatar?.author._id === getUserId() ? emotionToSend : null}
+                                />
+                            </RigidBody>
+                        </Suspense>
                     )}
-                </RigidBody>
+                </React.Fragment>
             ))}
 
             <RigidBody type="dinamic" colliders={false} position={[-1.3, -1.35, 4.0]} rotation-y={Math.PI * 0.5}>

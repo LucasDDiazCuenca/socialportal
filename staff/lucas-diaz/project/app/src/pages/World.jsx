@@ -2,25 +2,40 @@ import { Canvas } from '@react-three/fiber'
 import VioletRoomExperience from '../components/VioletRoomExperience'
 import { Suspense, useEffect, useState } from 'react'
 import retrieveAvatar from "../logic/retrieveAvatar"
+import retrieveUser from "../logic/retrieveUser"
 import { Loader, KeyboardControls } from "@react-three/drei"
 import { useAppContext } from "../hooks"
+import * as THREE from "three"
+import getUserId from '../logic/getUserId'
+
+import { io } from "socket.io-client"
+const socket = io(`${import.meta.env.VITE_API2_URL}`)
 
 export default function World() {
     const [avatar, setAvatar] = useState()
-    const { navigate } = useAppContext()
+    const boy = "./models/boy.glb"
+    const girl = "./models/girl.glb"
+    const [user, setUser] = useState()
+    const { navigate, setAvatars } = useAppContext()
     const [chatVisibility, setChatVisibility] = useState(false)
     const [emotionsVisibility, setEmotionsVisibility] = useState(false)
     const [emotionToSend, setEmotionToSend] = useState(null)
     const [message, setMessage] = useState("")
+    const [boyMessageToSend, setBoyMessageToSend] = useState(null)
+    const [girlMessageToSend, setGirlMessageToSend] = useState(null)
     const [messageToSend, setMessageToSend] = useState(null)
+
+
 
     useEffect(() => {
         console.log("<World/> mounted")
         try {
 
             (async () => {
+                const _user = await retrieveUser()
                 const _avatar = await retrieveAvatar()
                 setAvatar(_avatar)
+                setUser(_user)
             })()
         } catch (error) {
             alert(error)
@@ -29,10 +44,17 @@ export default function World() {
         return () => {
             console.log("<World/> unmounted")
         }
-    }, [])
+    }, [setAvatars])
 
     const handleNavigateHome = () => {
         navigate("/")
+        socket.on("connect", console.log("user out of room"))
+        socket.emit("delete_avatar", avatar)
+
+        socket.on("send_characters", data => {
+            setAvatars(data)
+        })
+
     }
 
     const handleTalk = () => {
@@ -40,15 +62,35 @@ export default function World() {
     }
 
     const handleSendText = (event) => {
+
         if (event.key === "Enter") {
 
-            setMessageToSend(message)
+            if(avatar.model === boy ){
+                setBoyMessageToSend(message)
+
+                socket.emit("send_message_to_back", {
+                    message: message, 
+                    model: boy
+                })
+            }
+            
+            if(avatar.model === girl){
+                setGirlMessageToSend(message)
+
+                socket.emit("send_message_to_back", {
+                    message: message, 
+                    model: girl
+                })
+            }
+
             setMessage("")
             setChatVisibility(!chatVisibility)
 
             setTimeout(() => {
-                setMessageToSend(null)
+                setBoyMessageToSend(null)
+                setGirlMessageToSend(null)
             }, 3000)
+
         }
     }
 
@@ -80,6 +122,7 @@ export default function World() {
                     initialState={(active) => active} // Initial black out state
                 />
                 <Canvas
+                    dpr={[1, 2]}
                     shadows
                     orthographic
                     camera={{
@@ -89,10 +132,15 @@ export default function World() {
                         far: 200,
                         position: [5, 2, 5]
                     }}
+                    gl={{
+                        antialias: true,
+                        toneMapping: THREE.CineonToneMapping,
+                        outputColorSpace: THREE.SRGBColorSpace
+                    }}
                 >
                     <color args={["#322734"]} attach={"background"} />
                     <Suspense fallback={null}>
-                        <VioletRoomExperience avatar={avatar} messageToSend={messageToSend} emotionToSend={emotionToSend} />
+                        <VioletRoomExperience avatar={avatar} boyMessageToSend={boyMessageToSend} girlMessageToSend={girlMessageToSend} emotionToSend={emotionToSend} />
                     </Suspense>
                 </Canvas>
             </KeyboardControls>

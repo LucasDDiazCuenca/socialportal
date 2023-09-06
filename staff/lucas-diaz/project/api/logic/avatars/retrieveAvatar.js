@@ -16,7 +16,7 @@ module.exports = function retrieveAvatar(userId) {
         const avatar = await Avatar.findOne({ author: userId }).populate("author", "-email -password -friends -friendRequests").lean()
         
         if(avatar){
-            delete avatar.author._id
+            // delete avatar.author._id
             delete avatar.author.__v
             delete avatar.__v
         }

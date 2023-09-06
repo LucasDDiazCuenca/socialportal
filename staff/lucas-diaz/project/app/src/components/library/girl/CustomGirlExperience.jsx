@@ -6,6 +6,7 @@ import animateCharacter from "../../../logic/character/animateCharacter"
 import moveCharacter from "../../../logic/character/moveCharacter"
 import customizeCharacter from "../../../logic/character/customizeCharacter"
 import followCharacter from "../../../logic/character/followCharacter"
+import getUserId from "../../../logic/getUserId";
 
 export default function CustomGirlExperience(props) {
     const group = useRef();
@@ -13,36 +14,47 @@ export default function CustomGirlExperience(props) {
     const [subscribeKeys, getKeys] = useKeyboardControls()
     const { actions, mixer } = useAnimations(animations, group);
     const avatar = props.avatar
-    const rigidBody = props.rigidBody
-    const animationStates = {
-        idle: true,
-        walk: false,
-        talk: false,
-        tempEmote: false,
-    }
+    const girlRigidBody = props.girlRigidBody
+    const animationStates = { idle: true, walk: false, talk: false, tempEmote: false }
     const text = props.messageToSend
     const emotion = props.emotionToSend
     const { camera, viewport } = useThree()
 
     customizeCharacter(materials, avatar)
+    let isMoving = false
 
-    if (rigidBody) {
+    if (girlRigidBody) {
         useFrame((state, delta) => {
             const { forward, backward, leftward, rightward } = getKeys()
             const walk = actions["walk"]
             const idle = actions["idle"]
             const talk = actions["talk"]
 
+            const girlBodyPosition = girlRigidBody?.current?.translation()
             const tempEmote = actions[emotion]
 
+            if (avatar?.author._id === getUserId()) {
+                const movementDirection = new THREE.Vector3();
 
-            animateCharacter(forward, backward, leftward, rightward, animationStates, walk, idle, talk, text, tempEmote)
-            moveCharacter(forward, backward, leftward, rightward, group, rigidBody, delta, avatar)
+                if (forward) {
+                    movementDirection.z = -1;
+                }
+                if (backward) {
+                    movementDirection.z = 1;
+                }
+                if (leftward) {
+                    movementDirection.x = -1;
+                }
+                if (rightward) {
+                    movementDirection.x = 1;
+                }
 
-            //CAMARA --> posicion del rigidBody 
-            const bodyPosition = rigidBody.current.translation()
+                isMoving = forward || backward || leftward || rightward;
 
-            followCharacter(bodyPosition, camera, viewport, avatar)
+                moveCharacter(movementDirection, group, girlRigidBody, delta, avatar);
+                animateCharacter(isMoving, animationStates, walk, idle, talk, text, tempEmote)
+                followCharacter(girlBodyPosition, camera, viewport, avatar)
+            }
         })
     }
 
