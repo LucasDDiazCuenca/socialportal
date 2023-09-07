@@ -12,7 +12,7 @@ const {
     updateUserPasswordHandler, updateUserUsernameHandler, sendFriendRequestHandler, deleteFriendRequestHandler,
     addFriendHandler, deleteFriendHandler,
     retrieveUserFriendsHandler, retrieveUserFriendsRequestsHandler,createAvatarHandler,
-    retrieveAvatarHandler
+    retrieveAvatarHandler, deleteAvatarHandler
 } = require("./handlers")
 
 mongoose.connect(process.env.MONGODB_URL)
@@ -40,6 +40,7 @@ mongoose.connect(process.env.MONGODB_URL)
         //!AVATARS
         api.post("/users/avatar", jsonBodyParser, createAvatarHandler)
         api.get("/users/avatar", retrieveAvatarHandler)
+        api.delete("/users/avatar", deleteAvatarHandler)
 
 
         api.listen(process.env.PORT, () => console.log(`Process running in port ${process.env.PORT}`))

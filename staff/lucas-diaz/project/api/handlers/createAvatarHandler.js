@@ -4,7 +4,7 @@ const { extractUserIdFromToken, handleErrors } = require("./helpers")
 
 module.exports = handleErrors((req, res) => {
     const userId = extractUserIdFromToken(req)
-    debugger;
+    
     const { model, name, personality, age, hair, skin, shirt, trousers, shoes, emotions } = req.body
 
     return createAvatar(userId, model, name, personality, age, hair, skin, shirt, trousers, shoes, emotions)

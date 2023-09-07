@@ -31,7 +31,7 @@ export default function VioletRoomExperience({ avatar, boyMessageToSend, girlMes
     }
 
     return <>
-        <Physics debug>
+        <Physics>
             <group dispose={null}>
                 <OrbitControls
                     maxAzimuthAngle={Math.PI / 4}

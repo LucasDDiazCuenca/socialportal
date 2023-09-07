@@ -11,5 +11,6 @@ module.exports = {
     retrieveUserFriendsRequests: require("./users/retrieveUserFriendsRequests"),
     retrieveUserFriends: require("./users/retrieveUserFriends"),
     createAvatar: require("./avatars/createAvatar"),
-    retrieveAvatar: require("./avatars/retrieveAvatar")
+    retrieveAvatar: require("./avatars/retrieveAvatar"),
+    deleteAvatar: require("./avatars/deleteAvatar")
 }
