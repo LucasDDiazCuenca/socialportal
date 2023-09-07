@@ -38,6 +38,7 @@ export default function CustomGirlExperience(props) {
             const { forward, backward, leftward, rightward } = getKeys()
 
             if (avatar?.author._id === getUserId()) {
+                socket.emit("girl_on_room", true)
                 const movementDirection = new THREE.Vector3();
 
                 if (forward) {

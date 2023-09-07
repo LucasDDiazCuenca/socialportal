@@ -44,6 +44,18 @@ io.on("connection", (socket) => {
         io.emit("send_characters", characters)
     })
 
+    socket.on("boy_on_room", data => {
+        socket.broadcast.emit("front_boy_on_room", data)
+    })
+
+    socket.on("girl_on_room", data => {
+        socket.broadcast.emit("front_girl_on_room", data)
+    })
+
+    socket.on("boy_out_of_room", data => {
+        socket.broadcast.emit("front_boy_out_of_room", data)
+    })
+
     //!recibe y envia la posicion del avatar boy
     socket.on('move_character_secondary', data => {
         socket.broadcast.emit("move_character_secondary_front", data)

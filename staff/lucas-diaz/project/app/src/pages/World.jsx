@@ -55,6 +55,8 @@ export default function World() {
             setAvatars(data)
         })
 
+        socket.emit("boy_out_of_room", false)
+
     }
 
     const handleTalk = () => {

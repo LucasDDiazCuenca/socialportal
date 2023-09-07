@@ -39,6 +39,8 @@ export default function CustomBoyExperience(props) {
             const { forward, backward, leftward, rightward } = getKeys()
 
             if (avatar?.author._id === getUserId()) {
+                socket.emit("boy_on_room", true)
+
                 const movementDirection = new THREE.Vector3();
 
                 if (forward) {
