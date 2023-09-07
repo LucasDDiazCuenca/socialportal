@@ -30,13 +30,11 @@ export default function Avatar() {
         setboyClicked(true)
         setGirlClicked(false)
         setModel("./models/boy.glb")
-        console.log(model)
     }
     const toggleGirlAvatarImg = () => {
         setGirlClicked(true)
         setboyClicked(false)
         setModel("./models/girl.glb")
-        console.log(model)
     }
     const toggleEmotion = (emotion) => {
         if (selectedEmotions.includes(emotion)) {

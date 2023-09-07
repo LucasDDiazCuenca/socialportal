@@ -27,8 +27,6 @@ io.on("connection", (socket) => {
             characters.push(data)
         }
 
-        console.log(characters.length)
-
         //! funcion enviar  --> una funcion que envie a front el array de characters 
         io.emit("send_characters", characters)
     })
@@ -40,7 +38,7 @@ io.on("connection", (socket) => {
         if (character) {
             characters.splice(characters.indexOf(character), 1);
         }
-        console.log(characters.length)
+        
         io.emit("send_characters", characters)
     })
 
