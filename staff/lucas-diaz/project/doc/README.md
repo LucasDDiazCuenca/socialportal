@@ -70,6 +70,10 @@ Avatar
 - shoes(string)
 - emotions (Array)
 
+## TEST COVERAGE
+
+![](./image/test%20coverage.png)
+
 
 ## LINK TO WORKFLOW PROCESS
 
