@@ -52,7 +52,7 @@ export default function VioletRoomFurniture({ nodes, materials }) {
             />
         </RigidBody>
 
-        <RigidBody type="dinamic" colliders={false} position={[0.5, 0.2, 0.2]}>
+        <RigidBody type="fixed" colliders={false} position={[0.5, 0, 0.2]}>
             <mesh
                 name="COUCH"
                 castShadow
@@ -119,10 +119,10 @@ export default function VioletRoomFurniture({ nodes, materials }) {
                     scale={[0.15, 0.063, 0.195]}
                 />
             </mesh>
-            <CuboidCollider args={[1, 0.4, 0.5]} position={[1.5, -1, -0.9]} />
+            <CuboidCollider args={[1, 0.4, 0.6]} position={[1.5, -1, -0.9]} />
         </RigidBody>
 
-        <RigidBody type="dinamic" colliders={false}>
+        <RigidBody type="fixed" colliders={false}>
             <mesh
                 name="couch_2"
                 castShadow
@@ -170,7 +170,7 @@ export default function VioletRoomFurniture({ nodes, materials }) {
                     scale={[0.147, 0.064, 0.197]}
                 />
             </mesh>
-            <CuboidCollider args={[0.6, 0.6, 0.6]} position={[-1, -0.8, 0.8]} />
+            <CuboidCollider args={[0.7, 0.6, 0.8]} position={[-1, -0.8, 0.8]} />
         </RigidBody>
 
         <mesh
@@ -294,14 +294,14 @@ export default function VioletRoomFurniture({ nodes, materials }) {
             />
         </mesh>
 
-        <RigidBody type="dinamic" colliders={false} position-y={0.1}>
+        <RigidBody type="fixed" colliders={false} position-y={0.1}>
             <mesh
                 name="coffe_table"
                 // castShadow
                 // receiveShadow
                 geometry={nodes.coffe_table.geometry}
                 material={materials["Material.016"]}
-                position={[1.48, -1.304, 0.414]}
+                position={[1.48, -1.44, 0.414]}
                 rotation={[0, -1.57, 0]}
                 scale={[0.275, 0.428, 0.54]}
             >
@@ -362,7 +362,7 @@ export default function VioletRoomFurniture({ nodes, materials }) {
             </mesh>
             <group
                 name="Circle"
-                position={[1.282, -0.978, 0.413]}
+                position={[1.282, -1.08, 0.413]}
                 rotation={[0, -1.162, 0]}
                 scale={[0.892, 0.997, 0.892]}
             >
@@ -381,7 +381,7 @@ export default function VioletRoomFurniture({ nodes, materials }) {
                     material={materials["Material.032"]}
                 />
             </group>
-            <CuboidCollider args={[0.6, 0.3, 0.3]} position={[1.5, -1, 0.4]} />
+            <CuboidCollider args={[0.6, 0.3, 0.3]} position={[1.5, -1.17, 0.4]} />
         </RigidBody>
 
         <RigidBody type="fixed" colliders="cuboid">
