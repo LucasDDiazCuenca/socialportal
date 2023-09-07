@@ -9,7 +9,7 @@ import updateUserUsername from "../logic/updateUserUsername"
 import updateUserPassword from "../logic/updateUserPassword"
 import ToastFail from "../components/ToastFail"
 import ToastSuccess from "../components/ToastSuccess"
-
+import deleteAvatar from "../logic/deleteAvatar.js"
 
 export default function EditProfile() {
     const [user, setUser] = useState(null)
@@ -18,6 +18,7 @@ export default function EditProfile() {
     const [passwordUpdated, setPasswordUpdated] = useState(false)
     const [failMessage, setFailMessage] = useState(null)
     const [successMessage, setSuccessMessage] = useState(null)
+    const [avatarDeleted, setAvatarDeleted] = useState(false)
 
     useEffect(() => {
         try {
@@ -33,6 +34,31 @@ export default function EditProfile() {
     const handleLogOutClick = () => {
         logOutUser()
         navigate("/login")
+    }
+
+    const handleDeleteAvatar = () => {
+        (async() => {
+            try {
+                await deleteAvatar()
+
+                setSuccessMessage("Avatar deleted correctly")
+                setTimeout(() => {
+                    setSuccessMessage(null)
+                    setAvatarDeleted(true)
+                }, 2000)
+
+                setTimeout(() => {
+                    setAvatarDeleted(false)
+                }, 2500)
+
+            } catch (error) {
+                setFailMessage(error.message)
+
+                setTimeout(() => {
+                    setFailMessage(null)
+                }, 2000)
+            }
+        })()
     }
 
     const handleUpdateUserUsername = event => {
@@ -66,26 +92,26 @@ export default function EditProfile() {
         const newPassword = event.target.newPassword.value
         const newPasswordConfirmation = event.target.newPasswordConfirmation.value;
 
-            (async () => {
-                try {
-                    await updateUserPassword(password, newPassword, newPasswordConfirmation)
+        (async () => {
+            try {
+                await updateUserPassword(password, newPassword, newPasswordConfirmation)
 
-                    setSuccessMessage("Password changed correctly")
+                setSuccessMessage("Password changed correctly")
 
-                    setTimeout(() => {
-                        setSuccessMessage(null)
-                    }, 2000)
+                setTimeout(() => {
+                    setSuccessMessage(null)
+                }, 2000)
 
-                    setPasswordUpdated(!passwordUpdated)
-                    event.target.reset()
-                } catch (error) {
-                    setFailMessage(error.message)
+                setPasswordUpdated(!passwordUpdated)
+                event.target.reset()
+            } catch (error) {
+                setFailMessage(error.message)
 
-                    setTimeout(() => {
-                        setFailMessage(null)
-                    }, 2000)
-                }
-            })()
+                setTimeout(() => {
+                    setFailMessage(null)
+                }, 2000)
+            }
+        })()
 
 
     }
@@ -132,11 +158,12 @@ export default function EditProfile() {
                     </div>
                 </form>
 
-                <div className="flex flex-col items-center mt-10">
+                <div className="flex flex-col items-center mt-6">
+                    <button className="text-red-600 font-bold my-3" onClick={handleDeleteAvatar}>Delete Avatar </button>
                     <button className="text-red-600 font-bold" onClick={handleLogOutClick}>Log Out <img className="inline" src="./icons/logOut.png" /></button>
                 </div>
             </section>
         </main>
-        <Footer user={user} />
+        <Footer user={user}/>
     </div>
 }
