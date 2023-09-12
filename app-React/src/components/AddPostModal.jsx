@@ -2,7 +2,7 @@ import { useState } from "react";
 import createPost from "../logic/createPost.js"
 import Form from "./library/Form.jsx";
 
-export default function AddPostModal({ onCancelClick, onCancelClick }) {
+export default function AddPostModal({ onCancelClick }) {
     const [errorMessage, setErrorMesagge] = useState("");
 
     function handleCancelClick(event) {
