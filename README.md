@@ -36,3 +36,5 @@ Post
 - likes (string array, refers to User id)
 
 ![](./doc/img2.png)
+
+![](./doc/loading.gif)
