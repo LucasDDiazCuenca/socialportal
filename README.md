@@ -35,6 +35,23 @@ Post
 - text (string)
 - likes (string array, refers to User id)
 
+
+## NORMAS DE USO
+
+hay una version deployed
+
+https://lucas-social-app.netlify.app
+
+si presenta problemas borrar la palabra "login" de la URL del navegador
+
+User: lucas@gmail.com Pass: LucasDiaz22!
+
+Puedes postear una imagen que sea una url que acabe en .jpeg 
+
+ejemplo : https://archello.s3.eu-central-1.amazonaws.com/images/2018/05/11/tobiarchitects1.1526035990.6946.jpg
+
+
+
 ![](./doc/img2.png)
 
 ![](./doc/loading.gif)
