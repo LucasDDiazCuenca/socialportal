@@ -50,6 +50,8 @@ Puedes postear una imagen que sea una url que acabe en .jpeg
 
 ejemplo : https://archello.s3.eu-central-1.amazonaws.com/images/2018/05/11/tobiarchitects1.1526035990.6946.jpg
 
+La app esta preparada para funcionar esteticamente mas optima con un formato mobile first
+
 
 
 ![](./doc/img2.png)
